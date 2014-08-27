@@ -1,0 +1,7 @@
+.color-box1, .color-box2 {
+	float:left;
+	width:30px;
+	height:30px;
+	margin:5px;
+	border: 1px solid;
+}
