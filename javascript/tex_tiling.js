@@ -69,23 +69,58 @@ function setTiling(tile_col_hex, hori_count, vert_count, grout_col_hex, hori_gap
 		return grad;
 	}
 	
-	function drawRectangle(tile_part_x, tile_part_y, hori_gap, vert_gap, x_smooth, y_smooth, grout_col_hex, tile_col_hex, ctx, x, y, w, h){
-		ctx.save();
+	function drawRectangle(tile_part_x, tile_part_y, hori_count, vert_count, hori_gap, vert_gap, x_smooth, y_smooth, grout_col_hex, tile_col_hex, ctx, x, y, w, h){
 		
 		ctx.fillStyle = gradient([0, y, 0, h], tile_part_y, vert_gap, y_smooth, grout_col_hex, tile_col_hex);
 		ctx.fillRect(x, y, w, h);
 
-		ctx.restore();
 		
 		ctx.save();
 
+		var offset_x = 0, offset_y = 0;
+		
+		if ((hori_gap/2 + x_smooth) * hori_count < (vert_gap/2 + y_smooth) * vert_count){
+			// tan = geg / an => geg = tan * an
+			var rad = Math.atan((hori_gap + x_smooth) / (vert_gap + y_smooth));
+			var geg = Math.tan(rad) * ((h-y)/2);
+			
+			offset_x = Math.max((w-x)/2 - geg, 0);
+		}
+		else{
+			var rad = Math.atan((vert_gap + y_smooth) / (hori_gap + x_smooth));
+			var geg = Math.tan(rad) * ((w-x)/2);
+			
+			offset_y = Math.max((h-y)/2 - geg, 0);
+		}
+		
 		ctx.beginPath();
 		ctx.moveTo(x, y);
+		ctx.lineTo((w-x)/2 + x - offset_x,(h-y)/2 + y - offset_y);
+		ctx.lineTo((w-x)/2 + x,(h-y)/2 + y - offset_y);
+		ctx.lineTo((w-x)/2 + x + offset_x,(h-y)/2 + y - offset_y);
+		ctx.lineTo(w, y);
 		ctx.lineTo(w, h);
+		ctx.lineTo((w-x)/2 + x + offset_x,(h-y)/2 + y + offset_y);
+		ctx.lineTo((w-x)/2 + x,(h-y)/2 + y + offset_y);
+		ctx.lineTo((w-x)/2 + x - offset_x,(h-y)/2 + y + offset_y);
+		ctx.lineTo(x, h);
+		ctx.lineTo(x, y);
+		ctx.clip();
+		
+		/*
+		ctx.beginPath();
+		ctx.moveTo(x, y);
+		ctx.lineTo(x, y + vert_gap/2);
+		ctx.lineTo(w/2, h/2);
+		ctx.lineTo(w, h - vert_gap/2);
+		ctx.clip();
+		ctx.moveTo(w, h);
 		ctx.lineTo(w, y);
 		ctx.lineTo(x, h);
 		ctx.clip();
+		*/
     
+		//ctx.fillStyle = "#ff7700";
 		ctx.fillStyle = gradient([x, 0, w, 0], tile_part_x, hori_gap, x_smooth, grout_col_hex, tile_col_hex);
 		ctx.fillRect(x, y, w, h);
 
@@ -94,8 +129,9 @@ function setTiling(tile_col_hex, hori_count, vert_count, grout_col_hex, hori_gap
 	
 	for (var y=0; y < vert_count; y++){
 		for (var x=0; x < hori_count; x++){
-			drawRectangle(tile_part_x, tile_part_y, hori_gap, vert_gap,
-			x_smooth, y_smooth, grout_col_hex, tile_col_hex, ctx, x*256/hori_count, y*256/vert_count, (x+1)*256/hori_count,  (y+1)*256/vert_count);
+			drawRectangle(tile_part_x, tile_part_y, hori_count, vert_count, hori_gap, vert_gap,
+			x_smooth, y_smooth, grout_col_hex, tile_col_hex, 
+			ctx, x*256/hori_count, y*256/vert_count, (x+1)*256/hori_count, (y+1)*256/vert_count);
 		}
 	}
 	
