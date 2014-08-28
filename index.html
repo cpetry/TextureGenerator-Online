@@ -4,60 +4,62 @@
 <head>
 	<script src="javascript/jquery-2.1.1.min.js"></script>
 	<script src="colpick-2.0.2/js/colpick.js" type="text/javascript"> </script>
-	<script src="javascript/tex_tiling.js" type="text/javascript"> </script>
+	
 	<link rel="stylesheet" href="colpick-2.0.2/css/colpick.css" type="text/css"/>
 	<link type="text/css" rel="stylesheet" href="./style.css"></link>
 </head>
 
 <body>
-
-	<canvas id="texture" style="display:none;" width="256" height="256"> </canvas>
-	<div width=256 height=256>
-		<canvas id="texture_preview" width="256" height="256" style="border:1px solid #000000;">> </canvas>
+	<!-- space to top -->
+	<div style="min-height:100px"></div>
+	
+	
+	<div class="container">		
+	
+		<table><tr>
+			<td>
+			<div class="preview">
+				<canvas id="texture" style="display:none;" width="256" height="256"> </canvas>
+				<div width=256 height=256>
+					<canvas id="texture_preview" width="256" height="256" style="border:1px solid #000000;">> </canvas>
+				</div>
+			</div>
+			</td>
+			
+			<td>
+			<div class="settings">
+				<div class="tiling">
+					<table><tr>
+					<td>Tiles:</td> 
+					<td>x <input type="number" id="x_tiling" onchange="updateTiling();" style="width:45px;" min="1" value="2" max="50" /></td>
+					<td>y <input type="number" id="y_tiling" onchange="updateTiling();" style="width:45px;" min="1" value="2" max="50" /></td>
+					</tr><tr>
+					<td>Grout:</td>
+					<td>x <input type="number" id="x_grout" onchange="updateTiling();" style="width:45px;" min="1" value="2" max="100" /></td>
+					<td>y <input type="number" id="y_grout" onchange="updateTiling();" style="width:45px;" min="1" value="2" max="100" /></td>
+					</td>
+					</tr><tr>
+					<td>Smoothness:</td>
+					<td>x <input type="number" id="x_smooth" onchange="updateTiling();" style="width:45px;" min="1" value="2" max="30" /></td>
+					<td>y <input type="number" id="y_smooth" onchange="updateTiling();" style="width:45px;" min="1" value="2" max="30" /></td>
+					</td>
+					</tr></table>
+					
+					<div class="color-box1" id="1"></div>
+					<div class="color-box2" id="2" ></div>
+				</div>
+			</div>
+			</td>
+			
+		</tr></table>
 	</div>
-
-	<div class="color-box1" id="1"></div>
-	<div class="color-box2" id="2" ></div>
-
-	<script> 
-		function rgb2hex(rgb){
-		 rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
-		 return "#" +
-		  ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
-		  ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
-		  ("0" + parseInt(rgb[3],10).toString(16)).slice(-2);
-		}
-
-		$('.color-box1').colpick({
-			layout:'rgbhsbhex',
-			color: {h:200, s:0, b:100},
-			hue:200,
-			onSubmit:function(hsb,hex,rgb,el) {
-				
-				// tile_col_hex, hori_count, vert_count, grout_col_hex, hori_gap, vert_gap
-				var hex2 = rgb2hex($("#2").css("background-color"));
-				//document.write(hex2);
-				setTiling('#'+hex, 2, 2, hex2, 10, 10);
-				$(el).css('background-color', '#'+hex);
-				$(el).colpickHide();
-			}
-		}).css('background-color', '#ffffff');
-
-		$('.color-box2').colpick({
-			layout:'rgbhsbhex',
-			color: {h:200, s:0, b:0},
-			onSubmit:function(hsb,hex,rgb,el) {
-				print
-				// tile_col_hex, hori_count, vert_count, grout_col_hex, hori_gap, vert_gap
-				var hex1 = rgb2hex($("#1").css("background-color"));
-				//document.write(hex1);
-				setTiling(hex1, 2, 2, '#'+hex, 10, 10);
-				$(el).css('background-color', '#'+hex);
-				$(el).colpickHide();
-			}
-		}).css('background-color', '#000000');
-		
-	</script>
+	
 </body>
 
+	<!-- Has to be down here! -->
+	<script src="javascript/tex_tiling.js" type="text/javascript"></script>
+	
+	
+	<script> updateTiling(); </script>
+	
 </html>
