@@ -45,14 +45,16 @@ function setTiling(tile_col_hex, hori_count, vert_count, grout_col_hex, hori_gap
 	var c = document.getElementById("texture_preview");
 	var ctx = c.getContext("2d");
 
+	var max_w = 512, max_h = 512;
+	
 	// grout
 	ctx.fillStyle = grout_col_hex; // hex col
-	ctx.fillRect(0,0,256,256); // fillRect(x,y,width,height)
+	ctx.fillRect(0,0,max_w,max_h); // fillRect(x,y,width,height)
 
 	// Smoothness (gradients)
 	
-	var tile_part_x = Math.max(256 / hori_count - hori_gap, 0);
-	var tile_part_y = Math.max(256 / vert_count - vert_gap, 0);	
+	var tile_part_x = Math.max(max_w / hori_count - hori_gap, 0);
+	var tile_part_y = Math.max(max_h / vert_count - vert_gap, 0);	
 	
 	function gradient(dir, tile_d, gap_d, smooth_d, grout_col_hex, tile_col_hex) {
 		var grad = ctx.createLinearGradient(dir[0], dir[1], dir[2], dir[3]);
@@ -131,7 +133,7 @@ function setTiling(tile_col_hex, hori_count, vert_count, grout_col_hex, hori_gap
 		for (var x=0; x < hori_count; x++){
 			drawRectangle(tile_part_x, tile_part_y, hori_count, vert_count, hori_gap, vert_gap,
 			x_smooth, y_smooth, grout_col_hex, tile_col_hex, 
-			ctx, x*256/hori_count, y*256/vert_count, (x+1)*256/hori_count, (y+1)*256/vert_count);
+			ctx, Math.floor(x*max_w/hori_count), Math.floor(y*max_h/vert_count), Math.ceil((x+1)*max_w/hori_count), Math.ceil((y+1)*max_h/vert_count));
 		}
 	}
 	
