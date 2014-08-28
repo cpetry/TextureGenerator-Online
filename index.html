@@ -16,24 +16,42 @@
 		<canvas id="texture_preview" width="256" height="256" style="border:1px solid #000000;">> </canvas>
 	</div>
 
-	<div class="color-box1"></div>
-	<div class="color-box2"></div>
+	<div class="color-box1" id="1"></div>
+	<div class="color-box2" id="2" ></div>
 
 	<script> 
+		function rgb2hex(rgb){
+		 rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+		 return "#" +
+		  ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
+		  ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
+		  ("0" + parseInt(rgb[3],10).toString(16)).slice(-2);
+		}
+
 		$('.color-box1').colpick({
 			layout:'rgbhsbhex',
-			color:'ffffff',
+			color: {h:200, s:0, b:100},
+			hue:200,
 			onSubmit:function(hsb,hex,rgb,el) {
+				
+				// tile_col_hex, hori_count, vert_count, grout_col_hex, hori_gap, vert_gap
+				var hex2 = rgb2hex($("#2").css("background-color"));
+				//document.write(hex2);
+				setTiling('#'+hex, 2, 2, hex2, 10, 10);
 				$(el).css('background-color', '#'+hex);
-				setTiling('#'+hex, 1, 1, '#'+hex, 1, 1);
 				$(el).colpickHide();
 			}
 		}).css('background-color', '#ffffff');
 
 		$('.color-box2').colpick({
 			layout:'rgbhsbhex',
-			color:'000000',
+			color: {h:200, s:0, b:0},
 			onSubmit:function(hsb,hex,rgb,el) {
+				print
+				// tile_col_hex, hori_count, vert_count, grout_col_hex, hori_gap, vert_gap
+				var hex1 = rgb2hex($("#1").css("background-color"));
+				//document.write(hex1);
+				setTiling(hex1, 2, 2, '#'+hex, 10, 10);
 				$(el).css('background-color', '#'+hex);
 				$(el).colpickHide();
 			}
