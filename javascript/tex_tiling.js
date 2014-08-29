@@ -27,12 +27,12 @@ function updateTiling(){
 	var hex1 = rgb2hex($("#1").css("background-color"));
 	var hex2 = rgb2hex($("#2").css("background-color"));
 	
-	var x_tiling = parseInt($("#x_tiling").val());
-	var y_tiling = parseInt($("#y_tiling").val());
-	var x_grout = parseInt($("#x_grout").val());
-	var y_grout = parseInt($("#y_grout").val());
-	var x_smooth = parseInt($("#x_smooth").val());
-	var y_smooth = parseInt($("#y_smooth").val());
+	var x_tiling = parseInt($("#tiles_x").val());
+	var y_tiling = parseInt($("#tiles_y").val());
+	var x_grout = parseInt($("#tiles_x_grout").val());
+	var y_grout = parseInt($("#tiles_y_grout").val());
+	var x_smooth = parseInt($("#tiles_x_smooth").val());
+	var y_smooth = parseInt($("#tiles_y_smooth").val());
 	//document.write(x_tiling);
 	
 	// tile_col_hex, hori_count, vert_count, grout_col_hex, hori_gap, vert_gap

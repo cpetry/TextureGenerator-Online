@@ -21,6 +21,15 @@ body {
 	margin-right: auto;
 	text-align: center;
 	padding: 10px 10px 10px 20px;
+	width:250px;
+}
+
+.type_selector{
+	
+}
+
+.type_settings{
+	display:none;
 }
 
 .color-box1, .color-box2 {

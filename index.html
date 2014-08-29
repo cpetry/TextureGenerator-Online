@@ -26,28 +26,63 @@
 			</div>
 			</td>
 			
-			<td>
+			<td style="vertical-align:top">
 			<div class="settings">
-				<div class="tiling">
-					<table><tr>
+				<div class="type_selector">
+					<script>
+								
+						function showType(type){
+							$("#types>option").map(function() {
+								if ($(this).val() != type)
+									$('#' + $(this).val()).hide(); 
+							});
+							$('#' + type).show();
+						}
+					</script>
+				
+					Texture type:
+					<select id="types" size="1" onchange="showType($(this).val())">
+						<option selected>Tiles</option>
+						<option>Wood</option>
+					</select>
+				</div>
+				
+				<div class="type_settings" id="Tiles" style="display:block">
+					<table align="center"><tr>
 					<td>Tiles:</td> 
-					<td>x <input type="number" id="x_tiling" onchange="updateTiling();" style="width:45px;" min="1" value="2" max="50" /></td>
-					<td>y <input type="number" id="y_tiling" onchange="updateTiling();" style="width:45px;" min="1" value="2" max="50" /></td>
+					<td>x <input type="number" id="tiles_x" onchange="updateTiling();" style="width:45px;" min="1" value="2" max="50" /></td>
+					<td>y <input type="number" id="tiles_y" onchange="updateTiling();" style="width:45px;" min="1" value="2" max="50" /></td>
 					</tr><tr>
 					<td>Grout:</td>
-					<td>x <input type="number" id="x_grout" onchange="updateTiling();" style="width:45px;" min="1" value="2" max="100" /></td>
-					<td>y <input type="number" id="y_grout" onchange="updateTiling();" style="width:45px;" min="1" value="20" max="100" /></td>
+					<td>x <input type="number" id="tiles_x_grout" onchange="updateTiling();" style="width:45px;" min="1" value="10" max="100" /></td>
+					<td>y <input type="number" id="tiles_y_grout" onchange="updateTiling();" style="width:45px;" min="1" value="10" max="100" /></td>
 					</td>
 					</tr><tr>
 					<td>Smoothness:</td>
-					<td>x <input type="number" id="x_smooth" onchange="updateTiling();" style="width:45px;" min="0" value="2" max="50" /></td>
-					<td>y <input type="number" id="y_smooth" onchange="updateTiling();" style="width:45px;" min="0" value="2" max="50" /></td>
+					<td>x <input type="number" id="tiles_x_smooth" onchange="updateTiling();" style="width:45px;" min="0" value="20" max="50" /></td>
+					<td>y <input type="number" id="tiles_y_smooth" onchange="updateTiling();" style="width:45px;" min="0" value="20" max="50" /></td>
+					</td>
+					</tr><tr>
+					<td>
+					</td>
+					
+					<td colspan="2">
+					<div class="color-box1" id="1"></div>
+					<div class="color-box2" id="2" ></div>
 					</td>
 					</tr></table>
 					
-					<div class="color-box1" id="1"></div>
-					<div class="color-box2" id="2" ></div>
+					
 				</div>
+				
+				<div class="type_settings" id="Wood">
+					<table><tr>
+					<td>Woodstuff:</td> 
+					<td>x <input type="number" id="x_tiling" onchange="updateTiling();" style="width:45px;" min="1" value="2" max="50" /></td>
+					<td>y <input type="number" id="y_tiling" onchange="updateTiling();" style="width:45px;" min="1" value="2" max="50" /></td>
+					</tr></table>
+				</div>
+				
 			</div>
 			</td>
 			
@@ -60,6 +95,8 @@
 	<script src="javascript/tex_tiling.js" type="text/javascript"></script>
 	
 	
-	<script> updateTiling(); </script>
+	<script> 
+		updateTiling(); 
+	</script>
 	
 </html>
