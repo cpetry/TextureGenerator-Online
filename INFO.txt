@@ -1,0 +1,8 @@
+http://luthuli.cs.uiuc.edu/~daf/courses/ComputerGraphics/Week8/Shading.pdf
+
+
+Perlin Simplex Noise
+http://en.wikipedia.org/wiki/Simplex_noise
+
+Marble Texture
+http://en.wikipedia.org/wiki/Procedural_texture
