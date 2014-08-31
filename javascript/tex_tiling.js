@@ -53,19 +53,23 @@ function setTiling(tile_col_hex, hori_count, vert_count, grout_col_hex, hori_gap
 
 	// Smoothness (gradients)
 	
-	var tile_part_x = Math.max(max_w / hori_count - hori_gap, 0);
-	var tile_part_y = Math.max(max_h / vert_count - vert_gap, 0);	
+	var tile_part_x = Math.max((max_w / hori_count) - hori_gap - (x_smooth * 2), 0);
+	var tile_part_y = Math.max((max_h / vert_count) - vert_gap - (y_smooth * 2), 0);	
 	
 	function gradient(dir, tile_d, gap_d, smooth_d, grout_col_hex, tile_col_hex) {
 		var grad = ctx.createLinearGradient(dir[0], dir[1], dir[2], dir[3]);
 		
 		var max_d = tile_d + gap_d + smooth_d*2;
-		
+		var half_gap = gap_d / 2.0;
 		grad.addColorStop(0, grout_col_hex);
-		grad.addColorStop(gap_d/2 / max_d, grout_col_hex);
-		grad.addColorStop((gap_d/2 + smooth_d) / max_d, tile_col_hex);
-		grad.addColorStop((gap_d/2 + smooth_d + tile_d) / max_d, tile_col_hex);
-		grad.addColorStop((gap_d/2 + smooth_d*2 + tile_d) / max_d, grout_col_hex);
+		grad.addColorStop(half_gap / max_d, grout_col_hex);
+		//grad.addColorStop(half_gap / max_d, tile_col_hex); // test
+		//grad.addColorStop((half_gap + smooth_d) / max_d, tile_col_hex); // test
+		//grad.addColorStop((half_gap + smooth_d) / max_d, grout_col_hex); // test
+		//grad.addColorStop((half_gap + smooth_d + 0.001) / max_d, grout_col_hex); // test
+		grad.addColorStop((half_gap + smooth_d) / max_d, tile_col_hex);
+		grad.addColorStop((half_gap + smooth_d + tile_d) / max_d, tile_col_hex);
+		grad.addColorStop((half_gap + smooth_d*2 + tile_d) / max_d, grout_col_hex);
 		grad.addColorStop(1.0, grout_col_hex);
 		
 		return grad;
@@ -76,35 +80,27 @@ function setTiling(tile_col_hex, hori_count, vert_count, grout_col_hex, hori_gap
 		ctx.fillStyle = gradient([0, y, 0, h], tile_part_y, vert_gap, y_smooth, grout_col_hex, tile_col_hex);
 		ctx.fillRect(x, y, w, h);
 
-		
 		ctx.save();
+		
+		var half_xgap = hori_gap/2.0; 
+		var half_ygap = vert_gap/2.0;
+		var mid_tile_x = (w-x)/2.0 + x;
+		var mid_tile_y = (h-y)/2.0 + y;
 
-		var offset_x = 0, offset_y = 0;
-		
-		if ((hori_gap/2 + x_smooth) * hori_count < (vert_gap/2 + y_smooth) * vert_count){
-			// tan = geg / an => geg = tan * an
-			var rad = Math.atan((hori_gap + x_smooth) / (vert_gap + y_smooth));
-			var geg = Math.tan(rad) * ((h-y)/2);
-			
-			offset_x = Math.max((w-x)/2 - geg, 0);
-		}
-		else{
-			var rad = Math.atan((vert_gap + y_smooth) / (hori_gap + x_smooth));
-			var geg = Math.tan(rad) * ((w-x)/2);
-			
-			offset_y = Math.max((h-y)/2 - geg, 0);
-		}
-		
 		ctx.beginPath();
 		ctx.moveTo(x, y);
-		ctx.lineTo((w-x)/2 + x - offset_x,(h-y)/2 + y - offset_y);
-		ctx.lineTo((w-x)/2 + x,(h-y)/2 + y - offset_y);
-		ctx.lineTo((w-x)/2 + x + offset_x,(h-y)/2 + y - offset_y);
-		ctx.lineTo(w, y);
+		ctx.lineTo(x + half_xgap, y + half_ygap);
+		ctx.lineTo(x + half_xgap + x_smooth, y + half_ygap + y_smooth);
+		ctx.lineTo(mid_tile_x, mid_tile_y);
+		ctx.lineTo(w - half_xgap - x_smooth, h - half_ygap - y_smooth);
+		ctx.lineTo(w - half_xgap, h - half_ygap);
 		ctx.lineTo(w, h);
-		ctx.lineTo((w-x)/2 + x + offset_x,(h-y)/2 + y + offset_y);
-		ctx.lineTo((w-x)/2 + x,(h-y)/2 + y + offset_y);
-		ctx.lineTo((w-x)/2 + x - offset_x,(h-y)/2 + y + offset_y);
+		ctx.lineTo(w, y);
+		ctx.lineTo(w - half_xgap, y + half_ygap);
+		ctx.lineTo(w - half_xgap - x_smooth, y + half_ygap + y_smooth);
+		ctx.lineTo(mid_tile_x, mid_tile_y);
+		ctx.lineTo(x + half_xgap + x_smooth, h - half_ygap - y_smooth);
+		ctx.lineTo(x + half_xgap, h - half_ygap);
 		ctx.lineTo(x, h);
 		ctx.lineTo(x, y);
 		ctx.clip();
@@ -133,7 +129,7 @@ function setTiling(tile_col_hex, hori_count, vert_count, grout_col_hex, hori_gap
 		for (var x=0; x < hori_count; x++){
 			drawRectangle(tile_part_x, tile_part_y, hori_count, vert_count, hori_gap, vert_gap,
 			x_smooth, y_smooth, grout_col_hex, tile_col_hex, 
-			ctx, Math.floor(x*max_w/hori_count), Math.floor(y*max_h/vert_count), Math.ceil((x+1)*max_w/hori_count), Math.ceil((y+1)*max_h/vert_count));
+			ctx, x*max_w/hori_count, y*max_h/vert_count, (x+1)*max_w/hori_count, (y+1)*max_h/vert_count);
 		}
 	}
 	
