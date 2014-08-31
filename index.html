@@ -5,6 +5,8 @@
 	<script src="javascript/jquery-2.1.1.min.js"></script>
 	<script src="colpick-2.0.2/js/colpick.js" type="text/javascript"> </script>
 	
+	<link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:700"></link>
+
 	<link rel="stylesheet" href="colpick-2.0.2/css/colpick.css" type="text/css"/>
 	<link type="text/css" rel="stylesheet" href="./style.css"></link>
 </head>
@@ -28,6 +30,9 @@
 			
 			<td style="vertical-align:top">
 			<div class="settings">
+				<div>
+					Texture type
+				</div>
 				<div class="type_selector">
 					<script>
 								
@@ -40,7 +45,7 @@
 						}
 					</script>
 				
-					Texture type:
+					
 					<select id="types" size="1" onchange="showType($(this).val())">
 						<option disabled>Celular</option>
 						<option disabled>Checker</option>
@@ -58,29 +63,77 @@
 					</select>
 				</div>
 				
+				<div style="min-height:30"></div>
+	
+
 				<div class="type_settings" id="Tiles" style="display:block">
 					<table align="center"><tr>
-					<td>Tiles:</td> 
-					<td>x <input type="number" id="tiles_x" onchange="updateTiling();" style="width:45px;" min="1" value="2" max="50" /></td>
-					<td>y <input type="number" id="tiles_y" onchange="updateTiling();" style="width:45px;" min="1" value="2" max="50" /></td>
+						<td>
+							Tiles:
+						</td> 
+						<td>
+							x <input type="number" id="tiles_x" onchange="updateTiling();" style="width:45px;" min="1" value="2" max="50" />
+						</td>
+						<td>
+							y <input type="number" id="tiles_y" onchange="updateTiling();" style="width:45px;" min="1" value="2" max="50" />
+						</td>
+						<td>
+							<div class="tiles_color"></div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label>
+
+								<input type="checkbox" id="Smoothness" text="Smoothness" onchange="enableSmoothness();" checked> 
+								Gradient 
+								<script>
+									function enableSmoothness(){
+										if($('#Smoothness').prop('checked')){
+								    		$('#tiles_smoothx').show();
+								    		$('#tiles_smoothy').show();
+								    		$('#tiles_smooth_col').show();
+								    		updateTiling();
+								    	}
+								    	else{
+								    		$('#tiles_smoothx').hide();
+								    		$('#tiles_smoothy').hide();
+								    		$('#tiles_smooth_col').hide();
+								    		tiles_smooth_col
+								    		updateTiling();
+								    	}
+									};
+								</script>
+							</label>
+						</td>
+							<td id="tiles_smoothx">
+								x <input type="number" id="tiles_x_smooth" onchange="updateTiling();" 
+								style="width:45px;" min="0" value="40" max="50" />
+							</td>
+							<td id="tiles_smoothy">
+								y <input type="number" id="tiles_y_smooth" onchange="updateTiling();" 
+								style="width:45px;" min="0" value="40" max="50" />
+							</td>
+							<td id="tiles_smooth_col">
+								<div class="tiles_smooth_color"></div>
+							</td>
+						</td>
+					</tr>
+
 					</tr><tr>
-					<td>Grout:</td>
-					<td>x <input type="number" id="tiles_x_grout" onchange="updateTiling();" style="width:45px;" min="1" value="10" max="100" /></td>
-					<td>y <input type="number" id="tiles_y_grout" onchange="updateTiling();" style="width:45px;" min="1" value="10" max="100" /></td>
-					</td>
-					</tr><tr>
-					<td>Smoothness:</td>
-					<td>x <input type="number" id="tiles_x_smooth" onchange="updateTiling();" style="width:45px;" min="0" value="20" max="50" /></td>
-					<td>y <input type="number" id="tiles_y_smooth" onchange="updateTiling();" style="width:45px;" min="0" value="20" max="50" /></td>
-					</td>
-					</tr><tr>
-					<td>
-					</td>
-					
-					<td colspan="2">
-					<div class="color-box1" id="1"></div>
-					<div class="color-box2" id="2" ></div>
-					</td>
+						<td>
+							Grout:
+						</td>
+						<td>
+							x <input type="number" id="tiles_x_grout" onchange="updateTiling();" 
+							style="width:45px;" min="1" value="5" max="100" /></td>
+						<td>
+							y <input type="number" id="tiles_y_grout" onchange="updateTiling();" 
+							style="width:45px;" min="1" value="5" max="100" /></td>
+						</td>
+						<td>
+							<div class="grout_color"></div>
+						</td>
 					</tr></table>
 					
 					

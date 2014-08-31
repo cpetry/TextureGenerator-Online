@@ -1,6 +1,7 @@
 
 body {
 	text-align: center;
+	font-family:"Open Sans";
 }
 
 .container{
@@ -21,7 +22,7 @@ body {
 	margin-right: auto;
 	text-align: center;
 	padding: 10px 10px 10px 20px;
-	width:250px;
+	width:300px;
 }
 
 .type_selector{
@@ -32,8 +33,7 @@ body {
 	display:none;
 }
 
-.color-box1, .color-box2 {
-	float:left;
+.tiles_color, .grout_color, .tiles_smooth_color{
 	width:30px;
 	height:30px;
 	margin:5px;
