@@ -103,18 +103,18 @@ function setTiling(tile_col_hex, hori_count, vert_count, grout_col_hex, hori_gap
 
 		ctx.beginPath();
 		ctx.moveTo(x, y);
-		ctx.lineTo(x + half_xgap, y + half_ygap);
-		ctx.lineTo(x + half_xgap + x_smooth, y + half_ygap + y_smooth);
+		ctx.lineTo(Math.min(x + half_xgap, mid_tile_x), Math.min(y + half_ygap, mid_tile_y));
+		ctx.lineTo(Math.min(x + half_xgap + x_smooth, mid_tile_x), Math.min(y + half_ygap + y_smooth, mid_tile_y));
 		ctx.lineTo(mid_tile_x, mid_tile_y);
-		ctx.lineTo(w - half_xgap - x_smooth, h - half_ygap - y_smooth);
-		ctx.lineTo(w - half_xgap, h - half_ygap);
+		ctx.lineTo(Math.max(w - half_xgap - x_smooth, mid_tile_x), Math.max(h - half_ygap - y_smooth, mid_tile_y));
+		ctx.lineTo(Math.max(w - half_xgap, mid_tile_x), Math.max(h - half_ygap, mid_tile_y));
 		ctx.lineTo(w, h);
 		ctx.lineTo(w, y);
-		ctx.lineTo(w - half_xgap, y + half_ygap);
-		ctx.lineTo(w - half_xgap - x_smooth, y + half_ygap + y_smooth);
+		ctx.lineTo(Math.max(w - half_xgap, mid_tile_x), Math.min(y + half_ygap, mid_tile_y));
+		ctx.lineTo(Math.max(w - half_xgap - x_smooth, mid_tile_x), Math.min(y + half_ygap + y_smooth, mid_tile_y));
 		ctx.lineTo(mid_tile_x, mid_tile_y);
-		ctx.lineTo(x + half_xgap + x_smooth, h - half_ygap - y_smooth);
-		ctx.lineTo(x + half_xgap, h - half_ygap);
+		ctx.lineTo(Math.min(x + half_xgap + x_smooth, mid_tile_x), Math.max(h - half_ygap - y_smooth, mid_tile_y));
+		ctx.lineTo(Math.min(x + half_xgap, mid_tile_x), Math.max(h - half_ygap, mid_tile_y));
 		ctx.lineTo(x, h);
 		ctx.lineTo(x, y);
 		ctx.clip();
@@ -133,7 +133,7 @@ function setTiling(tile_col_hex, hori_count, vert_count, grout_col_hex, hori_gap
 		*/
     
 		//ctx.fillStyle = "#ff7700";
-		ctx.fillStyle = gradient([x, 0, w, 0], tile_part_x, hori_gap, x_smooth, grout_col_hex, tile_col_hex);
+		ctx.fillStyle = gradient([x, 0, w, 0], tile_part_x, hori_gap, x_smooth, tile_col_hex, grout_col_hex, tiles_smooth_col);
 		ctx.fillRect(x, y, w, h);
 
 		ctx.restore();
