@@ -77,13 +77,14 @@ function setTiling(tile_col_hex, hori_count, vert_count, grout_col_hex, hori_gap
 		var half_gap = gap_d / 2.0;
 		grad.addColorStop(0, grout_col_hex);
 		grad.addColorStop(half_gap / max_d, grout_col_hex);
+		grad.addColorStop(half_gap / max_d, tiles_smooth_col);
 		//grad.addColorStop(half_gap / max_d, tile_col_hex); // test
 		//grad.addColorStop((half_gap + smooth_d) / max_d, tile_col_hex); // test
 		//grad.addColorStop((half_gap + smooth_d) / max_d, grout_col_hex); // test
 		//grad.addColorStop((half_gap + smooth_d + 0.001) / max_d, grout_col_hex); // test
 		grad.addColorStop((half_gap + smooth_d) / max_d, tile_col_hex);
 		grad.addColorStop((half_gap + smooth_d + tile_d) / max_d, tile_col_hex);
-		grad.addColorStop((half_gap + smooth_d*2 + tile_d) / max_d, grout_col_hex);
+		grad.addColorStop((half_gap + smooth_d*2 + tile_d) / max_d, tiles_smooth_col);
 		grad.addColorStop(1.0, grout_col_hex);
 		
 		return grad;
