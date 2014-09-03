@@ -65,12 +65,18 @@
 				
 				<div style="min-height:30"></div>
 	
-
-				<div class="type_settings" id="Tiles" style="display:block">
-					<table align="center"><tr>
+				<!-- Tiles -->
+				<div class="type_settings" id="Tiles" style="display:block"> <!-- Standard for first texture -->
+					<table align="center">
+					<tr class="option_settings_head">
 						<td>
 							Tiles:
-						</td> 
+						</td>
+					</tr>
+					<tr class="suboption_settings">
+						<td>
+							Count
+						</td>
 						<td>
 							x <input type="number" id="tiles_x" onchange="updateTiling();" style="width:45px;" min="1" value="2" max="50" />
 						</td>
@@ -81,48 +87,59 @@
 							<div class="tiles_color"></div>
 						</td>
 					</tr>
-					<tr>
-						<td>
-							<label>
 
-								<input type="checkbox" id="Smoothness" text="Smoothness" onchange="enableSmoothness();" checked> 
+
+
+					<!-- Gradient for Tiles-->
+					<tr class="suboption_settings" >
+						<td colspan="2" style="text-align:left">
+							<label>
+								<input type="checkbox" id="TilesGradient" onchange="enableTilesGradient();" checked> 
 								Gradient 
 								<script>
-									function enableSmoothness(){
-										if($('#Smoothness').prop('checked')){
-								    		$('#tiles_smoothx').show();
-								    		$('#tiles_smoothy').show();
-								    		$('#tiles_smooth_col').show();
+									function enableTilesGradient(){
+										if($('#TilesGradient').prop('checked')){
+								    		$('#tiles_gradient').show();
 								    		updateTiling();
 								    	}
 								    	else{
-								    		$('#tiles_smoothx').hide();
-								    		$('#tiles_smoothy').hide();
-								    		$('#tiles_smooth_col').hide();
-								    		tiles_smooth_col
+								    		$('#tiles_gradient').hide();
 								    		updateTiling();
 								    	}
 									};
 								</script>
 							</label>
 						</td>
-							<td id="tiles_smoothx">
-								x <input type="number" id="tiles_x_smooth" onchange="updateTiling();" 
-								style="width:45px;" min="0" value="40" max="500" />
-							</td>
-							<td id="tiles_smoothy">
-								y <input type="number" id="tiles_y_smooth" onchange="updateTiling();" 
-								style="width:45px;" min="0" value="40" max="500" />
-							</td>
-							<td id="tiles_smooth_col">
-								<div class="tiles_smooth_color"></div>
-							</td>
+					</tr>
+					<tr class="suboption_settings" id="tiles_gradient">
+						<td>
+							Size
+						</td>
+						<td>
+							x <input type="number" id="tiles_x_gradient" onchange="updateTiling();" 
+							style="width:45px;" min="0" value="40" max="500" />
+						</td>
+						<td>
+							y <input type="number" id="tiles_y_gradient" onchange="updateTiling();" 
+							style="width:45px;" min="0" value="40" max="500" />
+						</td>
+						<td>
+							<div class="tiles_gradient_color"></div>
+						</td>
 						</td>
 					</tr>
 
-					</tr><tr>
+
+
+					<!-- Grout -->
+					<tr class="option_settings_head">
 						<td>
 							Grout:
+						</td>
+					</tr>
+					<tr class="suboption_settings">
+						<td>
+							Size
 						</td>
 						<td>
 							x <input type="number" id="tiles_x_grout" onchange="updateTiling();" 
@@ -134,11 +151,44 @@
 						<td>
 							<div class="grout_color"></div>
 						</td>
-					</tr></table>
-					
-					
+					</tr>
+
+
+
+					<!-- Gradient for Grout -->
+					<tr class="suboption_settings" >
+						<td colspan="2" style="text-align:left">
+							<label>
+								<input type="checkbox" id="GroutGradient" onchange="enableGroutGradient();"> 
+								Gradient 
+								<script>
+									function enableGroutGradient(){
+										if($('#GroutGradient').prop('checked')){
+								    		$('#grout_gradient').show();
+								    		updateTiling();
+								    	}
+								    	else{
+								    		$('#grout_gradient').hide();
+								    		updateTiling();
+								    	}
+									};
+								</script>
+							</label>
+						</td>
+					</tr>
+					<tr class="suboption_settings" id="grout_gradient" style="display:none;">
+						<td></td>
+						<td></td>
+						<td></td>
+						<td>
+							<div class="grout_gradient_color"></div>
+						</td>
+					</tr>
+					</table>
 				</div>
 				
+
+				<!-- Wood -->
 				<div class="type_settings" id="Wood">
 					<table><tr>
 					<td>Woodstuff:</td> 

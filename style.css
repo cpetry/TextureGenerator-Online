@@ -10,7 +10,7 @@ body {
 	margin-right: auto;
 	padding: 10px 10px 10px 10px;
 	display: inline-block;
-	border-radius: 10px;
+	border-radius: 2px;
 	box-shadow: 2px 2px 10px #333;
 	background: none repeat scroll 0% 0% rgba(10,10,10,0.5);
 	color: #fff;
@@ -25,18 +25,29 @@ body {
 	width:300px;
 }
 
-.type_selector{
-	
-}
-
 .type_settings{
 	display:none;
 }
 
-.tiles_color, .grout_color, .tiles_smooth_color{
+.tiles_color, .grout_color, .tiles_gradient_color, .grout_gradient_color{
 	width:30px;
 	height:30px;
-	margin:5px;
 	border: 1px solid;
+	margin-left: 5px;
 }
 
+.tiles_color, .grout_color{
+	margin:5px;
+}
+
+
+.option_settings_head{
+	padding-top: 20px;
+}
+
+.suboption_settings {
+	padding-top: 5px;
+	margin-left: 20px;
+	font-size: 12px;
+	text-align: right;
+}
