@@ -29,7 +29,8 @@
 			</td>
 			
 			<td style="vertical-align:top">
-			<div class="settings">
+
+			<div class="type_chooser">
 				<div>
 					Texture type
 				</div>
@@ -62,9 +63,11 @@
 						<option disabled>Wood</option>
 					</select>
 				</div>
-				
-				<div style="min-height:30"></div>
+			</div>
+
+			<div style="min-height:30"></div>
 	
+			<div class="settings">
 				<!-- Tiles -->
 				<div class="type_settings" id="Tiles" style="display:block"> <!-- Standard for first texture -->
 					<table align="center">
@@ -117,11 +120,11 @@
 						</td>
 						<td>
 							x <input type="number" id="tiles_x_gradient" onchange="updateTiling();" 
-							style="width:45px;" min="0" value="40" max="500" />
+							style="width:45px;" min="0" value="30" max="500" />
 						</td>
 						<td>
 							y <input type="number" id="tiles_y_gradient" onchange="updateTiling();" 
-							style="width:45px;" min="0" value="40" max="500" />
+							style="width:45px;" min="0" value="30" max="500" />
 						</td>
 						<td>
 							<div class="tiles_gradient_color"></div>
@@ -143,10 +146,10 @@
 						</td>
 						<td>
 							x <input type="number" id="tiles_x_grout" onchange="updateTiling();" 
-							style="width:45px;" min="1" value="5" max="100" /></td>
+							style="width:45px;" min="1" value="10" max="100" /></td>
 						<td>
 							y <input type="number" id="tiles_y_grout" onchange="updateTiling();" 
-							style="width:45px;" min="1" value="5" max="100" /></td>
+							style="width:45px;" min="1" value="10" max="100" /></td>
 						</td>
 						<td>
 							<div class="grout_color"></div>

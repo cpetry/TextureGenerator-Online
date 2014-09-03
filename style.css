@@ -4,25 +4,34 @@ body {
 	font-family:"Open Sans";
 }
 
-.container{
+.container, .type_chooser, .settings{
 	position: relative;
 	margin-left: auto;
 	margin-right: auto;
 	padding: 10px 10px 10px 10px;
-	display: inline-block;
+}
+
+.container, .settings{
 	border-radius: 2px;
 	box-shadow: 2px 2px 10px #333;
-	background: none repeat scroll 0% 0% rgba(10,10,10,0.5);
+}
+
+.container{
 	color: #fff;
+	display:inline-block;
+	background: none repeat scroll 0% 0% rgba(10,10,10,0.5);
 }
 
 .settings{
-	position: relative;
-	margin-left: auto;
-	margin-right: auto;
 	text-align: center;
-	padding: 10px 10px 10px 20px;
-	width:300px;
+	width:280px;
+	margin-left:20px;
+	margin-right:20px;
+	background: none repeat scroll 0% 0% rgba(10,10,10,0.3);
+}
+
+.type_chooser{
+	text-align: center;
 }
 
 .type_settings{

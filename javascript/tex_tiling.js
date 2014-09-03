@@ -2,7 +2,7 @@
 
 $('.tiles_color').colpick({
 	layout:'rgbhsbhex',
-	color: {h:200, s:0, b:100},
+	color: {h:35, s:15, b:90},
 	hue:200,
 	onChange:function(hsb,hex,rgb,el) {
 		$(el).css('background-color', '#'+hex);
@@ -11,12 +11,12 @@ $('.tiles_color').colpick({
 	onSubmit:function(hsb,hex,rgb,el) {
 		$(el).colpickHide();
 	}
-}).css('background-color', '#ffffff');
+}).css('background-color', '#e6d7c3');
 
 
 $('.grout_color').colpick({
 	layout:'rgbhsbhex',
-	color: {h:200, s:0, b:0},
+	color: {h:35, s:20, b:40},
 	onChange:function(hsb,hex,rgb,el) {
 		$(el).css('background-color', '#'+hex);
 		updateTiling();
@@ -24,11 +24,11 @@ $('.grout_color').colpick({
 	onSubmit:function(hsb,hex,rgb,el) {
 		$(el).colpickHide();
 	}
-}).css('background-color', '#000000');
+}).css('background-color', '#665e52');
 
 $('.tiles_gradient_color').colpick({
 	layout:'rgbhsbhex',
-	color: {h:200, s:0, b:0},
+	color: {h:35, s:20, b:40},
 	onChange:function(hsb,hex,rgb,el) {
 		$(el).css('background-color', '#'+hex);
 		updateTiling();
@@ -36,11 +36,11 @@ $('.tiles_gradient_color').colpick({
 	onSubmit:function(hsb,hex,rgb,el) {
 		$(el).colpickHide();
 	}
-}).css('background-color', '#000000');
+}).css('background-color', '#665e52');
 
 $('.grout_gradient_color').colpick({
 	layout:'rgbhsbhex',
-	color: {h:200, s:0, b:0},
+	color: {h:35, s:20, b:40},
 	onChange:function(hsb,hex,rgb,el) {
 		$(el).css('background-color', '#'+hex);
 		updateTiling();
@@ -48,7 +48,7 @@ $('.grout_gradient_color').colpick({
 	onSubmit:function(hsb,hex,rgb,el) {
 		$(el).colpickHide();
 	}
-}).css('background-color', '#000000');
+}).css('background-color', '#665e52');
 
 
 
