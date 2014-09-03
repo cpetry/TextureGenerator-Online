@@ -40,7 +40,7 @@ $('.tiles_gradient_color').colpick({
 
 $('.grout_gradient_color').colpick({
 	layout:'rgbhsbhex',
-	color: {h:35, s:20, b:40},
+	color: {h:35, s:0, b:15},
 	onChange:function(hsb,hex,rgb,el) {
 		$(el).css('background-color', '#'+hex);
 		updateTiling();
@@ -48,7 +48,7 @@ $('.grout_gradient_color').colpick({
 	onSubmit:function(hsb,hex,rgb,el) {
 		$(el).colpickHide();
 	}
-}).css('background-color', '#665e52');
+}).css('background-color', '#262626');
 
 
 

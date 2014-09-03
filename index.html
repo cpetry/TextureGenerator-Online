@@ -146,10 +146,10 @@
 						</td>
 						<td>
 							x <input type="number" id="tiles_x_grout" onchange="updateTiling();" 
-							style="width:45px;" min="1" value="10" max="100" /></td>
+							style="width:45px;" min="1" value="15" max="100" /></td>
 						<td>
 							y <input type="number" id="tiles_y_grout" onchange="updateTiling();" 
-							style="width:45px;" min="1" value="10" max="100" /></td>
+							style="width:45px;" min="1" value="15" max="100" /></td>
 						</td>
 						<td>
 							<div class="grout_color"></div>
@@ -162,7 +162,7 @@
 					<tr class="suboption_settings" >
 						<td colspan="2" style="text-align:left">
 							<label>
-								<input type="checkbox" id="GroutGradient" onchange="enableGroutGradient();"> 
+								<input type="checkbox" id="GroutGradient" onchange="enableGroutGradient();" checked> 
 								Gradient 
 								<script>
 									function enableGroutGradient(){
@@ -179,7 +179,7 @@
 							</label>
 						</td>
 					</tr>
-					<tr class="suboption_settings" id="grout_gradient" style="display:none;">
+					<tr class="suboption_settings" id="grout_gradient">
 						<td></td>
 						<td></td>
 						<td></td>
