@@ -13,15 +13,15 @@ $('.slider').colpick({
 
 
 $(".slider_area" ).click(function(evt) {
-	var x = Math.max(evt.pageX - $(this).offset().left, 0);
+	var x = Math.min(Math.max(evt.pageX - $(this).offset().left, 0), 255);
 	var new_slider = $('.slider')[0].cloneNode(true);
 	$(new_slider).css('left', Math.max(x - 5, 0));
 	
 	$(new_slider).draggable({ 
 		//axis: "x", 
 		grid: [ 1, 50 ],
-		//containment: ".slider_area", 
-		//scroll: false,
+		containment: ".slider_area", 
+		scroll: false,
 		drag: function() {
 			updateGradient();
 		},
@@ -29,7 +29,7 @@ $(".slider_area" ).click(function(evt) {
 	
 	$(new_slider).colpick({
 		layout:'rgbhsbhex',
-		color: {h:0, s:100, b:0},
+		color: {h:0, s:0, b:100},
 		hue:200,
 		onChange:function(hsb,hex,rgb,el) {
 			$(el).css('background-color', '#'+hex);
@@ -47,19 +47,24 @@ $(".slider_area" ).click(function(evt) {
 });
 
 
-$( ".slider" ).draggable({ 
-	axis: "x", 
-	grid: [ 1, 40 ],
-	//cursorAt: { left: -5 },
-	drag: function() {
-        updateGradient();
-    },
-});
 	
 $(".slider_area").droppable({
 	out: function (event, ui) {
-        $(ui.draggable).remove();
+		//document.write($(ui.draggable).position().left);
+		if ($(ui.draggable).position().left < 250)
+			$(ui.draggable).remove();
     }
+});
+
+
+$( ".slider" ).draggable({ 
+	//axis: "x", 
+	grid: [ 1, 50 ],
+	containment: ".slider_area",
+	scroll: false,
+	drag: function() {
+        updateGradient();
+    },
 });
 
 
@@ -69,7 +74,7 @@ function updateGradient(){
 	$(".slider").each(function( index ) {
 		var pos = $(this).css("left");
 		pos = pos.substring(0, pos.length - 2);
-		var percentage = Math.min(parseFloat(pos) + 5, 256) / 2.56;
+		var percentage = Math.min(parseFloat(pos) + 5, 255) / 2.56;
 	
 		colors.push([rgb2hex($(this).css("background-color")), percentage]);
 	});
@@ -105,7 +110,7 @@ function setGradientColors(colors, gradient_type){
 		grad = ctx.createLinearGradient(0,0,512,0);
 		
 	else if (gradient_type == 'radial')
-		grad = ctx.createRadialGradient(256, 256, 0, 256, 256, 256); //x1,y1,r1 ,x1,y1,r1
+		grad = ctx.createRadialGradient(256, 256, 0, 256, 256, 362); //x1,y1,r1 ,x1,y1,r1
 	
 	var gradient_text = 'linear-gradient(to right';
 	
