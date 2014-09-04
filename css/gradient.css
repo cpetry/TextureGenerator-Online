@@ -4,6 +4,7 @@
 	display: block;  /*forces max width*/
 	background-color: gray;
 	height:30px;
+	width: 256px;
 	border: 1px solid;
 }
 
@@ -12,16 +13,25 @@
 	margin: 0px 10px 5px 10px;
 	display: block;  /*forces max width*/
 	height: 30px;
-	border: 1px solid;
+	width: 256px;
+	border: 0px solid;
 	z-index: 0; /* below */
 }
 
-.test_color{
+.slider{
 	position: relative;
-	width:15px;
-	height:15px;
+	float:left;
+	left:0px;
+	width:10px;
+	height:10px;
 	border: 1px solid;
-	margin: 5px 7px 0px -7px;
+	margin: 5px -5px 0px -5px;
 	z-index: 2; /* above */
 }
 
+.slider_line{
+	display:inline-block; 
+	margin-top: 10px; 
+	margin-bottom:-15px; 
+	width:256px;
+}
