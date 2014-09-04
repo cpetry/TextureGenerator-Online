@@ -38,18 +38,6 @@ body {
 	display:none;
 }
 
-.tiles_color, .grout_color, .tiles_gradient_color, .grout_gradient_color{
-	width:30px;
-	height:30px;
-	border: 1px solid;
-	margin-left: 5px;
-}
-
-.tiles_color, .grout_color{
-	margin:5px;
-}
-
-
 .option_settings_head{
 	padding-top: 20px;
 }

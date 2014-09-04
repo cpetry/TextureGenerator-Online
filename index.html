@@ -8,7 +8,9 @@
 	<link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:700"></link>
 
 	<link rel="stylesheet" href="colpick-2.0.2/css/colpick.css" type="text/css"/>
-	<link type="text/css" rel="stylesheet" href="./style.css"></link>
+	<link type="text/css" rel="stylesheet" href="./css/style.css"></link>
+	<link type="text/css" rel="stylesheet" href="./css/tiles.css"></link>
+	<link type="text/css" rel="stylesheet" href="./css/gradient.css"></link>
 </head>
 
 <body>
@@ -51,14 +53,14 @@
 						<option disabled>Celular</option>
 						<option disabled>Checker</option>
 						<option disabled>Falloff</option>
-						<option disabled>Gradient</option>
+						<option selected>Gradient</option>
 						<option disabled>Marble</option>
 						<option disabled>Noise</option>
 						<option disabled>Smoke</option>
 						<option disabled>Splat</option>
 						<option disabled>Stucco</option>
 						<option disabled>Swirl</option>
-						<option selected>Tiles</option>
+						<option>Tiles</option>
 						<option disabled>Waves</option>
 						<option disabled>Wood</option>
 					</select>
@@ -68,8 +70,20 @@
 			<div style="min-height:30"></div>
 	
 			<div class="settings">
+			
+				<!-- Gradient -->
+				<div class="type_settings" id="Gradient" style="display:block"> <!-- display:block -> Show default texture -->
+					<div class="option_settings_head" style="text-align: center;">
+						Gradient:
+					</div>
+					<div class="gradient_preview"></div>
+					<div class="slider_area">
+						<div class="test_color"></div>
+					</div>
+				</div>
+			
 				<!-- Tiles -->
-				<div class="type_settings" id="Tiles" style="display:block"> <!-- Standard for first texture -->
+				<div class="type_settings" id="Tiles">
 					<table align="center">
 					<tr class="option_settings_head">
 						<td>
@@ -209,8 +223,12 @@
 </body>
 
 	<!-- Has to be down here! -->
+	<script src="javascript/_helper.js" type="text/javascript"></script>
+
+	<script src="javascript/tex_gradient.js" type="text/javascript"></script>
 	<script src="javascript/tex_tiling.js" type="text/javascript"></script>
-	<script type="text/javascript" src="javascripts/ganalytics.js"></script>
+	
+	<script src="javascript/ganalytics.js" type="text/javascript" ></script>
 		
 	<script> 
 		updateTiling(); 
