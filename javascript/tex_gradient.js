@@ -1,5 +1,5 @@
 
-function createSlider(pos, col){
+function createGradientSlider(pos, col){
 
 	var newslider = jQuery('<div/>', {
 		class: 'slider',
@@ -34,7 +34,7 @@ function createSlider(pos, col){
 $(".slider_area" ).click(function(evt) {
 	var x = Math.min(Math.max(evt.pageX - $(this).offset().left, 0), 255);
 	
-	createSlider(x, 'ffffff');
+	createGradientSlider(x, 'ffffff');
 	
 	updateGradient();
 	//alert( "Position: " + x );

@@ -55,6 +55,9 @@
 							case 'Gradient':
 								updateGradient();
 								break;
+							case 'Checker':
+								updateGradient();
+								break;
 							}
 						}
 					</script>
@@ -62,9 +65,9 @@
 					
 					<select id="types" size="1" onchange="showType($(this).val())">
 						<option disabled>Celular</option>
-						<option disabled>Checker</option>
+						<option selected>Checker</option>
 						<option disabled>Falloff</option>
-						<option selected>Gradient</option>
+						<option>Gradient</option>
 						<option disabled>Marble</option>
 						<option disabled>Noise</option>
 						<option disabled>Smoke</option>
@@ -82,8 +85,34 @@
 	
 			<div class="settings">
 			
+				<!-- Checker -->
+				<div class="type_settings" id="Checker" style="display:block"> <!-- display:block -> Show default texture -->
+					<table align="center">
+					<tr class="option_settings_head">
+						<td>
+							Checker:
+						</td>
+					</tr>
+					<tr class="suboption_settings">
+						<td>
+							Count
+						</td>
+						<td>
+							x <input type="number" id="checker_x" onchange="updateChecker();" style="width:45px;" min="1" value="2" max="50" />
+						</td>
+						<td>
+							y <input type="number" id="checker_y" onchange="updateChecker();" style="width:45px;" min="1" value="2" max="50" />
+						</td>
+						<td>
+							<div class="checker_color1"></div>
+							<div class="checker_color2"></div>
+						</td>
+					</tr>
+					</table>
+				</div>
+				
 				<!-- Gradient -->
-				<div class="type_settings" id="Gradient" style="display:block"> <!-- display:block -> Show default texture -->
+				<div class="type_settings" id="Gradient">
 					<div class="option_settings_head" style="text-align: center;">
 						Gradient:
 					</div>
@@ -260,9 +289,9 @@
 		createSlider(196, '00ff00');
 		createSlider(256, 'ffff00');
 		*/
-		createSlider(0, 'e6d7c3');
-		createSlider(96, '262626');
-		createSlider(178, '665e52');
+		createGradientSlider(0, 'e6d7c3');
+		createGradientSlider(96, '262626');
+		createGradientSlider(178, '665e52');
 		
 		
 		updateGradient();
