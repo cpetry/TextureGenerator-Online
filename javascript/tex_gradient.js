@@ -1,36 +1,14 @@
-$('.slider').colpick({
-	layout:'rgbhsbhex',
-	color: {h:35, s:15, b:90},
-	hue:200,
-	onChange:function(hsb,hex,rgb,el) {
-		$(el).css('background-color', '#'+hex);
-		updateGradient();
-	},
-	onSubmit:function(hsb,hex,rgb,el) {
-		$(el).colpickHide();
-	}
-}).css('background-color', '#e6d7c3');
 
+function createSlider(pos, col){
 
-$(".slider_area" ).click(function(evt) {
-	var x = Math.min(Math.max(evt.pageX - $(this).offset().left, 0), 255);
-	var new_slider = $('.slider')[0].cloneNode(true);
-	$(new_slider).css('left', Math.max(x - 5, 0));
+	var newslider = jQuery('<div/>', {
+		class: 'slider',
+		style: 'left:' + pos + 'px',
+	}).appendTo('.slider_area');
 	
-	$(new_slider).draggable({ 
-		//axis: "x", 
-		grid: [ 1, 50 ],
-		containment: ".slider_area", 
-		scroll: false,
-		drag: function() {
-			updateGradient();
-		},
-	});
-	
-	$(new_slider).colpick({
+	newslider.colpick({
 		layout:'rgbhsbhex',
-		color: {h:0, s:0, b:100},
-		hue:200,
+		color: col,
 		onChange:function(hsb,hex,rgb,el) {
 			$(el).css('background-color', '#'+hex);
 			updateGradient();
@@ -38,9 +16,25 @@ $(".slider_area" ).click(function(evt) {
 		onSubmit:function(hsb,hex,rgb,el) {
 			$(el).colpickHide();
 		}
-	}).css('background-color', '#ffffff');
+	}).css('background-color', '#' + col);
 	
-	$('.slider_area').append(new_slider);
+	
+	newslider.draggable({ 
+		//axis: "x", 
+		grid: [ 1, 50 ],
+		containment: ".slider_area",
+		scroll: false,
+		drag: function() {
+			updateGradient();
+		},
+	});
+}
+
+
+$(".slider_area" ).click(function(evt) {
+	var x = Math.min(Math.max(evt.pageX - $(this).offset().left, 0), 255);
+	
+	createSlider(x, 'ffffff');
 	
 	updateGradient();
 	//alert( "Position: " + x );
@@ -57,16 +51,6 @@ $(".slider_area").droppable({
 });
 
 
-$( ".slider" ).draggable({ 
-	//axis: "x", 
-	grid: [ 1, 50 ],
-	containment: ".slider_area",
-	scroll: false,
-	drag: function() {
-        updateGradient();
-    },
-});
-
 
 function updateGradient(){
 	var colors = [];
@@ -74,7 +58,7 @@ function updateGradient(){
 	$(".slider").each(function( index ) {
 		var pos = $(this).css("left");
 		pos = pos.substring(0, pos.length - 2);
-		var percentage = Math.min(parseFloat(pos) + 5, 255) / 2.56;
+		var percentage = Math.min(parseFloat(pos) - 5, 255) / 2.56;
 	
 		colors.push([rgb2hex($(this).css("background-color")), percentage]);
 	});
