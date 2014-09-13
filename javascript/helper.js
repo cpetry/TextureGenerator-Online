@@ -8,6 +8,8 @@ function rgb2hex(rgb){
 
 // result is either 1 or 0
 function randomSeed(seed, percentage) {
+	percentage = (typeof percentage === "undefined") ? 1.00 : percentage;
+	
     var x = Math.sin(seed) * 10000;
-    return parseInt((x - Math.floor(x)) + percentage);
+    return parseInt((x - Math.floor(x)) + (1.00 - percentage));
 }

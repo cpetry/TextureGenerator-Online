@@ -1,11 +1,11 @@
 
-$('.checker_color1').colpick({
+$('#checker_color1').colpick({
 	layout:'rgbhsbhex',
 	color: {h:35, s:15, b:90},
 	hue:200,
 	onChange:function(hsb,hex,rgb,el) {
 		$(el).css('background-color', '#'+hex);
-		updateTiling();
+		updateChecker();
 	},
 	onSubmit:function(hsb,hex,rgb,el) {
 		$(el).colpickHide();
@@ -13,12 +13,12 @@ $('.checker_color1').colpick({
 }).css('background-color', '#e6d7c3');
 
 
-$('.checker_color2').colpick({
+$('#checker_color2').colpick({
 	layout:'rgbhsbhex',
 	color: {h:35, s:20, b:40},
 	onChange:function(hsb,hex,rgb,el) {
 		$(el).css('background-color', '#'+hex);
-		updateTiling();
+		updateChecker();
 	},
 	onSubmit:function(hsb,hex,rgb,el) {
 		$(el).colpickHide();
@@ -27,15 +27,14 @@ $('.checker_color2').colpick({
 
 
 function updateChecker(){
-	var color1 = rgb2hex($(".checker_color1").css("background-color"));
-	var color2 = rgb2hex($(".checker_color2").css("background-color"));
-	var percentage1 = 1;
+	var color1 = rgb2hex($("#checker_color1").css("background-color"));
+	var color2 = rgb2hex($("#checker_color2").css("background-color"));
 
 	var x_checker = parseInt($("#checker_x").val());
 	var y_checker = parseInt($("#checker_y").val());
 	
 	var seed = parseInt($("#checker_seed").val());
-	var percentage1 = parseFloat($("#checker_percentage").val());
+	var percentage1 = parseInt($("#checker_percentage").val()) / 100.0;
 
 	setChecker(x_checker, y_checker, color1, color2, seed, percentage1);
 }

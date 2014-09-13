@@ -56,7 +56,7 @@
 								updateGradient();
 								break;
 							case 'Checker':
-								updateGradient();
+								updateChecker();
 								break;
 							}
 						}
@@ -89,46 +89,68 @@
 				<div class="type_settings" id="Checker" style="display:block"> <!-- display:block -> Show default texture -->
 					<table align="center">
 					<tr class="option_settings_head">
-						<td>
-							Checker:
+						<td colspan="3">
+							Checker Settings
 						</td>
 					</tr>
+					<tr class="suboption_settings">
+						<td>
+							Color
+						</td>
+						<td>
+							<div class="colorpicker" id="checker_color1"></div>
+						</td>
+						<td>
+							<div class="colorpicker" id="checker_color2"></div>
+						</td>
+					</tr>
+
 					<tr class="suboption_settings">
 						<td>
 							Count
 						</td>
 						<td>
-							x <input type="number" id="checker_x" onchange="updateChecker();" style="width:45px;" min="1" value="6" max="50" />
+							x <input type="number" id="checker_x" onchange="updateChecker();" style="width:35px;" min="1" value="6" max="50" />
 						</td>
 						<td>
-							y <input type="number" id="checker_y" onchange="updateChecker();" style="width:45px;" min="1" value="6" max="50" />
+							y <input type="number" id="checker_y" onchange="updateChecker();" style="width:35px;" min="1" value="6" max="50" />
 						</td>
 					</tr>
 					<tr class="suboption_settings">
 						<td>
-							
+							Percentage
 						</td>
 						<td>
-							Seed <input type="number" id="checker_seed" onchange="updateChecker();" style="width:45px;" min="1" value="1" max="1000" />
-						</td>
-						<td>
-							Percentage <input type="number" id="checker_percentage" onchange="updateChecker();" step="0.01" style="width:45px;" min="0" value="0.5" max="1" />
+							 <input type="number" id="checker_percentage" onchange="enableCheckerPercentage(); updateChecker();" step="1" style="width:45px;" min="0" value="100" max="100" />
+								<script>
+									function enableCheckerPercentage(){
+										if($('#checker_percentage').val() < 100){
+								    		$('#checker_seed_line').show();
+								    	}
+								    	else{
+								    		$('#checker_seed_line').hide();
+								    	}
+									};
+								</script>
 						</td>
 					</tr>
-					<tr>
-						
+					<tr class="suboption_settings" id="checker_seed_line" style="display:none">
 						<td>
-							<div class="checker_color1"></div>
-							<div class="checker_color2"></div>
+							Seed
+						</td>
+						<td>
+							 <input type="number" id="checker_seed" onchange="updateChecker();" style="width:45px;" min="1" value="1" max="1000" />
 						</td>
 					</tr>
+					
+					
 					</table>
 				</div>
 				
 				<!-- Gradient -->
 				<div class="type_settings" id="Gradient">
-					<div class="option_settings_head" style="text-align: center;">
-						Gradient:
+					<div class="option_settings_head">
+						Gradient Settings
 					</div>
 					<div class="gradient_preview"></div>
 					<div class="slider_area">
@@ -147,8 +169,8 @@
 				<div class="type_settings" id="Tiles">
 					<table align="center">
 					<tr class="option_settings_head">
-						<td>
-							Tiles:
+						<td colspan="3">
+							Tiles Settings
 						</td>
 					</tr>
 					<tr class="suboption_settings">
@@ -162,7 +184,7 @@
 							y <input type="number" id="tiles_y" onchange="updateTiling();" style="width:45px;" min="1" value="2" max="50" />
 						</td>
 						<td>
-							<div class="tiles_color"></div>
+							<div class="colorpicker" id="tiles_color"></div>
 						</td>
 					</tr>
 
@@ -202,7 +224,7 @@
 							style="width:45px;" min="0" value="30" max="500" />
 						</td>
 						<td>
-							<div class="tiles_gradient_color"></div>
+							<div class="colorpicker" id="tiles_gradient_color"></div>
 						</td>
 						</td>
 					</tr>
@@ -227,7 +249,7 @@
 							style="width:45px;" min="1" value="15" max="100" /></td>
 						</td>
 						<td>
-							<div class="grout_color"></div>
+							<div class="colorpicker" id="grout_color"></div>
 						</td>
 					</tr>
 
@@ -259,7 +281,7 @@
 						<td></td>
 						<td></td>
 						<td>
-							<div class="grout_gradient_color"></div>
+							<div class="colorpicker" id="grout_gradient_color"></div>
 						</td>
 					</tr>
 					</table>

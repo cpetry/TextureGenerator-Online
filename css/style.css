@@ -40,6 +40,8 @@ body {
 
 .option_settings_head{
 	padding-top: 20px;
+	height :50px;
+	text-align: center;
 }
 
 .suboption_settings {
@@ -47,4 +49,11 @@ body {
 	margin-left: 20px;
 	font-size: 12px;
 	text-align: right;
+}
+
+.colorpicker{
+	width:30px;
+	height:30px;
+	border: 1px solid;
+	margin-left: 5px;
 }

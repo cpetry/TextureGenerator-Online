@@ -106,7 +106,7 @@ function setGradientColors(colors, gradient_type){
 	$(".gradient_preview").css('background', gradient_text); // W3C
 	
 	
-ctx.fillStyle = grad;
+	ctx.fillStyle = grad;
 	ctx.fillRect(0, 0, 512, 512);
 	
 	/*

@@ -1,6 +1,6 @@
 
 
-$('.tiles_color').colpick({
+$('#tiles_color').colpick({
 	layout:'rgbhsbhex',
 	color: {h:35, s:15, b:90},
 	hue:200,
@@ -14,7 +14,7 @@ $('.tiles_color').colpick({
 }).css('background-color', '#e6d7c3');
 
 
-$('.grout_color').colpick({
+$('#grout_color').colpick({
 	layout:'rgbhsbhex',
 	color: {h:35, s:20, b:40},
 	onChange:function(hsb,hex,rgb,el) {
@@ -26,7 +26,7 @@ $('.grout_color').colpick({
 	}
 }).css('background-color', '#665e52');
 
-$('.tiles_gradient_color').colpick({
+$('#tiles_gradient_color').colpick({
 	layout:'rgbhsbhex',
 	color: {h:35, s:20, b:40},
 	onChange:function(hsb,hex,rgb,el) {
@@ -38,7 +38,7 @@ $('.tiles_gradient_color').colpick({
 	}
 }).css('background-color', '#665e52');
 
-$('.grout_gradient_color').colpick({
+$('#grout_gradient_color').colpick({
 	layout:'rgbhsbhex',
 	color: {h:35, s:0, b:15},
 	onChange:function(hsb,hex,rgb,el) {
@@ -53,10 +53,10 @@ $('.grout_gradient_color').colpick({
 
 
 function updateTiling(){
-	var tiles_color = rgb2hex($(".tiles_color").css("background-color"));
-	var grout_color = rgb2hex($(".grout_color").css("background-color"));
-	var tiles_gradient_color = rgb2hex($(".tiles_gradient_color").css("background-color"));
-	var grout_gradient_color = rgb2hex($(".grout_gradient_color").css("background-color"));
+	var tiles_color = rgb2hex($("#tiles_color").css("background-color"));
+	var grout_color = rgb2hex($("#grout_color").css("background-color"));
+	var tiles_gradient_color = rgb2hex($("#tiles_gradient_color").css("background-color"));
+	var grout_gradient_color = rgb2hex($("#grout_gradient_color").css("background-color"));
 	
 	var x_tiling = parseInt($("#tiles_x").val());
 	var y_tiling = parseInt($("#tiles_y").val());
