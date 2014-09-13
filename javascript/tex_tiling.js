@@ -96,7 +96,7 @@ function setTiling(tile_col_hex, hori_count, vert_count, grout_col_hex, hori_gap
 	
 	for (var y=0; y < vert_count; y++){
 		for (var x=0; x < hori_count; x++){
-			drawRectangle(tile_part_x, tile_part_y, hori_gap, vert_gap,
+			drawTilingRectangle(tile_part_x, tile_part_y, hori_gap, vert_gap,
 			x_tiles_gradient, y_tiles_gradient, tile_col_hex, grout_col_hex, tiles_gradient_color, grout_gradient_color,
 			ctx, Math.floor(x*max_w/hori_count), Math.floor(y*max_h/vert_count), 
 			Math.ceil((x+1)*max_w/hori_count), Math.ceil((y+1)*max_h/vert_count));
@@ -104,7 +104,7 @@ function setTiling(tile_col_hex, hori_count, vert_count, grout_col_hex, hori_gap
 	}
 }
 
-function drawRectangle(tile_part_x, tile_part_y, hori_gap, vert_gap, x_tiles_gradient, y_tiles_gradient, tile_col_hex, grout_col_hex, tiles_smooth_col, grout_gradient_color, ctx, x, y, w, h){
+function drawTilingRectangle(tile_part_x, tile_part_y, hori_gap, vert_gap, x_tiles_gradient, y_tiles_gradient, tile_col_hex, grout_col_hex, tiles_smooth_col, grout_gradient_color, ctx, x, y, w, h){
 		
 	ctx.fillStyle = gradient([0, y, 0, h], ctx, tile_part_y, vert_gap, y_tiles_gradient, tile_col_hex, grout_col_hex, tiles_smooth_col, grout_gradient_color);
 	ctx.fillRect(x, y, w, h);

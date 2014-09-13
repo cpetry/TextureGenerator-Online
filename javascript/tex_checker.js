@@ -29,6 +29,39 @@ $('.checker_color2').colpick({
 function updateChecker(){
 	var color1 = rgb2hex($(".checker_color1").css("background-color"));
 	var color2 = rgb2hex($(".checker_color2").css("background-color"));
+	var percentage1 = 1;
+
+	var x_checker = parseInt($("#checker_x").val());
+	var y_checker = parseInt($("#checker_y").val());
 	
-	//setChecker(tiles_color, x_tiling, y_tiling, grout_color, x_grout, y_grout, tiles_gradient_color, x_tiles_gradient, y_tiles_gradient, grout_gradient_color);
+	var seed = parseInt($("#checker_seed").val());
+	var percentage1 = parseFloat($("#checker_percentage").val());
+
+	setChecker(x_checker, y_checker, color1, color2, seed, percentage1);
+}
+
+function setChecker(x_checker, y_checker, color1, color2, seed, percentage1)
+{
+	var c = document.getElementById("texture_preview");
+	var ctx = c.getContext("2d");
+
+	var max_w = 512, max_h = 512;
+	
+	// color2
+	ctx.fillStyle = color2; // hex col
+	ctx.fillRect(0,0,max_w,max_h); // fillRect(x,y,width,height)
+
+	var checker_width  = max_w / x_checker; 
+	var checker_height = max_h / y_checker; 
+	var incr_seed = seed;
+
+	for (var y=0; y < y_checker; y++)
+		for (var x=0; x < x_checker; x++)
+			if ((x+y) % 2 == 0 && randomSeed(incr_seed++, percentage1) < 1)
+				drawCheckerRectangle(ctx, checker_width * x, checker_height * y, checker_width, checker_height, color1);
+}
+
+function drawCheckerRectangle(ctx, start_x, start_y, width, height, col){
+	ctx.fillStyle = col;
+	ctx.fillRect(start_x, start_y, width, height);
 }
