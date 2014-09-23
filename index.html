@@ -49,14 +49,14 @@
 							$('#' + type).show();
 							
 							switch(type){
-							case 'Tiles':
-								updateTiling();
+							case 'Checker':
+								updateChecker();
 								break;
 							case 'Gradient':
 								updateGradient();
 								break;
-							case 'Checker':
-								updateChecker();
+							case 'Tiles':
+								updateTiling();
 								break;
 							}
 						}
@@ -64,9 +64,9 @@
 				
 					
 					<select id="types" size="1" onchange="showType($(this).val())">
-						<option disabled>Brick</option>
+						<option selected>Brick</option>
 						<option disabled>Celular</option>
-						<option selected>Checker</option>
+						<option>Checker</option>
 						<option disabled>Falloff</option>
 						<option>Gradient</option>
 						<option disabled>Marble</option>
@@ -85,9 +85,48 @@
 			<div style="min-height:30"></div>
 	
 			<div class="settings">
-			
+				<!-- Brick -->
+				<div class="type_settings" id="Brick" style="display:block"> <!-- display:block -> Show default texture -->
+					<table align="center">
+					<tr class="option_settings_head">
+						<td colspan="3">
+							Brick Settings
+						</td>
+					</tr>
+					<tr class="suboption_settings">
+						<td>
+							Color
+						</td>
+						<td>
+							<div class="colorpicker" id="brick_color"></div>
+						</td>
+						<td>
+							<div class="colorpicker" id="brick_grout_color"></div>
+						</td>
+					</tr>
+					<tr class="suboption_settings">
+						<td>
+							Pattern
+						</td>
+					</tr>	
+					<tr class="suboption_settings">
+						<td>
+							Count
+						</td>
+						<td>
+							x <input type="number" id="brick_x" onchange="updateBrick();" style="width:35px;" min="1" value="6" max="50" />
+						</td>
+						<td>
+							y <input type="number" id="brick_y" onchange="updateBrick();" style="width:35px;" min="1" value="6" max="50" />
+						</td>
+					</tr>
+								
+					
+					</table>
+				</div>
+
 				<!-- Checker -->
-				<div class="type_settings" id="Checker" style="display:block"> <!-- display:block -> Show default texture -->
+				<div class="type_settings" id="Checker">
 					<table align="center">
 					<tr class="option_settings_head">
 						<td colspan="3">
@@ -309,6 +348,7 @@
 	<!-- Has to be down here! -->
 	<script src="javascript/helper.js" type="text/javascript"></script>
 
+	<script src="javascript/tex_brick.js" type="text/javascript"></script>
 	<script src="javascript/tex_checker.js" type="text/javascript"></script>
 	<script src="javascript/tex_gradient.js" type="text/javascript"></script>
 	<script src="javascript/tex_tiling.js" type="text/javascript"></script>
@@ -316,23 +356,15 @@
 	<script src="javascript/ganalytics.js" type="text/javascript" ></script>
 		
 	<script> 
+		// initialization
+
 		updateTiling();
 		
-		/*
-		createSlider(0, 'ffff00');
-		createSlider(32, 'ff0000');
-		createSlider(64, 'ff00ff');
-		createSlider(96, '0000ff');
-		createSlider(128, '00ffff');
-		createSlider(196, '00ff00');
-		createSlider(256, 'ffff00');
-		*/
 		createGradientSlider(0, 'e6d7c3');
 		createGradientSlider(96, '262626');
-		createGradientSlider(178, '665e52');
-		
-		
+		createGradientSlider(178, '665e52');	
 		updateGradient();
+
 		updateChecker();
 	</script>
 
