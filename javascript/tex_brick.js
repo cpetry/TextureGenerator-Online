@@ -35,7 +35,7 @@ function updateBrick(){
 	var count_x = parseInt($("#brick_x").val());
 	var count_y = parseInt($("#brick_y").val());
 
-	var rotation = parseInt($("#brick_rotation").val()) * (Math.PI/180); //rad to deg
+	var rotation = parseInt($("#brick_rotation").val()) * (Math.PI/180) * 0.5; //rad to deg
 
 	var c = document.getElementById("texture_preview");
 	var ctx = c.getContext("2d");
@@ -108,7 +108,7 @@ function createWideBlockPattern(ctx, width, height, count_x, count_y, groutspace
 	height = parseInt(height / 2.0 + 0.5);
 	count_y *= 2;
 	count_x *= 2;
-	
+
 	ctx.fillStyle = grout_color;
 	ctx.fillRect(0, 0, 256, 256);
 
