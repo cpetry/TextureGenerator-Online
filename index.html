@@ -49,6 +49,9 @@
 							$('#' + type).show();
 							
 							switch(type){
+							case 'Brick':
+								updateBrick();
+								break;
 							case 'Checker':
 								updateChecker();
 								break;
@@ -65,19 +68,19 @@
 					
 					<select id="types" size="1" onchange="showType($(this).val())">
 						<option selected>Brick</option>
-						<option disabled>Celular</option>
+						<!--<option disabled>Celular</option>-->
 						<option>Checker</option>
-						<option disabled>Falloff</option>
+						<!--<option disabled>Falloff</option>-->
 						<option>Gradient</option>
-						<option disabled>Marble</option>
+						<!--<option disabled>Marble</option>
 						<option disabled>Noise</option>
 						<option disabled>Smoke</option>
 						<option disabled>Splat</option>
 						<option disabled>Stucco</option>
-						<option disabled>Swirl</option>
+						<option disabled>Swirl</option>-->
 						<option>Tiles</option>
-						<option disabled>Waves</option>
-						<option disabled>Wood</option>
+						<!--<option disabled>Waves</option>
+						<option disabled>Wood</option>-->
 					</select>
 				</div>
 			</div>
@@ -99,7 +102,7 @@
 						</td>
 						<td>
 							<div class="colorpicker" id="brick_color"></div>
-						</td>
+						</td>	
 						<td>
 							<div class="colorpicker" id="brick_grout_color"></div>
 						</td>
@@ -108,16 +111,46 @@
 						<td>
 							Pattern
 						</td>
+						<td colspan=2 style="max-width: 180px;">
+							<input type="radio" name="brick_pattern" onchange="updateBrick();" value="straight" > 
+								<img src="images/brick_straight.png" />
+    						<input type="radio" name="brick_pattern" onchange="updateBrick();" value="block_wide" >
+    							<img src="images/brick_block_wide.png" /><br/>
+    						<input type="radio" name="brick_pattern" onchange="updateBrick();" value="block">
+    							<img src="images/brick_block.png" />
+    						<!--<input type="radio" name="brick_pattern" onchange="updateBrick();" value="block_lines"> block_lines
+    						<input type="radio" name="brick_pattern" onchange="updateBrick();" value="star"> star-->
+    						<input type="radio" name="brick_pattern" onchange="updateBrick();" value="circle" > 
+    							<img src="images/brick_circle.png" /><br/>
+    					
+    						<input type="radio" name="brick_pattern" onchange="updateBrick();" value="edges" checked>
+    							<img src="images/brick_edges.png" />
+    						<!--<input type="radio" name="brick_pattern" onchange="updateBrick();" value="rose"> rose-->
+						</td>
 					</tr>	
 					<tr class="suboption_settings">
 						<td>
-							Count
+							Size
 						</td>
 						<td>
 							x <input type="number" id="brick_x" onchange="updateBrick();" style="width:35px;" min="1" value="6" max="50" />
+							y <input type="number" id="brick_y" onchange="updateBrick();" style="width:35px;" min="1" value="6" max="50" />
+						</td>
+					</tr>
+					<tr class="suboption_settings">
+						<td>
+							Grout
 						</td>
 						<td>
-							y <input type="number" id="brick_y" onchange="updateBrick();" style="width:35px;" min="1" value="6" max="50" />
+							<input type="number" id="brick_grout_width" onchange="updateBrick();" style="width:35px;" min="1" value="6" max="50" />
+						</td>
+					</tr>
+					<tr class="suboption_settings">
+						<td>
+							Rotation
+						</td>
+						<td>
+							<input type="number" id="brick_rotation" onchange="updateBrick();" style="width:45px;" min="0" value="0" max="360" />
 						</td>
 					</tr>
 								
@@ -353,19 +386,19 @@
 	<script src="javascript/tex_gradient.js" type="text/javascript"></script>
 	<script src="javascript/tex_tiling.js" type="text/javascript"></script>
 	
-	<script src="javascript/ganalytics.js" type="text/javascript" ></script>
+	<!--<script src="javascript/ganalytics.js" type="text/javascript" ></script>-->
 		
 	<script> 
 		// initialization
+		updateBrick();
+		updateChecker();
+		updateGradient();
 
 		updateTiling();
 		
-		createGradientSlider(0, 'e6d7c3');
-		createGradientSlider(96, '262626');
-		createGradientSlider(178, '665e52');	
-		updateGradient();
+		showType($("#types>option").val());
 
-		updateChecker();
+
 	</script>
 
 	

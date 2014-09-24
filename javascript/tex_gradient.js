@@ -50,6 +50,9 @@ $(".slider_area").droppable({
     }
 });
 
+createGradientSlider(0, 'e6d7c3');
+createGradientSlider(96, '262626');
+createGradientSlider(178, '665e52');
 
 
 function updateGradient(){
