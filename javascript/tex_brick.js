@@ -35,8 +35,6 @@ function updateBrick(){
 	var count_x = parseInt($("#brick_x").val());
 	var count_y = parseInt($("#brick_y").val());
 
-	var rotation = parseInt($("#brick_rotation").val()) * (Math.PI/180) * 0.5; //rad to deg
-
 	var c = document.getElementById("texture_preview");
 	var ctx = c.getContext("2d");
 
@@ -44,10 +42,6 @@ function updateBrick(){
 	var width = parseInt(max_w / count_x + 0.5);
 	var height = parseInt(max_h / count_y + 0.5);
 	
-	if (rotation != 0){
-		ctx.beginPath();
-		ctx.rect(0,0,max_w,max_h);
-	}	
 
 	switch(pattern){
 		case "straight":
@@ -78,14 +72,7 @@ function updateBrick(){
 			break;
 	}
 
-	if (rotation != 0){
-		ctx.rotate(rotation);
-		var pat=ctx.createPattern(document.getElementById("texture_preview"),"repeat");
-		ctx.clearRect(0,0,max_w,max_h);
-		ctx.fillStyle=pat;
-		ctx.fill();
-		ctx.rotate(-rotation);
-	}
+	
 }
 
 
