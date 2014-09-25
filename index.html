@@ -90,22 +90,7 @@
 								Brick Settings
 							</td>
 						</tr>
-						<tr class="suboption_settings">
-							<td>
-								Brick
-							</td>
-							<td align="center">
-								<div class="colorpicker" id="brick_color"></div>
-							</td>	
-						</tr>
-						<tr class="suboption_settings">
-							<td>
-								Grout
-							</td>
-							<td align="center">
-								<div class="colorpicker" id="brick_grout_color"></div>
-							</td>
-						</tr>
+
 						<tr class="suboption_settings">
 							<td>
 								Pattern
@@ -128,22 +113,67 @@
 							</td>
 						</tr>	
 						<tr class="suboption_settings">
-							<td>
+							<td >
 								Size
 							</td>
-							<td align="center">
+							<td align="center" colspan="2">
 								x <input type="number" id="brick_x" onchange="updateTexture();" style="width:35px;" min="1" value="6" max="50" />
 								y <input type="number" id="brick_y" onchange="updateTexture();" style="width:35px;" min="1" value="6" max="50" />
 							</td>
+						</tr>
+						
+						<tr class="suboption_settings">
+							<td style="width:30%;">
+								Brick
+							</td>
+							<td>
+								<div class="colorpicker" id="brick_color"></div>
+							</td>	
+						</tr>
+						<!-- Gradient for Brick -->
+						<tr class="suboption_settings" >
+							<td style="text-align:left">
+								<label>
+									<input type="checkbox" id="BrickGradient" onchange="enableBrickGradient();" checked> 
+									Gradient 
+									<script>
+										function enableBrickGradient(){
+											if($('#BrickGradient').prop('checked')){
+									    		$('.brick_gradient_option').show();
+									    		updateTexture();
+									    	}
+									    	else{
+									    		$('.brick_gradient_option').hide();
+									    		updateTexture();
+									    	}
+										};
+									</script>
+								</label>
+							</td>
+
+							<td class="brick_gradient_option">
+								<div class="colorpicker" id="brick_gradient_color"></div>
+							</td>
+							<td class="brick_gradient_option" align="center">
+								Size <input type="number" id="brick_gradient" onchange="updateTexture();" 
+								style="width:45px;" min="0" value="3" max="100" />
+							</td>
+
 						</tr>
 						<tr class="suboption_settings">
 							<td>
 								Grout
 							</td>
-							<td align="center">
-								<input type="number" id="brick_grout_width" onchange="updateTexture();" style="width:35px;" min="1" value="6" max="50" />
+							<td>
+								<div class="colorpicker" id="brick_grout_color"></div>
 							</td>
+							<td align="center">
+								Size <input type="number" id="brick_grout_width" onchange="updateTexture();" 
+								style="width:35px;" min="1" value="6" max="50" />
+							</td>
+							
 						</tr>
+						
 						
 									
 						

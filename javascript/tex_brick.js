@@ -12,6 +12,18 @@ $('#brick_color').colpick({
 }).css('background-color', '#e6d7c3');
 
 
+$('#brick_gradient_color').colpick({
+	layout:'rgbhsbhex',
+	color: {h:35, s:20, b:40},
+	onChange:function(hsb,hex,rgb,el) {
+		$(el).css('background-color', '#'+hex);
+		updateTexture();
+	},
+	onSubmit:function(hsb,hex,rgb,el) {
+		$(el).colpickHide();
+	}
+}).css('background-color', '#665e52');
+
 $('#brick_grout_color').colpick({
 	layout:'rgbhsbhex',
 	color: {h:35, s:20, b:40},
@@ -28,9 +40,12 @@ $('#brick_grout_color').colpick({
 function updateBrick(){
 	var brick_color = rgb2hex($("#brick_color").css("background-color"));
 	var grout_color = rgb2hex($("#brick_grout_color").css("background-color"));
+	var gradient_color = rgb2hex($("#brick_gradient_color").css("background-color"));
 	
 	var pattern = $("input[name='brick_pattern']:checked").val();
 	var groutspace = parseInt($("#brick_grout_width").val());
+
+	var brick_gradient = parseInt($("#brick_gradient").val());
 
 	var count_x = parseInt($("#brick_x").val());
 	var count_y = parseInt($("#brick_y").val());
@@ -45,23 +60,23 @@ function updateBrick(){
 
 	switch(pattern){
 		case "straight":
-			createStraightPattern(ctx, width, height, count_x, count_y, groutspace, brick_color, grout_color);
+			createStraightPattern(ctx, width, height, count_x, count_y, groutspace, brick_gradient, brick_color, grout_color, gradient_color);
 			break;
 
 		case "block_wide":
-			createWideBlockPattern(ctx, width, height, count_x, count_y, groutspace, brick_color, grout_color);
+			createWideBlockPattern(ctx, width, height, count_x, count_y, groutspace, brick_gradient, brick_color, grout_color, gradient_color);
 			break;
 
 		case "block":
-			createBlockPattern(ctx, width, height, count_x, count_y, groutspace, brick_color, grout_color);
+			createBlockPattern(ctx, width, height, count_x, count_y, groutspace, brick_gradient, brick_color, grout_color, gradient_color);
 			break;
 
 		case "circle":
-			createCirclePattern(ctx, width, height, count_x, count_y, groutspace, brick_color, grout_color);
+			createCirclePattern(ctx, width, height, count_x, count_y, groutspace, brick_gradient, brick_color, grout_color, gradient_color);
 			break;
 
 		case "edges":
-			createEdgesPattern(ctx, width, height, count_x, count_y, groutspace, brick_color, grout_color);
+			createEdgesPattern(ctx, width, height, count_x, count_y, groutspace, brick_gradient, brick_color, grout_color, gradient_color);
 			break;
 
 		case "star":
@@ -76,21 +91,21 @@ function updateBrick(){
 }
 
 
-function createStraightPattern(ctx, width, height, count_x, count_y, groutspace, brick_color, grout_color){
+function createStraightPattern(ctx, width, height, count_x, count_y, groutspace, brick_gradient, brick_color, grout_color, gradient_color){
 	var half_height = parseInt(height/2.0 + 0.5);
 
 	for (var y = 0; y < count_y+1; y++){
 		for (var x = 0; x < count_x+1; x++){
 			if (x%2 == 1){
-				drawBrickRectangle(ctx, groutspace, brick_color, grout_color, x*width, y*height - half_height, width, (y == 0 ? height - half_height : height));
+				drawBrickRectangle(ctx, groutspace, brick_gradient, brick_color, grout_color, gradient_color, x*width, y*height - half_height, width, (y == 0 ? height - half_height : height));
 			}
 			else
-				drawBrickRectangle(ctx, groutspace, brick_color, grout_color, x*width, y*height, width, height);
+				drawBrickRectangle(ctx, groutspace, brick_gradient, brick_color, grout_color, gradient_color, x*width, y*height, width, height);
 		}
 	}
 }
 
-function createWideBlockPattern(ctx, width, height, count_x, count_y, groutspace, brick_color, grout_color){
+function createWideBlockPattern(ctx, width, height, count_x, count_y, groutspace, brick_gradient, brick_color, grout_color, gradient_color){
 	width = parseInt(width / 2.0 + 0.5);
 	height = parseInt(height / 2.0 + 0.5);
 	count_y *= 2;
@@ -101,14 +116,14 @@ function createWideBlockPattern(ctx, width, height, count_x, count_y, groutspace
 
 	for (var y = 0; y < count_y+1; y+=2){
 		for (var x = 0; x < count_x+1; x+=3){
-			drawBrickRectangle(ctx, groutspace, brick_color, grout_color, x*width, y*height, width, height*2);
-			drawBrickRectangle(ctx, groutspace, brick_color, grout_color, x*width + width, y*height, width*2, height);
-			drawBrickRectangle(ctx, groutspace, brick_color, grout_color, x*width + width, y*height + height, width*2, height);
+			drawBrickRectangle(ctx, groutspace, brick_gradient, brick_color, grout_color, gradient_color, x*width, y*height, width, height*2);
+			drawBrickRectangle(ctx, groutspace, brick_gradient, brick_color, grout_color, gradient_color, x*width + width, y*height, width*2, height);
+			drawBrickRectangle(ctx, groutspace, brick_gradient, brick_color, grout_color, gradient_color, x*width + width, y*height + height, width*2, height);
 		}
 	}
 }
 
-function createBlockPattern(ctx, width, height, count_x, count_y, groutspace, brick_color, grout_color){
+function createBlockPattern(ctx, width, height, count_x, count_y, groutspace, brick_gradient, brick_color, grout_color, gradient_color){
 	width = parseInt(width / 2.0 + 0.5);
 	height = parseInt(height / 2.0 + 0.5);
 	count_y *= 2;
@@ -117,18 +132,18 @@ function createBlockPattern(ctx, width, height, count_x, count_y, groutspace, br
 	for (var y = 0; y < count_y+1; y+=2){
 		for (var x = 0; x < count_x+1; x+=2){
 			if ((x + y) % 4 == 0){
-				drawBrickRectangle(ctx, groutspace, brick_color, grout_color, x*width, y*height, width, height*2);
-				drawBrickRectangle(ctx, groutspace, brick_color, grout_color, x*width + width, y*height, width, height*2);
+				drawBrickRectangle(ctx, groutspace, brick_gradient, brick_color, grout_color, gradient_color, x*width, y*height, width, height*2);
+				drawBrickRectangle(ctx, groutspace, brick_gradient, brick_color, grout_color, gradient_color, x*width + width, y*height, width, height*2);
 			}
 			else{
-				drawBrickRectangle(ctx, groutspace, brick_color, grout_color, x*width, y*height, width*2, height);
-				drawBrickRectangle(ctx, groutspace, brick_color, grout_color, x*width, y*height + height, width*2, height);
+				drawBrickRectangle(ctx, groutspace, brick_gradient, brick_color, grout_color, gradient_color, x*width, y*height, width*2, height);
+				drawBrickRectangle(ctx, groutspace, brick_gradient, brick_color, grout_color, gradient_color, x*width, y*height + height, width*2, height);
 			}
 		}
 	}
 }
 
-function createCirclePattern(ctx, width, height, count_x, count_y, groutspace, brick_color, grout_color){
+function createCirclePattern(ctx, width, height, count_x, count_y, groutspace, brick_gradient, brick_color, grout_color, gradient_color){
 	width = parseInt(width / 3.0 + 0.5);
 	height = parseInt(height / 3.0 + 0.5);
 	count_y *= 3;
@@ -136,18 +151,18 @@ function createCirclePattern(ctx, width, height, count_x, count_y, groutspace, b
 	
 	for (var y = 0; y < count_y+1; y+=3){
 		for (var x = 0; x < count_x+1; x+=3){
-			drawBrickRectangle(ctx, groutspace, brick_color, grout_color, x*width, y*height, width*2, height);
-			drawBrickRectangle(ctx, groutspace, brick_color, grout_color, x*width + width, y*height + 2*height, width*2, height);
+			drawBrickRectangle(ctx, groutspace, brick_gradient, brick_color, grout_color, gradient_color, x*width, y*height, width*2, height);
+			drawBrickRectangle(ctx, groutspace, brick_gradient, brick_color, grout_color, gradient_color, x*width + width, y*height + 2*height, width*2, height);
 				
-			drawBrickRectangle(ctx, groutspace, brick_color, grout_color, x*width, y*height + height, width, height*2);
-			drawBrickRectangle(ctx, groutspace, brick_color, grout_color, x*width + 2*width, y*height, width, height*2);
+			drawBrickRectangle(ctx, groutspace, brick_gradient, brick_color, grout_color, gradient_color, x*width, y*height + height, width, height*2);
+			drawBrickRectangle(ctx, groutspace, brick_gradient, brick_color, grout_color, gradient_color, x*width + 2*width, y*height, width, height*2);
 
-			drawBrickRectangle(ctx, groutspace, brick_color, grout_color, x*width + width, y*height + height, width, height);
+			drawBrickRectangle(ctx, groutspace, brick_gradient, brick_color, grout_color, gradient_color, x*width + width, y*height + height, width, height);
 		}
 	}
 }
 
-function createEdgesPattern(ctx, width, height, count_x, count_y, groutspace, brick_color, grout_color){
+function createEdgesPattern(ctx, width, height, count_x, count_y, groutspace, brick_gradient, brick_color, grout_color, gradient_color){
 	width = parseInt(width / 2.0 + 0.5);
 	height = parseInt(height / 2.0 + 0.5);
 	count_y *= 2;
@@ -157,10 +172,10 @@ function createEdgesPattern(ctx, width, height, count_x, count_y, groutspace, br
 	for (var y = 0; y < count_y+2; y++){
 		for (var x = 0; x < count_x+2; x++){
 			if (y % 4 == x % 4)
-				drawBrickRectangle(ctx, groutspace, brick_color, grout_color, x*width, y*height, width*2, height);
+				drawBrickRectangle(ctx, groutspace, brick_gradient, brick_color, grout_color, gradient_color, x*width, y*height, width*2, height);
 			else if (y % 4 == (x % 4 + 1) 
 				|| (y % 4 == 0 && x % 4 == 3))
-				drawBrickRectangle(ctx, groutspace, brick_color, grout_color, x*width, y*height, width, height * 2);
+				drawBrickRectangle(ctx, groutspace, brick_gradient, brick_color, grout_color, gradient_color, x*width, y*height, width, height * 2);
 			
 		}
 	}
@@ -168,10 +183,131 @@ function createEdgesPattern(ctx, width, height, count_x, count_y, groutspace, br
 }
 
 
-function drawBrickRectangle( ctx, groutspace, brick_col, brick_grout_col, x, y, w, h){
+function drawBrickRectangle( ctx, groutspace, brick_gradient, brick_col, brick_grout_col, gradient_color, x, y, w, h){
+
+	brick_gradient = Math.min(brick_gradient, Math.min((h - groutspace*2)/2, (w - groutspace*2)/2));
+
+	/*
+	ctx.fillStyle = brick_grout_col;
+	ctx.fillRect(x, Math.max(y,0), w, h);
+	
+	ctx.fillStyle = brick_col;
+	ctx.fillRect(x + groutspace, y + groutspace < 0 ? 0 : y + groutspace , w - groutspace*2, y + groutspace < 0 ? h - groutspace : h - groutspace*2);
+	*/
+	
 	ctx.fillStyle = brick_grout_col;
 	ctx.fillRect(x, Math.max(y,0), w, h);
 
-	ctx.fillStyle = brick_col;
+	var grad = ctx.createLinearGradient(0, y, 0, y+h);
+	var max_d = h;
+	grad.addColorStop(0, brick_grout_col);
+	grad.addColorStop(groutspace / max_d, brick_grout_col);
+	grad.addColorStop(groutspace / max_d, gradient_color);
+	grad.addColorStop((groutspace + brick_gradient) / max_d, brick_col);
+	grad.addColorStop((h - groutspace - brick_gradient) / max_d, brick_col);
+	grad.addColorStop((h - groutspace) / max_d, gradient_color);
+	grad.addColorStop((h - groutspace) / max_d, brick_grout_col);	
+	grad.addColorStop(1.0, brick_grout_col);
+
+	ctx.fillStyle = grad;
 	ctx.fillRect(x + groutspace, y + groutspace < 0 ? 0 : y + groutspace , w - groutspace*2, y + groutspace < 0 ? h - groutspace : h - groutspace*2);
+	//ctx.fillStyle = gradient([0, y, 0, h], ctx, y, groutspace, brick_col, brick_grout_col, gradient_color);
+	//ctx.fillRect(x, y, w, h);
+
+	
+	ctx.save();
+	
+	var mid_x = w / 2 + x;
+	var mid_y = h / 2 + y;
+
+	ctx.beginPath();
+	ctx.moveTo(x, y);
+	ctx.lineTo(x + groutspace, y + groutspace);
+	ctx.lineTo(x + groutspace + brick_gradient, y + groutspace + brick_gradient);
+	ctx.lineTo(mid_x , mid_y);
+	ctx.lineTo(w+x - brick_gradient - groutspace, h+y - brick_gradient - groutspace);
+	ctx.lineTo(w+x - brick_gradient, h+y - brick_gradient);
+	ctx.lineTo(w+x, y+h);
+	ctx.lineTo(w+x, y);
+	ctx.lineTo(w+x - groutspace, y + groutspace);
+	ctx.lineTo(w+x - brick_gradient - groutspace, y + groutspace + brick_gradient);
+	ctx.lineTo(mid_x, mid_y);
+	ctx.lineTo(x + brick_gradient + groutspace, h+y - brick_gradient - groutspace);
+	ctx.lineTo(x + groutspace, h+y - groutspace);
+	ctx.lineTo(x, h+y);
+	ctx.lineTo(x, y);
+	ctx.clip();
+	
+	grad = ctx.createLinearGradient(x, 0, x+w, 0);
+	max_d = w;
+	grad.addColorStop(0, brick_grout_col);
+	grad.addColorStop(groutspace / max_d, brick_grout_col);
+	grad.addColorStop(groutspace / max_d, gradient_color);
+	grad.addColorStop((groutspace + brick_gradient) / max_d, brick_col);
+	grad.addColorStop((w - groutspace - brick_gradient) / max_d, brick_col);
+	grad.addColorStop((w - groutspace) / max_d, gradient_color);
+	grad.addColorStop((w - groutspace) / max_d, brick_grout_col);	
+	grad.addColorStop(1.0, brick_grout_col);
+	ctx.fillStyle = grad;
+	//ctx.fillStyle = gradient([x, 0, w, 0], ctx, tile_part_x, hori_gap, x_tiles_gradient, tile_col_hex, grout_col_hex, tiles_smooth_col, grout_gradient_color);
+	ctx.fillRect(x + groutspace, y + groutspace < 0 ? 0 : y + groutspace , w - groutspace*2, y + groutspace < 0 ? h - groutspace : h - groutspace*2);
+
+	ctx.restore();
+	
 }
+
+/*
+function drawTilingRectangle(tile_part_x, tile_part_y, hori_gap, vert_gap, x_tiles_gradient, y_tiles_gradient, tile_col_hex, grout_col_hex, tiles_smooth_col, grout_gradient_color, ctx, x, y, w, h){
+		
+	ctx.fillStyle = gradient([0, y, 0, h], ctx, tile_part_y, vert_gap, y_tiles_gradient, tile_col_hex, grout_col_hex, tiles_smooth_col, grout_gradient_color);
+	ctx.fillRect(x, y, w, h);
+
+	ctx.save();
+	
+	var half_xgap = hori_gap/2.0; 
+	var half_ygap = vert_gap/2.0;
+	var mid_tile_x = (w-x)/2.0 + x;
+	var mid_tile_y = (h-y)/2.0 + y;
+
+	ctx.beginPath();
+	ctx.moveTo(x, y);
+	ctx.lineTo(Math.min(x + half_xgap, mid_tile_x), Math.min(y + half_ygap, mid_tile_y));
+	ctx.lineTo(Math.min(x + half_xgap + x_tiles_gradient, mid_tile_x), Math.min(y + half_ygap + y_tiles_gradient, mid_tile_y));
+	ctx.lineTo(mid_tile_x, mid_tile_y);
+	ctx.lineTo(Math.max(w - half_xgap - x_tiles_gradient, mid_tile_x), Math.max(h - half_ygap - y_tiles_gradient, mid_tile_y));
+	ctx.lineTo(Math.max(w - half_xgap, mid_tile_x), Math.max(h - half_ygap, mid_tile_y));
+	ctx.lineTo(w, h);
+	ctx.lineTo(w, y);
+	ctx.lineTo(Math.max(w - half_xgap, mid_tile_x), Math.min(y + half_ygap, mid_tile_y));
+	ctx.lineTo(Math.max(w - half_xgap - x_tiles_gradient, mid_tile_x), Math.min(y + half_ygap + y_tiles_gradient, mid_tile_y));
+	ctx.lineTo(mid_tile_x, mid_tile_y);
+	ctx.lineTo(Math.min(x + half_xgap + x_tiles_gradient, mid_tile_x), Math.max(h - half_ygap - y_tiles_gradient, mid_tile_y));
+	ctx.lineTo(Math.min(x + half_xgap, mid_tile_x), Math.max(h - half_ygap, mid_tile_y));
+	ctx.lineTo(x, h);
+	ctx.lineTo(x, y);
+	ctx.clip();
+	
+	//ctx.fillStyle = "#ff7700";
+	ctx.fillStyle = gradient([x, 0, w, 0], ctx, tile_part_x, hori_gap, x_tiles_gradient, tile_col_hex, grout_col_hex, tiles_smooth_col, grout_gradient_color);
+	ctx.fillRect(x, y, w, h);
+
+	ctx.restore();
+}
+
+
+function gradient(dir, ctx, tile_d, gap_d, tiles_gradient_d, tile_col_hex, grout_col_hex, tiles_smooth_col, grout_gradient_color) {
+	var grad = ctx.createLinearGradient(dir[0], dir[1], dir[2], dir[3]);
+	
+	var max_d = tile_d + gap_d + tiles_gradient_d*2;
+	var half_gap = gap_d / 2.0;
+	grad.addColorStop(0, grout_gradient_color);
+	grad.addColorStop(half_gap / max_d, grout_col_hex);
+	grad.addColorStop(half_gap / max_d, tiles_smooth_col);
+	grad.addColorStop((half_gap + tiles_gradient_d) / max_d, tile_col_hex);
+	grad.addColorStop((half_gap + tiles_gradient_d + tile_d) / max_d, tile_col_hex);
+	grad.addColorStop((half_gap + tiles_gradient_d*2 + tile_d) / max_d, tiles_smooth_col);
+	grad.addColorStop((half_gap + tiles_gradient_d*2 + tile_d) / max_d, grout_col_hex);
+	grad.addColorStop(1.0, grout_gradient_color);
+	
+	return grad;
+}*/

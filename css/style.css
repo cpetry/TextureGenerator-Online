@@ -46,10 +46,11 @@ body {
 }
 
 .suboption_settings {
-	padding-top: 5px;
+	padding-top: 10px;
 	margin-left: 20px;
 	font-size: 12px;
 	text-align: right;
+
 }
 
 .colorpicker{
