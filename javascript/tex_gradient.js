@@ -11,7 +11,7 @@ function createGradientSlider(pos, col){
 		color: col,
 		onChange:function(hsb,hex,rgb,el) {
 			$(el).css('background-color', '#'+hex);
-			updateGradient();
+			updateTexture();
 		},
 		onSubmit:function(hsb,hex,rgb,el) {
 			$(el).colpickHide();
@@ -25,7 +25,7 @@ function createGradientSlider(pos, col){
 		containment: ".slider_area",
 		scroll: false,
 		drag: function() {
-			updateGradient();
+			updateTexture();
 		},
 	});
 }
@@ -36,7 +36,7 @@ $(".slider_area" ).click(function(evt) {
 	
 	createGradientSlider(x, 'ffffff');
 	
-	updateGradient();
+	updateTexture();
 	//alert( "Position: " + x );
 });
 

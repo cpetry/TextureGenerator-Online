@@ -6,7 +6,7 @@ $('#tiles_color').colpick({
 	hue:200,
 	onChange:function(hsb,hex,rgb,el) {
 		$(el).css('background-color', '#'+hex);
-		updateTiling();
+		updateTexture();
 	},
 	onSubmit:function(hsb,hex,rgb,el) {
 		$(el).colpickHide();
@@ -19,7 +19,7 @@ $('#grout_color').colpick({
 	color: {h:35, s:20, b:40},
 	onChange:function(hsb,hex,rgb,el) {
 		$(el).css('background-color', '#'+hex);
-		updateTiling();
+		updateTexture();
 	},
 	onSubmit:function(hsb,hex,rgb,el) {
 		$(el).colpickHide();
@@ -31,7 +31,7 @@ $('#tiles_gradient_color').colpick({
 	color: {h:35, s:20, b:40},
 	onChange:function(hsb,hex,rgb,el) {
 		$(el).css('background-color', '#'+hex);
-		updateTiling();
+		updateTexture();
 	},
 	onSubmit:function(hsb,hex,rgb,el) {
 		$(el).colpickHide();
@@ -43,7 +43,7 @@ $('#grout_gradient_color').colpick({
 	color: {h:35, s:0, b:15},
 	onChange:function(hsb,hex,rgb,el) {
 		$(el).css('background-color', '#'+hex);
-		updateTiling();
+		updateTexture();
 	},
 	onSubmit:function(hsb,hex,rgb,el) {
 		$(el).colpickHide();

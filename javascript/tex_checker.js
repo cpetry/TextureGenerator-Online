@@ -5,7 +5,7 @@ $('#checker_color1').colpick({
 	hue:200,
 	onChange:function(hsb,hex,rgb,el) {
 		$(el).css('background-color', '#'+hex);
-		updateChecker();
+		updateTexture();
 	},
 	onSubmit:function(hsb,hex,rgb,el) {
 		$(el).colpickHide();
@@ -18,7 +18,7 @@ $('#checker_color2').colpick({
 	color: {h:35, s:20, b:40},
 	onChange:function(hsb,hex,rgb,el) {
 		$(el).css('background-color', '#'+hex);
-		updateChecker();
+		updateTexture();
 	},
 	onSubmit:function(hsb,hex,rgb,el) {
 		$(el).colpickHide();

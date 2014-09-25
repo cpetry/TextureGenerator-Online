@@ -4,7 +4,7 @@ $('#brick_color').colpick({
 	hue:200,
 	onChange:function(hsb,hex,rgb,el) {
 		$(el).css('background-color', '#'+hex);
-		updateBrick();
+		updateTexture();
 	},
 	onSubmit:function(hsb,hex,rgb,el) {
 		$(el).colpickHide();
@@ -17,7 +17,7 @@ $('#brick_grout_color').colpick({
 	color: {h:35, s:20, b:40},
 	onChange:function(hsb,hex,rgb,el) {
 		$(el).css('background-color', '#'+hex);
-		updateBrick();
+		updateTexture();
 	},
 	onSubmit:function(hsb,hex,rgb,el) {
 		$(el).colpickHide();
