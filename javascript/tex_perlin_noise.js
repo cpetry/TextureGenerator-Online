@@ -58,9 +58,9 @@ function setPerlinNoise(color1, color2, scale_x, scale_y, blur, seed)
 	
 	for (var i=0; i<d.length; i += 4) {
 		var v = S.noise(i % max_w, i / max_w);
-		d[i] = v * col1_rgb.r + ((1-v) * col2_rgb.r);
-		d[i+1] = v * col1_rgb.g + ((1-v) * col2_rgb.g);
-		d[i+2] = v * col1_rgb.b + ((1-v) * col2_rgb.b);
+		d[i] = v * col1_rgb.r + ((1.0-v) * col2_rgb.r);
+		d[i+1] = v * col1_rgb.g + ((1.0-v) * col2_rgb.g);
+		d[i+2] = v * col1_rgb.b + ((1.0-v) * col2_rgb.b);
 		d[i+3] = 255;
 	}
 	ctx.putImageData(imgData, 0, 0);
