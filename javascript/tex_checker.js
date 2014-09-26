@@ -56,7 +56,7 @@ function setChecker(x_checker, y_checker, color1, color2, seed, percentage1)
 
 	for (var y=0; y < y_checker; y++)
 		for (var x=0; x < x_checker; x++)
-			if ((x+y) % 2 == 0 && randomSeed(incr_seed++, percentage1) < 1)
+			if ((x+y) % 2 == 0 && random10Seed(incr_seed++, percentage1) < 1)
 				drawCheckerRectangle(ctx, checker_width * x, checker_height * y, checker_width, checker_height, color1);
 }
 

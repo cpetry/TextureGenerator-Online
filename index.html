@@ -45,31 +45,18 @@
 						Texture type
 					</div>
 					<div class="type_selector">
-						<script>
-									
-							function showType(type){
-								$("#types>option").map(function() {
-									if ($(this).val() != type)
-										$('#' + $(this).val()).hide(); 
-								});
-								$('#' + type).show();
-
-								updateTexture();
-							}
-						</script>
-					
 						
 						<select id="types" size="1" onchange="showType($(this).val())">
 							<!-- concrete, gravel, textiles, peeling paint, scratches, rust, rock, leaf, reptile skin, boards, 
 							roofing, wallpaper, blood spatter, grime maps, cracked earth, human skin, fish scales,
 							fence, building facade, rubble, metal, dirt, leather, road signs-->
-							<option selected>Brick</option>
+							<option>Brick</option>
 							<option disabled>Celular</option>
 							<option>Checker</option>
 							<option disabled>Falloff</option>
 							<option>Gradient</option>
 							<option disabled>Marble</option>
-							<option disabled>Noise</option>
+							<option selected>PerlinNoise</option>
 							<option disabled>Smoke</option>
 							<option disabled>Splat</option>
 							<option disabled>Stucco</option>
@@ -86,7 +73,7 @@
 				<div class="settings">
 
 					<!-- Brick -->
-					<div class="type_settings" id="Brick" style="display:block"> <!-- display:block -> Show default texture -->
+					<div class="type_settings" id="Brick">
 						<table align="center">
 						<tr class="option_settings_head">
 							<td colspan="3">
@@ -263,6 +250,78 @@
 						</div>
 					</div>
 				
+					<!-- Perlin Noise --> 
+					<div class="type_settings" id="PerlinNoise" style="display:block"> <!-- display:block -> Show default texture -->
+						<table align="center">
+						<tr class="option_settings_head">
+							<td colspan="3">
+								Perlin Noise Settings
+							</td>
+						</tr>
+						<tr class="suboption_settings">
+							<td>
+								Color
+							</td>
+							<td align="center">
+								<div style="display:inline-block;" class="colorpicker" id="perlin_noise_color1"></div>
+								<div style="display:inline-block;"class="colorpicker" id="perlin_noise_color2"></div>
+							</td>
+						</tr>
+						<tr class="suboption_settings">
+							<td>
+								Scale
+							</td>
+							<td colspan=2>
+								x <input type="range" id="perlin_noise_scale_slider_x" min="1" max="20" value="1" step="0.01"
+									onchange="document.getElementById('perlin_noise_scale_x').value = this.value; updateTexture();"
+									oninput=" document.getElementById('perlin_noise_scale_x').value = this.value; updateTexture();"
+									style="width:50%;vertical-align:top;">
+								<input type="number" id="perlin_noise_scale_x" 
+									onchange="document.getElementById('perlin_noise_scale_slider_x').value = this.value; updateTexture();"
+									style="width:52px;" min="1" value="1" max="20" step="0.01"/>
+							</td>
+						</tr>
+						<tr class="suboption_settings">	
+							<td></td>
+							<td colspan=2>
+								y <input type="range" id="perlin_noise_scale_slider_y" min="1" max="20" value="1" step="0.01"
+									onchange="document.getElementById('perlin_noise_scale_y').value = this.value; updateTexture();"
+									oninput=" document.getElementById('perlin_noise_scale_y').value = this.value; updateTexture();"
+									style="width:50%;vertical-align:top;">
+								<input type="number" id="perlin_noise_scale_y" 
+									onchange="document.getElementById('perlin_noise_scale_slider_y').value = this.value; updateTexture();"
+									style="width:52px;" min="1" value="1" max="20" step="0.01"/>
+							</td>
+						</tr>
+						
+						<tr class="suboption_settings">
+							<td>
+								Blur
+							</td>
+							<td colspan=2>
+								<input type="range" id="perlin_noise_blur_slider" min="1" max="20" value="1" step="0.1"
+									onchange="document.getElementById('perlin_noise_blur').value = this.value; updateTexture();"
+									oninput=" document.getElementById('perlin_noise_blur').value = this.value; updateTexture();"
+									style="width:50%;vertical-align:top;">
+								<input type="number" id="perlin_noise_blur" 
+									onchange="document.getElementById('perlin_noise_blur_slider').value = this.value; updateTexture();"
+									style="width:45px;" min="1" value="1" max="20" />
+							</td>
+						</tr>
+						
+						<tr class="suboption_settings" id="perlin_noise_seed_line">
+							<td>
+								Seed
+							</td>
+							<td align="center">
+								 <input type="number" id="perlin_noise_seed" onchange="updateTexture();" style="width:45px;" min="1" value="1" max="1000" />
+							</td>
+						</tr>
+						
+						
+						</table>
+					</div>
+					
 					<!-- Tiles -->
 					<div class="type_settings" id="Tiles">
 						<table align="center">
@@ -449,17 +508,20 @@
 
 	<!-- Has to be down here! -->
 	<script src="javascript/helper.js" type="text/javascript"></script>
+	<script src="javascript/noise.js" type="text/javascript"></script>
+	<script src="javascript/gaussianblur.js" type="text/javascript"></script>
 
 	<script src="javascript/tex_brick.js" type="text/javascript"></script>
 	<script src="javascript/tex_checker.js" type="text/javascript"></script>
 	<script src="javascript/tex_gradient.js" type="text/javascript"></script>
+	<script src="javascript/tex_perlin_noise.js" type="text/javascript"></script>
 	<script src="javascript/tex_tiling.js" type="text/javascript"></script>
 	
-	<script src="javascript/ganalytics.js" type="text/javascript" ></script>
+	<!--<script src="javascript/ganalytics.js" type="text/javascript" ></script>-->
 		
 	<script> 
 		// initialization		
-		showType($("#types>option").val());
+		showType($("#types>option:selected").val());
 		updateTexture();
 
 	</script>
