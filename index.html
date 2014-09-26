@@ -267,6 +267,22 @@
 								<div style="display:inline-block;"class="colorpicker" id="perlin_noise_color2"></div>
 							</td>
 						</tr>
+						
+						<tr class="suboption_settings">
+							<td>
+								Percentage
+							</td>
+							<td>
+								<input type="range" id="perlin_noise_percentage_slider" min="0" max="100" value="100" step="1"
+									onchange="document.getElementById('perlin_noise_percentage').value = this.value; updateTexture();"
+									oninput=" document.getElementById('perlin_noise_percentage').value = this.value; updateTexture();"
+									style="width:50%;vertical-align:top;">
+								 <input type="number" id="perlin_noise_percentage" 
+								 onchange="document.getElementById('perlin_noise_percentage_slider').value = this.value; updateTexture();"
+								 step="1" style="width:45px;" min="0" value="100" max="100" />
+							</td>
+						</tr>
+						
 						<tr class="suboption_settings">
 							<td>
 								Scale
