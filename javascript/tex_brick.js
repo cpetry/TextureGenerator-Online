@@ -45,8 +45,9 @@ function updateBrick(){
 	var pattern = $("input[name='brick_pattern']:checked").val();
 	var groutspace = parseInt($("#brick_grout_width").val());
 
-	var brick_gradient = parseInt($("#brick_gradient").val());
-
+	var brick_gradient = $('#BrickGradient').prop('checked') ? parseInt($("#brick_gradient").val()): 0;
+	
+	
 	var count_x = parseInt($("#brick_x").val());
 	var count_y = parseInt($("#brick_y").val());
 
