@@ -71,6 +71,7 @@
 							<option disabled>Splat</option>
 							<option disabled>Stucco</option>
 							<option disabled>Swirl</option>
+							<option>Textiles</option>
 							<option>Tiles</option>
 							<option disabled>Waves</option>
 							<option disabled>Wood</option>
@@ -348,6 +349,108 @@
 						</table>
 					</div>
 					
+					<!-- Textiles -->
+					<div class="type_settings" id="Textiles">
+						<table align="center">
+							<tr class="option_settings_head">
+								<td colspan="3">
+									Textiles Settings
+								</td>
+							</tr>
+							<tr class="suboption_settings">
+								<td>
+									Color
+								</td>
+								<td align="center">
+									<div style="display:inline-block;" class="colorpicker" id="textiles_color1"></div>
+									<div style="display:inline-block;" class="colorpicker" id="textiles_color2"></div>
+								</td>
+							</tr>
+							<tr class="suboption_settings">
+								<td >
+									Size
+								</td>
+								<td align="center" colspan="2">
+									x <input type="number" id="textiles_x" onchange="updateTexture();" style="width:35px;" min="1" value="1" max="50" />
+									y <input type="number" id="textiles_y" onchange="updateTexture();" style="width:35px;" min="1" value="1" max="50" />
+								</td>
+							</tr>
+							<tr class="suboption_settings">
+								<td>
+									Tightness
+								</td>
+								<td>
+									<input type="range" id="textiles_tightness_slider" min="0" max="1" value="0.5" step="0.01"
+										onchange="document.getElementById('textiles_tightness').value = this.value; updateTexture();"
+										oninput=" document.getElementById('textiles_tightness').value = this.value; updateTexture();"
+										style="width:50%;vertical-align:top;">
+									 <input type="number" id="textiles_tightness" 
+									 onchange="document.getElementById('textiles_tightness_slider').value = this.value; updateTexture();"
+									 step="0.01" style="width:45px;" min="0" value="0.5" max="1" />
+								</td>
+							</tr>
+							
+							<tr class="suboption_settings">
+								<td>
+									Thickness
+								</td>
+								<td>
+									<input type="range" id="textiles_thickness_slider" min="0.01" max="1" value="0.2" step="0.01"
+										onchange="document.getElementById('textiles_thickness').value = this.value; updateTexture();"
+										oninput=" document.getElementById('textiles_thickness').value = this.value; updateTexture();"
+										style="width:50%;vertical-align:top;">
+									 <input type="number" id="textiles_thickness" 
+									 onchange="document.getElementById('textiles_thickness_slider').value = this.value; updateTexture();"
+									 step="0.01" style="width:45px;" min="0.01" value="0.2" max="1" />
+								</td>
+							</tr>
+
+							<tr class="suboption_settings">
+								<td>
+									Smoothness
+								</td>
+								<td>
+									<input type="range" id="textiles_smoothness_slider" min="0" max="1" value="0" step="0.01"
+										onchange="document.getElementById('textiles_smoothness').value = this.value; updateTexture();"
+										oninput=" document.getElementById('textiles_smoothness').value = this.value; updateTexture();"
+										style="width:50%;vertical-align:top;">
+									 <input type="number" id="textiles_smoothness" 
+									 onchange="document.getElementById('textiles_smoothness_slider').value = this.value; updateTexture();"
+									 step="0.01" style="width:45px;" min="0" value="0" max="1" />
+								</td>
+							</tr>
+
+							<tr class="suboption_settings">
+								<td>
+									Shading
+								</td>
+								<td>
+									<input type="range" id="textiles_offset_slider" min="0" max="1" value="1" step="0.01"
+										onchange="document.getElementById('textiles_offset').value = this.value; updateTexture();"
+										oninput=" document.getElementById('textiles_offset').value = this.value; updateTexture();"
+										style="width:50%;vertical-align:top;">
+									 <input type="number" id="textiles_offset" 
+									 onchange="document.getElementById('textiles_offset_slider').value = this.value; updateTexture();"
+									 step="0.01" style="width:45px;" min="0" value="1" max="1" />
+								</td>
+							</tr>
+							<!--<tr class="suboption_settings">
+								<td>
+									Depth
+								</td>
+								<td>
+									<input type="range" id="textiles_depth_slider" min="0" max="3" value="1" step="0.01"
+										onchange="document.getElementById('textiles_depth').value = this.value; updateTexture();"
+										oninput=" document.getElementById('textiles_depth').value = this.value; updateTexture();"
+										style="width:50%;vertical-align:top;">
+									 <input type="number" id="textiles_depth" 
+									 onchange="document.getElementById('textiles_depth_slider').value = this.value; updateTexture();"
+									 step="0" style="width:45px;" min="-2" value="1" max="3" />
+								</td>
+							</tr>-->
+						</table>
+					</div>
+
 					<!-- Tiles -->
 					<div class="type_settings" id="Tiles">
 						<table align="center">
@@ -558,6 +661,7 @@
 	<script src="javascript/tex_checker.js" type="text/javascript"></script>
 	<script src="javascript/tex_gradient.js" type="text/javascript"></script>
 	<script src="javascript/tex_perlin_noise.js" type="text/javascript"></script>
+	<script src="javascript/tex_textiles.js" type="text/javascript"></script>
 	<script src="javascript/tex_tiling.js" type="text/javascript"></script>
 	
 	<script src="javascript/ganalytics.js" type="text/javascript" ></script>

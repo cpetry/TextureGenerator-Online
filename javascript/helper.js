@@ -41,6 +41,16 @@ function fastfloor(x){
 	return x<xi ? xi-1 : xi;
 }
 
+function rational_tanh(x)
+{
+    if( x < -3 )
+        return -1;
+    else if( x > 3 )
+        return 1;
+    else
+        return x * ( 27 + x * x ) / ( 27 + 9 * x * x );
+}
+
 function showType(type){
 	$("#types>option").map(function() {
 		if ($(this).val() != type)
@@ -68,6 +78,9 @@ function updateTexture(){
 			break;
 		case "Checker":
 			updateChecker();
+			break;
+		case "Textiles":
+			updateTextiles();
 			break;
 		case "Tiles":
 			updateTiling();
