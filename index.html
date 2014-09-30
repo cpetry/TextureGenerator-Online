@@ -367,7 +367,7 @@
 									<!--<div style="display:inline-block;" class="colorpicker" id="textiles_bgcolor"></div>-->
 								</td>
 							</tr>
-							<tr class="suboption_settings">
+							<!--<tr class="suboption_settings">
 								<td >
 									Size
 								</td>
@@ -375,19 +375,19 @@
 									x <input type="number" id="textiles_x" onchange="updateTexture();" style="width:35px;" min="1" value="1" max="50" />
 									y <input type="number" id="textiles_y" onchange="updateTexture();" style="width:35px;" min="1" value="1" max="50" />
 								</td>
-							</tr>
+							</tr>-->
 							<tr class="suboption_settings">
 								<td>
 									Tightness
 								</td>
 								<td>
-									<input type="range" id="textiles_tightness_slider" min="0" max="1" value="0.5" step="0.01"
+									<input type="range" id="textiles_tightness_slider" min="0" max="1" value="1" step="0.01"
 										onchange="document.getElementById('textiles_tightness').value = this.value; updateTexture();"
 										oninput=" document.getElementById('textiles_tightness').value = this.value; updateTexture();"
 										style="width:50%;vertical-align:top;">
 									 <input type="number" id="textiles_tightness" 
 									 onchange="document.getElementById('textiles_tightness_slider').value = this.value; updateTexture();"
-									 step="0.01" style="width:45px;" min="0" value="0.5" max="1" />
+									 step="0.01" style="width:45px;" min="0" value="1" max="1" />
 								</td>
 							</tr>
 							
@@ -396,13 +396,13 @@
 									Thickness
 								</td>
 								<td>
-									<input type="range" id="textiles_thickness_slider" min="1" max="7" value="1" step="1"
+									<input type="range" id="textiles_thickness_slider" min="1" max="7" value="6" step="1"
 										onchange="document.getElementById('textiles_thickness').value = this.value; updateTexture();"
 										oninput=" document.getElementById('textiles_thickness').value = this.value; updateTexture();"
 										style="width:50%;vertical-align:top;">
 									 <input type="number" id="textiles_thickness" 
 									 onchange="document.getElementById('textiles_thickness_slider').value = this.value; updateTexture();"
-									 step="1" style="width:45px;" min="1" value="1" max="7" />
+									 step="1" style="width:45px;" min="1" value="6" max="7" />
 								</td>
 							</tr>
 
@@ -426,13 +426,13 @@
 									Shading
 								</td>
 								<td>
-									<input type="range" id="textiles_offset_slider" min="0" max="1" value="1" step="0.01"
+									<input type="range" id="textiles_offset_slider" min="0" max="1" value="0.25" step="0.01"
 										onchange="document.getElementById('textiles_offset').value = this.value; updateTexture();"
 										oninput=" document.getElementById('textiles_offset').value = this.value; updateTexture();"
 										style="width:50%;vertical-align:top;">
 									 <input type="number" id="textiles_offset" 
 									 onchange="document.getElementById('textiles_offset_slider').value = this.value; updateTexture();"
-									 step="0.01" style="width:45px;" min="0" value="1" max="1" />
+									 step="0.01" style="width:45px;" min="0" value="0.25" max="1" />
 								</td>
 							</tr>
 							<!--<tr class="suboption_settings">

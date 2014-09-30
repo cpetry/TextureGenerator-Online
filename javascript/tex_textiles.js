@@ -55,8 +55,8 @@ function updateTextiles(){
 	var color2 = rgb2hex($("#textiles_color2").css("background-color"));
 	var bgcolor = '#000000'; //$("#textiles_bgcolor").css("background-color")
 
-	var scale_x = parseFloat($("#textiles_x").val());
-	var scale_y = parseFloat($("#textiles_y").val());
+	//var scale_x = parseFloat($("#textiles_x").val());
+	//var scale_y = parseFloat($("#textiles_y").val());
 	
 	var facetlength = parseFloat($("#textiles_tightness").val()); // [0,1] , default 0.5
 	var delta = parseFloat($("#textiles_thickness").val()); // thickness, (0, 1]
@@ -80,7 +80,9 @@ function updateTextiles(){
 
 	var img = document.createElement('img');
 	img.src = './pattern/pat2.png';
-	img.onload = setTextiles(ctx, img, max_w, max_h, col1_rgb, col2_rgb, col_bg, facetlength, delta, smoothness, offset, steepness, depth, round);
+	img.onload = function(){
+		setTextiles(ctx, img, max_w, max_h, col1_rgb, col2_rgb, col_bg, facetlength, delta, smoothness, offset, steepness, depth, round);
+	}
 }
 
 function setTextiles(ctx, img, max_w, max_h, col1_rgb, col2_rgb, col_bg, facetlength, delta, smoothness, offset, steepness, depth, round){
