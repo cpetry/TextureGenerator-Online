@@ -50,20 +50,6 @@ PatternDirection = {
     VERTICAL : 1
 }
 
-var img_pat1 = document.createElement('img');
-var img1_loaded = false;
-img_pat1.src = './pattern/pat1.png';
-img_pat1.onload = function(){
-	img1_loaded = true;
-}
-
-var img_pat2 = document.createElement('img');
-var img2_loaded = false;
-img_pat2.src = './pattern/pat2.png';
-img_pat2.onload = function(){
-	img2_loaded = true;
-}
-
 function updateTextiles(){
 	var color1 = rgb2hex($("#textiles_color1").css("background-color"));
 	var color2 = rgb2hex($("#textiles_color2").css("background-color"));
@@ -89,10 +75,11 @@ function updateTextiles(){
 	var col1_rgb = hexToRgb(color1);
 	var col2_rgb = hexToRgb(color2);
 	var col_bg = hexToRgb(bgcolor);
-
+	
+	var current_pattern = document.getElementsByClassName("textiles_pattern_selected")[0];
+	//console.log(current_pattern);
 	//ctx.drawImage(can2, 0, 0, max_w, max_h);
-	if (img1_loaded && img2_loaded)
-		setTextiles(ctx, img_pat2, max_w, max_h, col1_rgb, col2_rgb, col_bg, facetlength, delta, smoothness, offset, steepness, depth, round);
+	setTextiles(ctx, current_pattern, max_w, max_h, col1_rgb, col2_rgb, col_bg, facetlength, delta, smoothness, offset, steepness, depth, round);
 	
 }
 
