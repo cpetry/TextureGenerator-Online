@@ -39,6 +39,17 @@ body {
 	display:none;
 }
 
+.texture_type{
+	border: 1px solid;
+	border-radius: 2px;
+	border-color: #333;
+}
+
+.texture_type_selected{
+	border: 1px solid;
+	border-radius: 2px;
+}
+
 .option_settings_head{
 	padding-top: 20px;
 	height :50px;
@@ -58,4 +69,5 @@ body {
 	height:30px;
 	border: 1px solid;
 	margin-left: 5px;
+	text-align: center;
 }

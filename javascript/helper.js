@@ -52,12 +52,24 @@ function rational_tanh(x)
 }
 
 function showType(type){
-	$("#types>option").map(function() {
-		if ($(this).val() != type)
-			$('#' + $(this).val()).hide(); 
+	var id = type.substring(5);
+	console.log(id);
+	if (!$('#' + id).attr('id'))
+		return;
+
+	$('.type_settings').each(function() {
+		if ($(this).attr('id') != id)
+			$(this).hide();
 	});
+
+	$('.texture_type_selected').each(function() {
+		$(this).toggleClass('texture_type_selected texture_type');
+	});
+
+	$('#' + type).toggleClass('texture_type texture_type_selected');
+	//elem.setAttribute('class', 'texture_type_selected');
 	//document.write(type);
-	$('#' + type).show();
+	$('#' + id).show();
 
 	updateTexture();
 }
@@ -70,9 +82,10 @@ function updateTexture(){
 
 	var max_w = 512, max_h = 512;
 	
-	
+	var type = $(".texture_type_selected").first().attr('id').substring(5);
+	console.log(type);
 
-	switch($("#types>option:selected").val()){
+	switch(type){
 		case "Brick":
 			updateBrick();
 			break;

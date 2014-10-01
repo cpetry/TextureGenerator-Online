@@ -50,12 +50,18 @@ PatternDirection = {
     VERTICAL : 1
 }
 
+function textiles_select_pattern(elem){
+	$(".textiles_pattern_selected").toggleClass('textiles_pattern_selected textiles_pattern');
+	elem.setAttribute('class', 'textiles_pattern_selected');
+	updateTexture();
+}
+
 function updateTextiles(){
 	var color1 = rgb2hex($("#textiles_color1").css("background-color"));
 	var color2 = rgb2hex($("#textiles_color2").css("background-color"));
 	var bgcolor = '#000000'; //$("#textiles_bgcolor").css("background-color")
 
-	//var scale_x = parseFloat($("#textiles_x").val());
+	var scale = $('#textiles_double').prop('checked') ? 2 : 1;
 	//var scale_y = parseFloat($("#textiles_y").val());
 	
 	var facetlength = parseFloat($("#textiles_tightness").val()); // [0,1] , default 0.5
@@ -76,17 +82,17 @@ function updateTextiles(){
 	var col2_rgb = hexToRgb(color2);
 	var col_bg = hexToRgb(bgcolor);
 	
-	var current_pattern = document.getElementsByClassName("textiles_pattern_selected")[0];
-	//console.log(current_pattern);
+	var current_pattern = $(".textiles_pattern_selected").first().next()[0];
+	console.log(current_pattern);
 	//ctx.drawImage(can2, 0, 0, max_w, max_h);
-	setTextiles(ctx, current_pattern, max_w, max_h, col1_rgb, col2_rgb, col_bg, facetlength, delta, smoothness, offset, steepness, depth, round);
-	
+	if (current_pattern !== undefined)
+		setTextiles(ctx, current_pattern, max_w, max_h, scale, col1_rgb, col2_rgb, col_bg, facetlength, delta, smoothness, offset, steepness, depth, round);
 }
 
-function setTextiles(ctx, img, max_w, max_h, col1_rgb, col2_rgb, col_bg, facetlength, delta, smoothness, offset, steepness, depth, round){
+function setTextiles(ctx, img, max_w, max_h, scale, col1_rgb, col2_rgb, col_bg, facetlength, delta, smoothness, offset, steepness, depth, round){
 	
-	var width = parseInt(max_w / img.width + 0.5);
-    var height = parseInt(max_h / img.height + 0.5);
+	var width = parseInt(max_w / (img.width * scale) + 0.5);
+    var height = parseInt(max_h / (img.height * scale) + 0.5);
 
 	var c_p1_block = document.createElement('canvas');
 	var pat1_block = createTextilesPattern(c_p1_block, PatternDirection.VERTICAL, PatternPart.BLOCK, width, height, facetlength, delta, smoothness, offset, steepness, depth, round, col1_rgb, col_bg);
@@ -101,37 +107,47 @@ function setTextiles(ctx, img, max_w, max_h, col1_rgb, col2_rgb, col_bg, facetle
 	var pat1_bottom = createTextilesPattern(c_p1_bottom, PatternDirection.VERTICAL, PatternPart.BOTTOM, width, height, facetlength, delta, smoothness, offset, steepness, depth, round, col1_rgb, col_bg);
 
 	var c_p2_block = document.createElement('canvas');
-	var pat2_block = createTextilesPattern(c_p2_block, PatternDirection.HORIZONTAL, PatternPart.BLOCK, width, height, facetlength, delta, smoothness, offset, steepness, depth, round, col2_rgb, col_bg);
+	var pat2_block = createTextilesPattern(c_p2_block, PatternDirection.HORIZONTAL, PatternPart.BLOCK, height, width, facetlength, delta, smoothness, offset, steepness, depth, round, col2_rgb, col_bg);
 
 	var c_p2_middle = document.createElement('canvas');
-	var pat2_middle = createTextilesPattern(c_p2_middle, PatternDirection.HORIZONTAL, PatternPart.MIDDLE, width, height, facetlength, delta, smoothness, offset, steepness, depth, round, col2_rgb, col_bg);
+	var pat2_middle = createTextilesPattern(c_p2_middle, PatternDirection.HORIZONTAL, PatternPart.MIDDLE, height, width, facetlength, delta, smoothness, offset, steepness, depth, round, col2_rgb, col_bg);
 
 	var c_p2_top = document.createElement('canvas');
-	var pat2_top = createTextilesPattern(c_p2_top, PatternDirection.HORIZONTAL, PatternPart.TOP, width, height, facetlength, delta, smoothness, offset, steepness, depth, round, col2_rgb, col_bg);
+	var pat2_top = createTextilesPattern(c_p2_top, PatternDirection.HORIZONTAL, PatternPart.TOP, height, width, facetlength, delta, smoothness, offset, steepness, depth, round, col2_rgb, col_bg);
 
 	var c_p2_bottom = document.createElement('canvas');
-	var pat2_bottom = createTextilesPattern(c_p2_bottom, PatternDirection.HORIZONTAL, PatternPart.BOTTOM, width, height, facetlength, delta, smoothness, offset, steepness, depth, round, col2_rgb, col_bg);
+	var pat2_bottom = createTextilesPattern(c_p2_bottom, PatternDirection.HORIZONTAL, PatternPart.BOTTOM, height, width, facetlength, delta, smoothness, offset, steepness, depth, round, col2_rgb, col_bg);
 
 	var c_ptrn = document.createElement('canvas');
 	var ctx_ptrn = c_ptrn.getContext('2d');
-	ctx_ptrn.drawImage(img, 0, 0 );
-	var imgData3 = ctx_ptrn.getImageData(0, 0, img.width, img.height);
+	ctx_ptrn.imageSmoothingEnabled = false;
+	for (var i=0; i<scale; i++){
+		ctx_ptrn.drawImage(img, 0, 0, img.width, img.height);
+		if (i >= 1){
+			for(var x=0; x<i; x++)
+				ctx_ptrn.drawImage(img, img.width*x, img.height*i, img.width, img.height);
+			for(var y=0; y<i; y++)
+				ctx_ptrn.drawImage(img, img.width*i, img.height*y, img.width, img.height);
+			ctx_ptrn.drawImage(img, img.width*i, img.height*i, img.width, img.height);
+		}
+	}
+	var imgData3 = ctx_ptrn.getImageData(0, 0, img.width*scale, img.height*scale);
 	var data3 = imgData3.data;
 
 	//console.log(img.width);
 	//ctx.fillStyle = pat1;
 	//ctx.fillRect(0, 0, max_w / img.width, max_h / img.height);
-	var width_mul = max_w / img.width;
-	var height_mul = max_h / img.height;
+	var width_mul = max_w / imgData3.width;
+	var height_mul = max_h / imgData3.height;
 
-	for (var y=0; y < img.height; y++){
-		for (var x=0; x < img.width; x++){
-			var pos = x * 4 + y * img.width * 4 + 0;
+	for (var y=0; y < imgData3.height; y++){
+		for (var x=0; x < imgData3.width; x++){
+			var pos = x * 4 + y * imgData3.width * 4 + 0;
 
 			// vertical color
 			if (data3[pos] == 0){
-				var top = x * 4 + ((y-1) < 0 ? y-1+img.height : y-1) * img.width * 4;
-				var bottom = x * 4 + ((y+1) == img.height ? 0 : y+1) * img.width * 4;
+				var top = x * 4 + ((y-1) < 0 ? y-1+imgData3.width : y-1) * imgData3.width * 4;
+				var bottom = x * 4 + ((y+1) == imgData3.width ? 0 : y+1) * imgData3.width * 4;
 			
 				if (data3[top] == 0 && data3[bottom] == 0){
 					ctx.fillStyle = pat1_middle;
@@ -153,8 +169,8 @@ function setTextiles(ctx, img, max_w, max_h, col1_rgb, col2_rgb, col_bg, facetle
 
 			// horizontal color
 			else{
-				var left = ((x-1) < 0 ? x-1+img.width : x-1) * 4 + y * img.width * 4;
-				var right = ((x+1) == img.width ? 0 : x+1)   * 4 + y * img.width * 4;
+				var left = ((x-1) < 0 ? x-1+imgData3.width : x-1) * 4 + y * imgData3.width * 4;
+				var right = ((x+1) == imgData3.width ? 0 : x+1)   * 4 + y * imgData3.width * 4;
 			
 				if (data3[left] != 0 && data3[right] == 0){
 					ctx.fillStyle = pat2_bottom;

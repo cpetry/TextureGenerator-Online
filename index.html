@@ -11,9 +11,12 @@
 	<link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:700"></link>
 
 	<link rel="stylesheet" href="colpick-2.0.2/css/colpick.css" type="text/css"/>
+
 	<link type="text/css" rel="stylesheet" href="./css/style.css"></link>
 	<link type="text/css" rel="stylesheet" href="./css/tiles.css"></link>
 	<link type="text/css" rel="stylesheet" href="./css/gradient.css"></link>
+<link type="text/css" rel="stylesheet" href="./css/textiles.css"></link>
+
 	<meta charset="utf-8">
 	<meta name="description" content="Online Texture Generator FREE! Create a Texture directly inside your browser! No Uploads required, completely client-based">
 	<meta name="author" content="Christian Petry">
@@ -39,7 +42,7 @@
 	<div class="container">		
 	
 		<table><tr>
-			<td>
+			<td style="vertical-align:top;">
 				<div class="preview">
 					<canvas id="texture" style="display:none;" width="512" height="512"> </canvas>
 					<div width=512 height=512>
@@ -54,32 +57,26 @@
 					<div>
 						Texture type
 					</div>
+					<div style="min-height:20"></div>
 					<div class="type_selector">
-						
-						<select id="types" size="1" onchange="showType($(this).val())">
-							<!-- concrete, gravel, textiles, peeling paint, scratches, rust, rock, leaf, reptile skin, boards, 
-							roofing, wallpaper, blood spatter, grime maps, cracked earth, human skin, fish scales,
-							fence, building facade, rubble, metal, dirt, leather, road signs-->
-							<option>Brick</option>
-							<option disabled>Celular</option>
-							<option>Checker</option>
-							<option disabled>Falloff</option>
-							<option>Gradient</option>
-							<option disabled>Marble</option>
-							<option selected>PerlinNoise</option>
-							<option disabled>Smoke</option>
-							<option disabled>Splat</option>
-							<option disabled>Stucco</option>
-							<option disabled>Swirl</option>
-							<option>Textiles</option>
-							<option>Tiles</option>
-							<option disabled>Waves</option>
-							<option disabled>Wood</option>
-						</select>
+						<img class="texture_type" title="Brick" id="type_Brick" src='./types/brick.png' onclick="showType($(this).attr('id'))" />
+						<!--<img class="texture_type" title="Under Construction" id="type_Celular" src='./types/under_construction.png' onclick="showType($(this).attr('id'))" />
+						<img class="texture_type" title="Under Construction" id="type_Falloff" src='./types/under_construction.png' onclick="showType($(this).attr('id'))" />-->
+						<img class="texture_type" title="Gradient" id="type_Gradient" src='./types/gradient.png' onclick="showType($(this).attr('id'))" />
+						<img class="texture_type" title="Under Construction" id="type_Marble" src='./types/under_construction.png' onclick="showType($(this).attr('id'))" />
+						<img class="texture_type" title="PerlinNoise" id="type_PerlinNoise" src='./types/perlinnoise.png' onclick="showType($(this).attr('id'))" />
+						<img class="texture_type" title="Under Construction" id="type_Smoke" src='./types/under_construction.png' onclick="showType($(this).attr('id'))" />
+						<img class="texture_type" title="Under Construction" id="type_Splat" src='./types/under_construction.png' onclick="showType($(this).attr('id'))" />
+						<br />
+						<img class="texture_type" title="Under Construction" id="type_Stucco" src='./types/under_construction.png' onclick="showType($(this).attr('id'))" />
+						<img class="texture_type" title="Under Construction" id="type_Swirl" src='./types/under_construction.png' onclick="showType($(this).attr('id'))" />
+						<img class="texture_type" title="Textiles" id="type_Textiles" src='./types/textiles.png' onclick="showType($(this).attr('id'))" />
+						<img class="texture_type" title="Tiles" id="type_Tiles" src='./types/tiles.png' onclick="showType($(this).attr('id'))" />
+						<img class="texture_type" title="Under Construction" id="type_Waves" src='./types/under_construction.png' onclick="showType($(this).attr('id'))" />
+						<img class="texture_type" title="Under Construction" id="type_Wood" src='./types/under_construction.png' onclick="showType($(this).attr('id'))" />
+						<br />
 					</div>
 				</div>
-
-				<div style="min-height:30"></div>
 		
 				<div class="settings">
 
@@ -262,7 +259,7 @@
 					</div>
 				
 					<!-- Perlin Noise --> 
-					<div class="type_settings" id="PerlinNoise" style="display:block"> <!-- display:block -> Show default texture -->
+					<div class="type_settings" id="PerlinNoise"> <!-- display:block -> Show default texture -->
 						<table align="center">
 						<tr class="option_settings_head">
 							<td colspan="3">
@@ -363,12 +360,12 @@
 									Pattern
 								</td>
 								<td align="center">
-									<div style="display:inline-block;" class="colorpicker">
-										<img class="textiles_pattern_selected" src = './pattern/pat1.png' />
-									</div>
-									<div style="display:inline-block;" class="colorpicker">
-										<img class="textiles_pattern" src = './pattern/pat2.png' />
-									</div>
+									<img class="textiles_pattern_selected" src='./pattern/pat1.png' onclick="textiles_select_pattern(this)" />
+									<img src='./pattern/pat1.png' style="display:none" />
+									<img class="textiles_pattern" src='./pattern/pat2.png' onclick="textiles_select_pattern(this);" />
+									<img src='./pattern/pat2.png' style="display:none" />
+									<img class="textiles_pattern" src='./pattern/pat3.png' onclick="textiles_select_pattern(this);" />
+									<img src='./pattern/pat3.png' style="display:none" />
 									<!--<div style="display:inline-block;" class="colorpicker" id="textiles_bgcolor"></div>-->
 								</td>
 							</tr>
@@ -383,15 +380,14 @@
 									<!--<div style="display:inline-block;" class="colorpicker" id="textiles_bgcolor"></div>-->
 								</td>
 							</tr>
-							<!--<tr class="suboption_settings">
+							<tr class="suboption_settings">
 								<td >
 									Size
 								</td>
 								<td align="center" colspan="2">
-									x <input type="number" id="textiles_x" onchange="updateTexture();" style="width:35px;" min="1" value="1" max="50" />
-									y <input type="number" id="textiles_y" onchange="updateTexture();" style="width:35px;" min="1" value="1" max="50" />
+									Double <input type="checkbox" id="textiles_double" onchange="updateTexture();"> 
 								</td>
-							</tr>-->
+							</tr>
 							<tr class="suboption_settings">
 								<td>
 									Tightness
@@ -535,7 +531,7 @@
 
 
 						<!-- Grout -->
-						<tr class="option_settings_head">
+						<tr class="suboption_settings">
 							<td>
 								Grout:
 							</td>
@@ -591,17 +587,18 @@
 					</div>
 					
 					<!-- Wood -->
+					<!--
 					<div class="type_settings" id="Wood">
 						<table><tr>
 						<td>Woodstuff:</td> 
 						<td>x <input type="number" id="x_tiling" onchange="updateTexture();" style="width:45px;" min="1" value="2" max="50" /></td>
 						<td>y <input type="number" id="y_tiling" onchange="updateTexture();" style="width:45px;" min="1" value="2" max="50" /></td>
 						</tr></table>
-					</div>
+					</div>-->
 					
 				</div>
 
-				<div style="min-height:30"></div>
+				<div style="min-height:15"></div>
 
 				<div class="settings">
 					<table>
@@ -685,7 +682,7 @@
 		
 	<script> 
 		// initialization		
-		showType($("#types>option:selected").val());
+		showType("type_PerlinNoise");
 		updateTexture();
 
 	</script>
