@@ -98,7 +98,7 @@ function createStraightPattern(ctx, width, height, count_x, count_y, groutspace,
 	for (var y = 0; y < count_y+1; y++){
 		for (var x = 0; x < count_x+1; x++){
 			if (x%2 == 1){
-				drawBrickRectangle(ctx, groutspace, brick_gradient, brick_color, grout_color, gradient_color, x*width, y*height - half_height, width, (y == 0 ? height - half_height : height));
+				drawBrickRectangle(ctx, groutspace, brick_gradient, brick_color, grout_color, gradient_color, x*width, y*height - half_height, width, height);
 			}
 			else
 				drawBrickRectangle(ctx, groutspace, brick_gradient, brick_color, grout_color, gradient_color, x*width, y*height, width, height);
