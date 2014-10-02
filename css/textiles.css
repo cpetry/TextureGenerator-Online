@@ -1,13 +1,18 @@
 .textiles_pattern_selected{
-	width: 36px;
-	height: 36px;
+	width: 32px;
+	height: 32px;
 	margin-left: 0px;
+   border: 1px solid;
+   border-radius: 2px;
 }
 
 .textiles_pattern{
-	width: 36px;
-	height: 36px;
+	width: 32px;
+	height: 32px;
 	margin-left: 0px;
+   border: 1px solid;
+   border-radius: 2px;
+   border-color: #333;
 }
 
 .textiles_pattern{

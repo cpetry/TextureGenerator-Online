@@ -260,20 +260,29 @@ function calcTextilesPattern(x, y, patterndirection, patternpart, facetlength, d
 	var tanh_value = 0.5 * steepness;
 	//var tanh = (Math.exp(tanh_value) - Math.exp(-tanh_value)) / (Math.exp(tanh_value) + Math.exp(-tanh_value));
 
+	var shading_border = 0.5;
+
 	if (patterndirection == PatternDirection.VERTICAL)
-		if ((patternpart == PatternPart.TOP && x < 0.5 - (offset * 0.5) * 0.5/delta)
-			|| (patternpart == PatternPart.BOTTOM && x > 0.5 + (offset * 0.5) * 0.5/delta)
-			|| (patternpart == PatternPart.BLOCK))
-			tanh_value = ((x < 0.5) ? x : (1.0 - x)) * steepness;
+		if ((patternpart == PatternPart.TOP && x < shading_border)
+			|| (patternpart == PatternPart.BOTTOM && x > shading_border)
+			|| (patternpart == PatternPart.BLOCK)){
+			if (x < shading_border)
+				tanh_value = x * steepness;
+			else if (x > shading_border)
+				tanh_value = (1.0 - x) * steepness;
+	}
 	
 	if (patterndirection == PatternDirection.HORIZONTAL)
-		if ((patternpart == PatternPart.TOP && x < 0.5 - (offset * 0.5) * 0.5/delta)
-			|| (patternpart == PatternPart.BOTTOM && x > 0.5 + (offset * 0.5) * 0.5/delta)
+		if ((patternpart == PatternPart.TOP && x < shading_border)
+			|| (patternpart == PatternPart.BOTTOM && x > shading_border)
 			|| (patternpart == PatternPart.BLOCK))
-			tanh_value = ((x < 0.5) ? x : (1.0 - x)) * steepness;
+			if (x < shading_border)
+				tanh_value = x * steepness;
+			else if (x > shading_border)
+				tanh_value = (1.0 - x) * steepness;
 
 	var XShading = offset + (1.0 - offset) * rational_tanh(tanh_value);
-	
+	//XShading = XShading * (x < 0.5 ? (1 - x) : x)
 	
 	var ThreadShading = TwistShading * XShading * YShading;
 

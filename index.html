@@ -15,7 +15,7 @@
 	<link type="text/css" rel="stylesheet" href="./css/style.css"></link>
 	<link type="text/css" rel="stylesheet" href="./css/tiles.css"></link>
 	<link type="text/css" rel="stylesheet" href="./css/gradient.css"></link>
-<link type="text/css" rel="stylesheet" href="./css/textiles.css"></link>
+	<link type="text/css" rel="stylesheet" href="./css/textiles.css"></link>
 
 	<meta charset="utf-8">
 	<meta name="description" content="Online Texture Generator FREE! Create a Texture directly inside your browser! No Uploads required, completely client-based">
@@ -360,12 +360,16 @@
 									Pattern
 								</td>
 								<td align="center">
-									<img class="textiles_pattern_selected" src='./pattern/pat1.png' onclick="textiles_select_pattern(this)" />
+									<img class="textiles_pattern" src='./pattern/pat1_preview.png' onclick="textiles_select_pattern(this)" />
 									<img src='./pattern/pat1.png' style="display:none" />
-									<img class="textiles_pattern" src='./pattern/pat2.png' onclick="textiles_select_pattern(this);" />
+									<img class="textiles_pattern" src='./pattern/pat2_preview.png' onclick="textiles_select_pattern(this);" />
 									<img src='./pattern/pat2.png' style="display:none" />
-									<img class="textiles_pattern" src='./pattern/pat3.png' onclick="textiles_select_pattern(this);" />
+									<img class="textiles_pattern" src='./pattern/pat3_preview.png' onclick="textiles_select_pattern(this);" />
 									<img src='./pattern/pat3.png' style="display:none" />
+									<img class="textiles_pattern_selected" src='./pattern/pat4_preview.png' onclick="textiles_select_pattern(this);" />
+									<img src='./pattern/pat4.png' style="display:none" />
+									<img class="textiles_pattern" src='./pattern/pat5_preview.png' onclick="textiles_select_pattern(this);" />
+									<img src='./pattern/pat5.png' style="display:none" />
 									<!--<div style="display:inline-block;" class="colorpicker" id="textiles_bgcolor"></div>-->
 								</td>
 							</tr>
@@ -438,13 +442,13 @@
 									Shading
 								</td>
 								<td>
-									<input type="range" id="textiles_offset_slider" min="0" max="1" value="0.25" step="0.01"
+									<input type="range" id="textiles_offset_slider" min="0" max="1" value="0" step="0.01"
 										onchange="document.getElementById('textiles_offset').value = this.value; updateTexture();"
 										oninput=" document.getElementById('textiles_offset').value = this.value; updateTexture();"
 										style="width:50%;vertical-align:top;">
 									 <input type="number" id="textiles_offset" 
 									 onchange="document.getElementById('textiles_offset_slider').value = this.value; updateTexture();"
-									 step="0.01" style="width:45px;" min="0" value="0.25" max="1" />
+									 step="0.01" style="width:45px;" min="0" value="0" max="1" />
 								</td>
 							</tr>
 							<!--<tr class="suboption_settings">
