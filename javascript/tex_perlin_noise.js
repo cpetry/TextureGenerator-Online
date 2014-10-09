@@ -57,7 +57,9 @@ function setPerlinNoise(color1, color2, scale_x, scale_y, blur, seed, percentage
 	var col2_rgb = hexToRgb(color2);
 	
 	for (var i=0; i<d.length; i += 4) {
-		var v = S.noise(i % max_w, i / max_w);
+		// octaves, persistence, scale, loBound, hiBound, x, y 
+		var v = S.scaled_octave_noise_2d(10, 0.4, 0.005, 0, 1, i/4 % max_w, i/4 / max_w);
+		v = (v + 1) / 2; //interval [0,1]. 
 		v = Math.min(v+(1-percentage), 1);
 		d[i] = v * col1_rgb.r + ((1.0-v) * col2_rgb.r);
 		d[i+1] = v * col1_rgb.g + ((1.0-v) * col2_rgb.g);

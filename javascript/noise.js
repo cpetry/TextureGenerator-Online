@@ -30,7 +30,55 @@ var SimplexNoise = function(seed) {
 SimplexNoise.prototype.dot = function(g, x, y) { 
 	return g[0]*x + g[1]*y;
 };
- 
+
+
+SimplexNoise.prototype.fractalnoise = function(xin, yin, minfreq, maxfreq){
+	var value = 0;
+	for (var f = minfreq; f < maxfreq; f *= 2)
+		value += this.noise(xin * f, yin * f)/f;
+	return value;
+}
+
+SimplexNoise.prototype.turbulence = function(xin, yin, minfreq, maxfreq){
+	var value = 0;
+	for (var f = minfreq; f < maxfreq; f *= 2)
+		value += Math.abs(this.noise(xin * f, yin * f))/f;
+	return value;
+}
+
+
+// 2D Scaled Multi-octave Simplex noise.
+//
+// Returned value will be between loBound and hiBound. 
+// persistence [0-1]
+SimplexNoise.prototype.scaled_octave_noise_2d = function( octaves, persistence, scale, loBound, hiBound, x, y ) {
+    return this.octave_noise_2d(octaves, persistence, scale, x, y) * (hiBound - loBound) / 2 + (hiBound + loBound) / 2;
+}
+
+// 2D Multi-octave Simplex noise.
+//
+// For each octave, a higher frequency/lower amplitude function will be added to the original.
+// The higher the persistence [0-1], the more of each succeeding octave will be added.
+SimplexNoise.prototype.octave_noise_2d = function( octaves, persistence, scale, x, y ) {
+    var total = 0;
+    var frequency = scale;
+    var amplitude = 1;
+
+    // We have to keep track of the largest possible amplitude,
+    // because each octave adds more, and we need a value in [-1, 1].
+    var maxAmplitude = 0;
+
+    for( var i=0; i < octaves; i++ ) {
+        total += this.noise( x * frequency, y * frequency ) * amplitude;
+
+        frequency *= 2;
+        maxAmplitude += amplitude;
+        amplitude *= persistence;
+    }
+
+    return total / maxAmplitude;
+}
+
 SimplexNoise.prototype.noise = function(xin, yin) { 
 	var n0, n1, n2; // Noise contributions from the three corners 
 	// Skew the input space to determine which simplex cell we're in 
@@ -95,5 +143,6 @@ SimplexNoise.prototype.noise = function(xin, yin) {
 	// The result is scaled to return values in the interval [-1,1]. 
 	
 	var r = 70.0 * (n0 + n1 + n2);
-	return (r + 1) / 2; //interval [0,1]. 
+	//r = (r + 1) / 2; //interval [0,1]. 
+	return r;
 };
