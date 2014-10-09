@@ -29,8 +29,8 @@ function updatePerlinNoise(){
 	var color1 = rgb2hex($("#perlin_noise_color1").css("background-color"));
 	var color2 = rgb2hex($("#perlin_noise_color2").css("background-color"));
 
-	var scale_x = parseFloat($("#perlin_noise_scale_x").val());
-	var scale_y = parseFloat($("#perlin_noise_scale_y").val());
+	var scale = parseFloat($("#perlin_noise_scale").val());
+	//var scale_y = parseFloat($("#perlin_noise_scale_y").val());
 	
 	var blur = parseFloat($("#perlin_noise_blur").val());
 	
@@ -38,10 +38,10 @@ function updatePerlinNoise(){
 	var seed = parseInt($("#perlin_noise_seed").val());
 	var percentage = parseInt($("#perlin_noise_percentage").val()) / 100.0;
 
-	setPerlinNoise(color1, color2, scale_x, scale_y, blur, seed, percentage);
+	setPerlinNoise(color1, color2, scale, blur, seed, percentage);
 }
 
-function setPerlinNoise(color1, color2, scale_x, scale_y, blur, seed, percentage)
+function setPerlinNoise(color1, color2, scale, blur, seed, percentage)
 {
 	var c = document.getElementById("texture_preview");
 	var ctx = c.getContext("2d");
@@ -77,7 +77,7 @@ function setPerlinNoise(color1, color2, scale_x, scale_y, blur, seed, percentage
 	
 	if (blur==1)
 		ctx2.imageSmoothingEnabled = false;
-	ctx2.drawImage(c, 0, 0, max_w*scale_x, max_h*scale_y);
+	ctx2.drawImage(c, 0, 0, max_w*scale, max_h*scale);
 	
 	
 	var new_img_data = ctx2.getImageData(0,0, max_w, max_h);
