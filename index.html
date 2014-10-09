@@ -278,16 +278,16 @@
 						
 						<tr class="suboption_settings">
 							<td>
-								Percentage
+								Octaves
 							</td>
 							<td>
-								<input type="range" id="perlin_noise_percentage_slider" min="0" max="100" value="100" step="1"
-									onchange="document.getElementById('perlin_noise_percentage').value = this.value; updateTexture();"
-									oninput=" document.getElementById('perlin_noise_percentage').value = this.value; updateTexture();"
+								<input type="range" id="perlin_noise_octaves_slider" min="0" max="10" value="3" step="1"
+									onchange="document.getElementById('perlin_noise_octaves').value = this.value; updateTexture();"
+									oninput=" document.getElementById('perlin_noise_octaves').value = this.value; updateTexture();"
 									style="width:50%;vertical-align:top;">
-								 <input type="number" id="perlin_noise_percentage" 
-								 onchange="document.getElementById('perlin_noise_percentage_slider').value = this.value; updateTexture();"
-								 step="1" style="width:45px;" min="0" value="100" max="100" />
+								 <input type="number" id="perlin_noise_octaves" 
+								 onchange="document.getElementById('perlin_noise_octaves_slider').value = this.value; updateTexture();"
+								 step="1" style="width:45px;" min="0" value="3" max="10" />
 							</td>
 						</tr>
 						
@@ -296,28 +296,28 @@
 								Scale
 							</td>
 							<td colspan=2>
-								<input type="range" id="perlin_noise_scale_slider" min="1" max="20" value="1" step="0.01"
+								<input type="range" id="perlin_noise_scale_slider" min="1" max="100" value="1" step="1"
 									onchange="document.getElementById('perlin_noise_scale').value = this.value; updateTexture();"
 									oninput=" document.getElementById('perlin_noise_scale').value = this.value; updateTexture();"
 									style="width:50%;vertical-align:top;">
 								<input type="number" id="perlin_noise_scale" 
 									onchange="document.getElementById('perlin_noise_scale_slider').value = this.value; updateTexture();"
-									style="width:52px;" min="1" value="1" max="20" step="0.01"/>
+									style="width:52px;" min="1" value="1" max="100" step="1"/>
 							</td>
 						</tr>
 												
 						<tr class="suboption_settings">
 							<td>
-								Blur
+								Persistence
 							</td>
 							<td colspan=2>
-								<input type="range" id="perlin_noise_blur_slider" min="1" max="20" value="1" step="0.1"
-									onchange="document.getElementById('perlin_noise_blur').value = this.value; updateTexture();"
-									oninput=" document.getElementById('perlin_noise_blur').value = this.value; updateTexture();"
+								<input type="range" id="perlin_noise_detail_slider" min="0" max="1" value="0"  step="0.01"
+									onchange="document.getElementById('perlin_noise_detail').value = this.value; updateTexture();"
+									oninput=" document.getElementById('perlin_noise_detail').value = this.value; updateTexture();"
 									style="width:50%;vertical-align:top;">
-								<input type="number" id="perlin_noise_blur" 
-									onchange="document.getElementById('perlin_noise_blur_slider').value = this.value; updateTexture();"
-									style="width:45px;" min="1" value="1" max="20" />
+								<input type="number" id="perlin_noise_detail" 
+									onchange="document.getElementById('perlin_noise_detail_slider').value = this.value; updateTexture();"
+									style="width:45px;" min="0" value="0" max="1" step="0.01" />
 							</td>
 						</tr>
 						

@@ -32,16 +32,16 @@ function updatePerlinNoise(){
 	var scale = parseFloat($("#perlin_noise_scale").val());
 	//var scale_y = parseFloat($("#perlin_noise_scale_y").val());
 	
-	var blur = parseFloat($("#perlin_noise_blur").val());
-	
+	var persistence = parseFloat($("#perlin_noise_detail").val());
+	var percentage = 1;
 	
 	var seed = parseInt($("#perlin_noise_seed").val());
-	var percentage = parseInt($("#perlin_noise_percentage").val()) / 100.0;
+	var octaves = parseInt($("#perlin_noise_octaves").val());
 
-	setPerlinNoise(color1, color2, scale, blur, seed, percentage);
+	setPerlinNoise(color1, color2, octaves, persistence, scale, seed, percentage);
 }
 
-function setPerlinNoise(color1, color2, scale, blur, seed, percentage)
+function setPerlinNoise(color1, color2, octaves, persistence, scale, seed, percentage)
 {
 	var c = document.getElementById("texture_preview");
 	var ctx = c.getContext("2d");
@@ -58,7 +58,7 @@ function setPerlinNoise(color1, color2, scale, blur, seed, percentage)
 	
 	for (var i=0; i<d.length; i += 4) {
 		// octaves, persistence, scale, loBound, hiBound, x, y 
-		var v = S.scaled_octave_noise_2d(10, 0.4, 0.005, 0, 1, i/4 % max_w, i/4 / max_w);
+		var v = S.scaled_octave_noise_2d(octaves, 1.0-persistence, 1.0 / (scale * 2), 0, 1, i/4 % max_w, i/4 / max_w);
 		v = (v + 1) / 2; //interval [0,1]. 
 		v = Math.min(v+(1-percentage), 1);
 		d[i] = v * col1_rgb.r + ((1.0-v) * col2_rgb.r);
@@ -67,28 +67,6 @@ function setPerlinNoise(color1, color2, scale, blur, seed, percentage)
 		d[i+3] = 255;
 	}
 	ctx.putImageData(imgData, 0, 0);
-	
-	// Step it down several times
-    var can2 = document.createElement('canvas');
-	can2.setAttribute("id", "dummy_canvas");
-    can2.width = max_w;
-    can2.height = max_w;
-    var ctx2 = can2.getContext('2d');
-	
-	if (blur==1)
-		ctx2.imageSmoothingEnabled = false;
-	ctx2.drawImage(c, 0, 0, max_w*scale, max_h*scale);
-	
-	
-	var new_img_data = ctx2.getImageData(0,0, max_w, max_h);
-	if (blur > 1) 
-		gaussianblur(new_img_data, max_w, max_h, blur - 1);
-	
-    ctx.putImageData(new_img_data, 0, 0);
-	
-	
-	
-	delete can2;
 	
 	
 	/* one solution
