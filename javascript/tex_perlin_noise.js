@@ -15,7 +15,7 @@ $('#perlin_noise_color1').colpick({
 
 $('#perlin_noise_color2').colpick({
 	layout:'rgbhsbhex',
-	color: {h:35, s:20, b:40},
+	color: {h:35, s:20, b:10},
 	onChange:function(hsb,hex,rgb,el) {
 		$(el).css('background-color', '#'+hex);
 		updateTexture();
@@ -23,7 +23,7 @@ $('#perlin_noise_color2').colpick({
 	onSubmit:function(hsb,hex,rgb,el) {
 		$(el).colpickHide();
 	}
-}).css('background-color', '#665e52');
+}).css('background-color', '#1a1714');
 
 function updatePerlinNoise(){
 	var color1 = rgb2hex($("#perlin_noise_color1").css("background-color"));
