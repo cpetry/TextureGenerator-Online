@@ -59,6 +59,9 @@ SimplexNoise.prototype.simplex = function( type, octaves, persistence, scale, x,
         amplitude *= persistence;
     }
 
+	if (type=="Turbulence")
+		total = Math.sin((x / 512.0 / 4) + total);
+	
     return total / maxAmplitude;
 }
 

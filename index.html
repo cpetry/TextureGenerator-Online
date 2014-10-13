@@ -295,12 +295,12 @@
 								Octaves
 							</td>
 							<td>
-								<input type="range" id="perlin_noise_octaves_slider" min="0" max="10" value="6" step="1"
+								<input type="range" id="perlin_noise_octaves_slider" min="1" max="10" value="6" step="1"
 									onchange="document.getElementById('perlin_noise_octaves').value = this.value; updateTexture();"
 									style="width:50%;vertical-align:top;">
 								 <input type="number" id="perlin_noise_octaves" 
 								 onchange="document.getElementById('perlin_noise_octaves_slider').value = this.value; updateTexture();"
-								 step="1" style="width:45px;" min="0" value="6" max="10" />
+								 step="1" style="width:45px;" min="1" value="6" max="10" />
 							</td>
 						</tr>
 						
@@ -309,12 +309,12 @@
 								Scale
 							</td>
 							<td colspan=2>
-								<input type="range" id="perlin_noise_scale_slider" min="1" max="100" value="61" step="1"
+								<input type="range" id="perlin_noise_scale_slider" min="1" max="100" value="50" step="1"
 									onchange="document.getElementById('perlin_noise_scale').value = this.value; updateTexture();"
 									style="width:50%;vertical-align:top;">
 								<input type="number" id="perlin_noise_scale" 
 									onchange="document.getElementById('perlin_noise_scale_slider').value = this.value; updateTexture();"
-									style="width:52px;" min="1" value="61" max="100" step="1"/>
+									style="width:52px;" min="1" value="50" max="100" step="1"/>
 							</td>
 						</tr>
 												
