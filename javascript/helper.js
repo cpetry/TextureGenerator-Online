@@ -41,6 +41,11 @@ function fastfloor(x){
 	return x<xi ? xi-1 : xi;
 }
 
+Number.prototype.fastmod = function(n) {
+return ((this % n) + n) % n;
+}
+
+
 function rational_tanh(x)
 {
     if( x < -3 )
@@ -75,6 +80,7 @@ function showType(type){
 }
 							
 function updateTexture(){
+	//console.log("UT");
 	var rotation = parseInt($("#rotation").val()) * (Math.PI/180); //rad to deg
 
 	var c = document.getElementById("texture_preview");
@@ -83,7 +89,7 @@ function updateTexture(){
 	var max_w = 512, max_h = 512;
 	
 	var type = $(".texture_type_selected").first().attr('id').substring(5);
-	console.log(type);
+	//console.log(type);
 
 	switch(type){
 		case "Brick":

@@ -37,12 +37,16 @@ function updatePerlinNoise(){
 	
 	var seed = parseInt($("#perlin_noise_seed").val());
 	var octaves = parseInt($("#perlin_noise_octaves").val());
-
-	setPerlinNoise(color1, color2, octaves, persistence, scale, seed, percentage);
+	
+	var type = $("#perlin_noise_type>option:selected").val();
+	//document.write(type);
+	setPerlinNoise(color1, color2, type, octaves, persistence, scale, seed, percentage);
 }
 
-function setPerlinNoise(color1, color2, octaves, persistence, scale, seed, percentage)
+function setPerlinNoise(color1, color2, type, octaves, persistence, scale, seed, percentage)
 {
+	
+	
 	var c = document.getElementById("texture_preview");
 	var ctx = c.getContext("2d");
 
@@ -56,16 +60,48 @@ function setPerlinNoise(color1, color2, octaves, persistence, scale, seed, perce
 	var col1_rgb = hexToRgb(color1);
 	var col2_rgb = hexToRgb(color2);
 	
+	var scale_s = 1.0 / (scale * 2);
+	
+	
+	var hiBound = 1;
+	var loBound = 0;
+	var lo_hi_mul = (hiBound - loBound) / 2;
+	var lo_hi_add = (hiBound + loBound) / 2;
+	
+	
+	var before = new Date().getTime();
+
+	
+	for (var y=0; y<max_h; y++)
+	for (var x=0; x<max_w; x++){
+		// octaves, persistence, scale, loBound, hiBound, x, y
+		var v = S.simplex(type, octaves, 1.0-persistence, scale_s, x, y);
+		//v = v * lo_hi_mul + lo_hi_add; // not sure what this does...
+		v = (v + 1.0) / 2.0; //interval [0,1]. 
+		v = Math.min(v-(1-percentage), 1);
+		var i = (x + y*max_w) * 4;
+		d[i]   = v * col1_rgb.r + ((1.0-v) * col2_rgb.r);
+		d[i+1] = v * col1_rgb.g + ((1.0-v) * col2_rgb.g);
+		d[i+2] = v * col1_rgb.b + ((1.0-v) * col2_rgb.b);
+		d[i+3] = 255;
+	}
+	
+	/*
 	for (var i=0; i<d.length; i += 4) {
-		// octaves, persistence, scale, loBound, hiBound, x, y 
-		var v = S.scaled_octave_noise_2d(octaves, 1.0-persistence, 1.0 / (scale * 2), 0, 1, i/4 % max_w, i/4 / max_w);
+		// octaves, persistence, scale, loBound, hiBound, x, y
+		var pix = (i/4);
+		var v = S.simplex(type, octaves, 1.0-persistence, scale_s, 0, 1, pix.fastmod(max_w), pix / max_w);
 		v = (v + 1) / 2; //interval [0,1]. 
 		v = Math.min(v+(1-percentage), 1);
 		d[i] = v * col1_rgb.r + ((1.0-v) * col2_rgb.r);
 		d[i+1] = v * col1_rgb.g + ((1.0-v) * col2_rgb.g);
 		d[i+2] = v * col1_rgb.b + ((1.0-v) * col2_rgb.b);
 		d[i+3] = 255;
-	}
+	}*/
+	
+	var after = new Date().getTime();
+	//console.log("noise: " + (after-before));
+	
 	ctx.putImageData(imgData, 0, 0);
 	
 	

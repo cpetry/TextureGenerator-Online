@@ -16,8 +16,9 @@ var SimplexNoise = function(seed) {
 	this.perm = [];
 	this.permMod12 = []
 	for(var i=0; i<512; i++) {
-		this.perm[i]=this.p[i & 255];
-		this.permMod12[i] = (this.perm[i] % 12);
+		var v = this.p[i & 255];
+		this.perm[i] = v;
+		this.permMod12[i] = v.fastmod(12);
 	} 
 	
 	// Skewing and unskewing factors for 2 dimensions
@@ -32,34 +33,11 @@ SimplexNoise.prototype.dot = function(g, x, y) {
 };
 
 
-SimplexNoise.prototype.fractalnoise = function(xin, yin, minfreq, maxfreq){
-	var value = 0;
-	for (var f = minfreq; f < maxfreq; f *= 2)
-		value += this.noise(xin * f, yin * f)/f;
-	return value;
-}
-
-SimplexNoise.prototype.turbulence = function(xin, yin, minfreq, maxfreq){
-	var value = 0;
-	for (var f = minfreq; f < maxfreq; f *= 2)
-		value += Math.abs(this.noise(xin * f, yin * f))/f;
-	return value;
-}
-
-
-// 2D Scaled Multi-octave Simplex noise.
-//
-// Returned value will be between loBound and hiBound. 
-// persistence [0-1]
-SimplexNoise.prototype.scaled_octave_noise_2d = function( octaves, persistence, scale, loBound, hiBound, x, y ) {
-    return this.octave_noise_2d(octaves, persistence, scale, x, y) * (hiBound - loBound) / 2 + (hiBound + loBound) / 2;
-}
-
 // 2D Multi-octave Simplex noise.
 //
 // For each octave, a higher frequency/lower amplitude function will be added to the original.
 // The higher the persistence [0-1], the more of each succeeding octave will be added.
-SimplexNoise.prototype.octave_noise_2d = function( octaves, persistence, scale, x, y ) {
+SimplexNoise.prototype.simplex = function( type, octaves, persistence, scale, x, y ) {
     var total = 0;
     var frequency = scale;
     var amplitude = 1;
@@ -69,7 +47,12 @@ SimplexNoise.prototype.octave_noise_2d = function( octaves, persistence, scale, 
     var maxAmplitude = 0;
 
     for( var i=0; i < octaves; i++ ) {
-        total += this.noise( x * frequency, y * frequency ) * amplitude;
+		if (type == "PerlinNoise")
+			total += this.noise(x * frequency, y * frequency) * amplitude;
+		else if (type== "FractalNoise")
+			total += Math.abs(this.noise(x * frequency, y * frequency)) * amplitude;
+		else if (type== "Turbulence")
+			total += Math.abs(this.noise(x * frequency, y * frequency)) * amplitude;
 
         frequency *= 2;
         maxAmplitude += amplitude;
@@ -78,6 +61,7 @@ SimplexNoise.prototype.octave_noise_2d = function( octaves, persistence, scale, 
 
     return total / maxAmplitude;
 }
+
 
 SimplexNoise.prototype.noise = function(xin, yin) { 
 	var n0, n1, n2; // Noise contributions from the three corners 

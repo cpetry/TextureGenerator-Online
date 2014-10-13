@@ -278,12 +278,25 @@
 						
 						<tr class="suboption_settings">
 							<td>
+								Type
+							</td>
+							<td>
+								<select id="perlin_noise_type"
+									onchange="updateTexture();">
+									<option selected>PerlinNoise</option>
+									<option>FractalNoise</option>
+									<option>Turbulence</option>
+								</select>
+							</td>
+						</tr>
+						
+						<tr class="suboption_settings">
+							<td>
 								Octaves
 							</td>
 							<td>
 								<input type="range" id="perlin_noise_octaves_slider" min="0" max="10" value="6" step="1"
 									onchange="document.getElementById('perlin_noise_octaves').value = this.value; updateTexture();"
-									oninput=" document.getElementById('perlin_noise_octaves').value = this.value; updateTexture();"
 									style="width:50%;vertical-align:top;">
 								 <input type="number" id="perlin_noise_octaves" 
 								 onchange="document.getElementById('perlin_noise_octaves_slider').value = this.value; updateTexture();"
@@ -298,7 +311,6 @@
 							<td colspan=2>
 								<input type="range" id="perlin_noise_scale_slider" min="1" max="100" value="61" step="1"
 									onchange="document.getElementById('perlin_noise_scale').value = this.value; updateTexture();"
-									oninput=" document.getElementById('perlin_noise_scale').value = this.value; updateTexture();"
 									style="width:50%;vertical-align:top;">
 								<input type="number" id="perlin_noise_scale" 
 									onchange="document.getElementById('perlin_noise_scale_slider').value = this.value; updateTexture();"
@@ -313,7 +325,6 @@
 							<td colspan=2>
 								<input type="range" id="perlin_noise_detail_slider" min="0" max="1" value="0.15"  step="0.01"
 									onchange="document.getElementById('perlin_noise_detail').value = this.value; updateTexture();"
-									oninput=" document.getElementById('perlin_noise_detail').value = this.value; updateTexture();"
 									style="width:50%;vertical-align:top;">
 								<input type="number" id="perlin_noise_detail" 
 									onchange="document.getElementById('perlin_noise_detail_slider').value = this.value; updateTexture();"
@@ -675,7 +686,7 @@
 	<script> 
 		// initialization		
 		showType("type_PerlinNoise");
-		updateTexture();
+		//updateTexture();
 
 	</script>
 
