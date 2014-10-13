@@ -95,6 +95,9 @@ function updateTexture(){
 		case "Brick":
 			updateBrick();
 			break;
+		case "Clouds":
+			updateClouds();
+			break;
 		case "Checker":
 			updateChecker();
 			break;
