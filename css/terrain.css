@@ -1,4 +1,4 @@
-.gradient_gradient_preview{
+.terrain_gradient_preview{
 	position: relative;
 	margin: 5px 10px 0px 10px;
 	display: block;  /*forces max width*/
@@ -8,7 +8,7 @@
 	border: 1px solid;
 }
 
-.slider_area_gradient{
+.slider_area_terrain{
 	position: relative;
 	margin: 0px 10px 5px 10px;
 	display: block;  /*forces max width*/
@@ -18,7 +18,7 @@
 	z-index: 0; /* below */
 }
 
-.slider_gradient{
+.slider_terrain{
 	position: relative;
 	float:left;
 	left:0px;
@@ -29,7 +29,7 @@
 	z-index: 2; /* above */
 }
 
-.slider_line_gradient{
+.slider_line_terrain{
 	display:inline-block; 
 	margin-top: 10px; 
 	margin-bottom:-15px; 
