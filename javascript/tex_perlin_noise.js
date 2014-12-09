@@ -60,7 +60,7 @@ function setPerlinNoise(color1, color2, type, octaves, persistence, scale, seed,
 	var col1_rgb = hexToRgb(color1);
 	var col2_rgb = hexToRgb(color2);
 	
-	var scale_s = 1.0 / (scale * 2);
+	var scale_s = scale;
 	
 	
 	var hiBound = 1;
@@ -75,9 +75,10 @@ function setPerlinNoise(color1, color2, type, octaves, persistence, scale, seed,
 	for (var y=0; y<max_h; y++)
 	for (var x=0; x<max_w; x++){
 		// octaves, persistence, scale, loBound, hiBound, x, y
-		var v = S.simplex(type, octaves, 1.0-persistence, scale_s, x, y);
+		var v = S.simplex(type, octaves, persistence, scale_s, x, y);
 		//v = v * lo_hi_mul + lo_hi_add; // not sure what this does...
-		v = (v + 1.0) / 2.0; //interval [0,1]. 
+		//if (type == "PerlinNoise")
+			//v = (v + 1.0) / 2.0; //interval [0,1]. 
 		v = Math.min(v-(1-percentage), 1);
 		var i = (x + y*max_w) * 4;
 		d[i]   = v * col1_rgb.r + ((1.0-v) * col2_rgb.r);

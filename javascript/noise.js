@@ -39,20 +39,22 @@ SimplexNoise.prototype.dot = function(g, x, y) {
 // The higher the persistence [0-1], the more of each succeeding octave will be added.
 SimplexNoise.prototype.simplex = function( type, octaves, persistence, scale, x, y ) {
     var total = 0;
-    var frequency = scale;
+	scale = 512 / scale;
+    var frequency = 0.25 / scale;
     var amplitude = 1;
-
+	var offset = 512;
     // We have to keep track of the largest possible amplitude,
     // because each octave adds more, and we need a value in [-1, 1].
     var maxAmplitude = 0;
 
     for( var i=0; i < octaves; i++ ) {
 		if (type == "PerlinNoise")
-			total += this.noise(x * frequency, y * frequency) * amplitude;
+			total += this.noise((x+offset) * frequency,(y+offset) * frequency) * amplitude;
+			//total += this.noise(x * frequency, y * frequency) * amplitude;
 		else if (type== "FractalNoise")
-			total += Math.abs(this.noise(x * frequency, y * frequency)) * amplitude;
+			total += Math.abs(this.noise((x+offset) * frequency, (y+offset) * frequency)) * amplitude;
 		else if (type== "Turbulence")
-			total += Math.abs(this.noise(x * frequency, y * frequency)) * amplitude;
+			total += Math.abs(this.noise((x+offset) * frequency, (y+offset) * frequency)) * amplitude;
 
         frequency *= 2;
         maxAmplitude += amplitude;
@@ -62,7 +64,12 @@ SimplexNoise.prototype.simplex = function( type, octaves, persistence, scale, x,
 	if (type=="Turbulence")
 		total = Math.sin((x / 512.0 / 4) + total);
 	
-    return total / maxAmplitude;
+	var retnoise = total / maxAmplitude;
+	
+	if (type == "PerlinNoise")
+		retnoise = (retnoise + 1.0) / 2.0; // [0, 1.0]
+	
+    return retnoise;
 }
 
 
