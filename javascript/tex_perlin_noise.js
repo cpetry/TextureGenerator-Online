@@ -59,7 +59,7 @@ function setPerlinNoise(color1, color2, type, octaves, persistence, scale, seed,
 	
 	var col1_rgb = hexToRgb(color1);
 	var col2_rgb = hexToRgb(color2);
-	
+	console.log (col1_rgb);
 	var scale_s = scale;
 	
 	
