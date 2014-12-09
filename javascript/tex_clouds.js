@@ -30,15 +30,14 @@ function updateClouds(){
 	var color2 = rgb2hex($("#clouds_color2").css("background-color"));
 
 	var scale = parseFloat($("#clouds_scale").val()) * 2;
-	//var scale_y = parseFloat($("#perlin_noise_scale_y").val());
 	
 	var persistence = parseFloat($("#clouds_detail").val());
-	var percentage = 0.6;
+	var percentage = parseFloat($("#clouds_percentage").val());
 	
 	var seed = parseInt($("#clouds_seed").val());
 	var octaves = parseInt($("#clouds_octaves").val());
 	
-	var type = "Turbulence";//$("#perlin_noise_type>option:selected").val();
+	var type = "PerlinNoise";//$("#perlin_noise_type>option:selected").val();
 	//document.write(type);
-	setPerlinNoise(color1, color2, type, octaves, persistence, scale, seed, percentage);
+	setPerlinNoise(color1, color2, type, 7, persistence, scale, seed, percentage);
 }

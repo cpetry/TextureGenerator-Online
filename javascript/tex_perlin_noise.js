@@ -71,15 +71,21 @@ function setPerlinNoise(color1, color2, type, octaves, persistence, scale, seed,
 	
 	var before = new Date().getTime();
 
+	var noise_type;
+	if (type == "PerlinNoise")
+		noise_type = NoiseTypeEnum.PERLINNOISE;
+	else if (type == "FractalNoise")
+		noise_type = NoiseTypeEnum.FRACTALNOISE;
+	else if (type == "Turbulence")
+		noise_type = NoiseTypeEnum.TURBULENCE;
 	
 	for (var y=0; y<max_h; y++)
 	for (var x=0; x<max_w; x++){
 		// octaves, persistence, scale, loBound, hiBound, x, y
-		var v = S.simplex(type, octaves, persistence, scale_s, x, y);
+		var v = S.simplex(noise_type, octaves, persistence, percentage, scale_s, x, y);
 		//v = v * lo_hi_mul + lo_hi_add; // not sure what this does...
 		//if (type == "PerlinNoise")
 			//v = (v + 1.0) / 2.0; //interval [0,1]. 
-		v = Math.min(v-(1-percentage), 1);
 		var i = (x + y*max_w) * 4;
 		d[i]   = v * col1_rgb.r + ((1.0-v) * col2_rgb.r);
 		d[i+1] = v * col1_rgb.g + ((1.0-v) * col2_rgb.g);

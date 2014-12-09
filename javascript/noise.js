@@ -33,41 +33,60 @@ SimplexNoise.prototype.dot = function(g, x, y) {
 };
 
 
+NoiseTypeEnum = {
+    PERLINNOISE : 0,
+    FRACTALNOISE : 1,
+    TURBULENCE : 2
+}
+
+
 // 2D Multi-octave Simplex noise.
 //
 // For each octave, a higher frequency/lower amplitude function will be added to the original.
 // The higher the persistence [0-1], the more of each succeeding octave will be added.
-SimplexNoise.prototype.simplex = function( type, octaves, persistence, scale, x, y ) {
+SimplexNoise.prototype.simplex = function( type, octaves, persistence, percentage, scale, x, y ) {
     var total = 0;
 	scale = 512 / scale;
     var frequency = 0.25 / scale;
     var amplitude = 1;
 	var offset = 512;
+	var power = 1 / frequency;
     // We have to keep track of the largest possible amplitude,
     // because each octave adds more, and we need a value in [-1, 1].
     var maxAmplitude = 0;
 
+	x = (x+offset);
+	y = (y+offset);
+	
     for( var i=0; i < octaves; i++ ) {
-		if (type == "PerlinNoise")
-			total += this.noise((x+offset) * frequency,(y+offset) * frequency) * amplitude;
-			//total += this.noise(x * frequency, y * frequency) * amplitude;
-		else if (type== "FractalNoise")
-			total += Math.abs(this.noise((x+offset) * frequency, (y+offset) * frequency)) * amplitude;
-		else if (type== "Turbulence")
-			total += Math.abs(this.noise((x+offset) * frequency, (y+offset) * frequency)) * amplitude;
-
+		var noise_v = this.noise(x * frequency, y * frequency);
+		//noise_v = Math.min (noise_v, (1-percentage));
+	
+		if (type == NoiseTypeEnum.PERLINNOISE)
+			total += noise_v * amplitude;
+		else if (type== NoiseTypeEnum.FRACTALNOISE)
+			total += Math.abs(noise_v) * amplitude;
+		else if (type== NoiseTypeEnum.TURBULENCE)
+			total += Math.abs(noise_v) * amplitude;
+ 
         frequency *= 2;
         maxAmplitude += amplitude;
         amplitude *= persistence;
     }
 
-	if (type=="Turbulence")
-		total = Math.sin((x / 512.0 / 4) + total);
+	if (type == NoiseTypeEnum.TURBULENCE)
+		total = Math.sin((x / scale) + total);
 	
 	var retnoise = total / maxAmplitude;
 	
-	if (type == "PerlinNoise")
-		retnoise = (retnoise + 1.0) / 2.0; // [0, 1.0]
+	
+	if (type== NoiseTypeEnum.TURBULENCE)
+		retnoise = total;
+	
+	if (type == NoiseTypeEnum.PERLINNOISE || type == NoiseTypeEnum.TURBULENCE)
+		retnoise = Math.max(retnoise + percentage,0) / (1.0 + percentage); // [0, 1.0]
+	
+	retnoise = Math.pow(retnoise, 1 + 2*(1-percentage));
 	
     return retnoise;
 }
