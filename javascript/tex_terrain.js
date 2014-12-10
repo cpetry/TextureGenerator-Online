@@ -16,10 +16,10 @@ $(".slider_area_terrain").droppable({
 });
 
 //createGradientSlider(256, 'eeeeee', 'terrain');
-createGradientSlider(245, 'eeeeee', 'terrain');
-createGradientSlider(178, 'bbbbbb', 'terrain');
-createGradientSlider(96, '888888', 'terrain');
-createGradientSlider(10, '222222', 'terrain');
+createGradientSlider(200, 'ffffff', 'terrain');
+createGradientSlider(168, '618546', 'terrain');
+createGradientSlider(50, '263b0c', 'terrain');
+createGradientSlider(10, '524f21', 'terrain');
 //createGradientSlider(0, '222222', 'terrain');
 
 
@@ -118,15 +118,29 @@ function setTerrainNoise(colors, type, octaves, persistence, scale, seed, percen
 		var i = (x + y*max_w) * 4;
 
 		// searches for the lower and upper color
-		for (var col = 0; col < colors.length; col++) {
-			if (colors[col][1] >= v){
-				var per = (colors[Math.max(col-1,0)][1] - v) / (colors[Math.min(col,colors.length-1)][1] - colors[Math.max(col-1,0)][1]);
-				d[i]   = per * colors[Math.max(col-1,0)][0][0] + ((1.0-per) * colors[Math.min(col,colors.length-1)][0][0]);
-				d[i+1] = per * colors[Math.max(col-1,0)][0][1] + ((1.0-per) * colors[Math.min(col,colors.length-1)][0][1]);
-				d[i+2] = per * colors[Math.max(col-1,0)][0][2] + ((1.0-per) * colors[Math.min(col,colors.length-1)][0][2]);
-				d[i+3] = 255;
-				col = colors.length;
+		if (colors[0][1] > v){
+			d[i]   = colors[0][0][0];
+			d[i+1] = colors[0][0][1];
+			d[i+2] = colors[0][0][2];
+			d[i+3] = 255;
+		}
+		else{
+			for (var col = 1; col < colors.length; col++) {
+				if (colors[col][1] > v){
+					var per = 1-(v - colors[col-1][1]) / (colors[Math.min(col, colors.length-1)][1] - colors[col-1][1]);
+					d[i]   = per * colors[col-1][0][0] + ((1.0-per) * colors[Math.min(col,colors.length-1)][0][0]);
+					d[i+1] = per * colors[col-1][0][1] + ((1.0-per) * colors[Math.min(col,colors.length-1)][0][1]);
+					d[i+2] = per * colors[col-1][0][2] + ((1.0-per) * colors[Math.min(col,colors.length-1)][0][2]);
+					d[i+3] = 255;
+					col = colors.length;
+				}
 			}
+		}
+		if (v > colors[colors.length-1][1]){
+			d[i]   = colors[colors.length-1][0][0];
+			d[i+1] = colors[colors.length-1][0][1];
+			d[i+2] = colors[colors.length-1][0][2];
+			d[i+3] = 255;
 		}
 	}
 	
