@@ -63,11 +63,6 @@ function setPerlinNoise(color1, color2, type, octaves, persistence, scale, seed,
 	var scale_s = scale;
 	
 	
-	var hiBound = 1;
-	var loBound = 0;
-	var lo_hi_mul = (hiBound - loBound) / 2;
-	var lo_hi_add = (hiBound + loBound) / 2;
-	
 	
 	var before = new Date().getTime();
 
