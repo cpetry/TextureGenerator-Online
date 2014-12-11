@@ -30,7 +30,7 @@ createGradientSlider(10, '524f21', 'terrain');
 //createGradientSlider(0, '222222', 'terrain');
 
 
-function updateTerrain(color_changed){
+function updateTerrain(effect){
 	
 
 	var octaves = parseInt($("#terrain_octaves").val());
@@ -40,21 +40,32 @@ function updateTerrain(color_changed){
 	var min_height = parseFloat($("#terrain_min_height").val());
 	var shadow_strength = (1-parseInt($("#terrain_shadow_strength").val()) / 100);
 
-	if (!color_changed){
+	var shadow_posx = parseInt($("#terrain_shadow_xpos").val());
+	var shadow_posy = parseInt($("#terrain_shadow_ypos").val());
+
+	if (!effect){
 		var before = new Date().getTime();
 		setTerrainNoise("FractalNoise", 7, persistence, scale, seed, 1, min_height);
 		var after = new Date().getTime();
-		//console.log(after - before);
-
-		if (terrain_shadow){
-			before = new Date().getTime();
-			updateTerrainShadow(shadow_strength);
-			after = new Date().getTime();
-			//console.log(after - before);
-		}
+		
+		updateTerrainShadow(shadow_posx, shadow_posy, shadow_strength);
+		updateTerrainColor();
+		console.log(after - before);
 	}
-
-	updateTerrainColor();
+	else if (effect == "shadow"){
+		before = new Date().getTime();
+		updateTerrainShadow(shadow_posx, shadow_posy, shadow_strength);
+		after = new Date().getTime();
+		console.log(after - before);
+	}
+	else if (effect == "color"){
+		before = new Date().getTime();
+		updateTerrainColor();
+		after = new Date().getTime();
+		console.log(after - before);
+	}
+	
+	before = new Date().getTime();
 	//console.log(terrain_colored);
 	if (terrain_colored && terrain_shadow)
 		multiplyCanvas(terrain_color_canvas, terrain_shadow_canvas, document.getElementById("texture_preview"));
@@ -64,10 +75,13 @@ function updateTerrain(color_changed){
 		multiplyCanvas(terrain_shadow_canvas, null, document.getElementById("texture_preview"));
 	else
 		multiplyCanvas(terrain_height_canvas, null, document.getElementById("texture_preview"));
+
+	after = new Date().getTime();
+	console.log(after - before);
 }
 
-function updateTerrainShadow(shadow_strength){
-	setTerrainShadow(new Array(-150, -150, 600), shadow_strength);
+function updateTerrainShadow(shadow_posx, shadow_posy, shadow_strength){
+	setTerrainShadow(new Array(shadow_posx, shadow_posy, 600), shadow_strength);
 }
 
 
@@ -188,62 +202,44 @@ function setTerrainShadow(sun_position, shadow_strengh)
 
 	shadow_strengh *= 255;
 
+
+	var Sun = vec3.fromValues(sun_position[0], sun_position[1], sun_position[2]);
+	var CurrentPos;
+	var LightDir = vec3.create();
+	var LerpX = 0;
+	var LerpY = 0;
+
 	for (var y=0; y<max_h; y++)
 	for (var x=0; x<max_w; x++){
+
 		var i = (x + y*max_w) * 4;
+		var CurrentPos = vec3.fromValues(x, y, s[i]);
+		vec3.subtract(LightDir, Sun, CurrentPos);
+		vec3.normalize(LightDir, LightDir);
+
 		d[i] = 255;
 		d[i+1] = 255;
 		d[i+2] = 255;
-		var diff_height_to_sun = Math.abs(s[i] - sun_position[2]);
-		// sqrt (xd^2 + yd^2)
-		var dist = Math.sqrt(Math.pow(x-sun_position[0],2), Math.pow(y-sun_position[1],2));
-		currentPos = new Array (x,y);
-		var height = s[i];
-		while(currentPos[0] >= 0 && currentPos[1] >= 0
-			&& currentPos[0] < max_w && currentPos[1] < max_h
-			&& height <= 255){
-			if (s[(currentPos[0] + currentPos[1]*max_w) * 4] > height ) {
+
+		while(CurrentPos[2] < 255 
+			&& CurrentPos[0] >= 0 && CurrentPos[1] >= 0
+			&& CurrentPos[0] < max_w && CurrentPos[1] < max_h
+			&& CurrentPos != Sun){
+			vec3.add(CurrentPos, CurrentPos, LightDir);
+			LerpX = parseInt(CurrentPos[0] + 0.5);
+			LerpY = parseInt(CurrentPos[1] + 0.5);
+
+			// check for hit
+			if ( CurrentPos[2] <= s[(LerpX + LerpY*max_w) * 4] ) {
 				d[i] = shadow_strengh;
 				d[i+1] = shadow_strengh;
 				d[i+2] = shadow_strengh;
+				break;
 			}
-			height = s[i] + diff_height_to_sun * (1.0-(Math.sqrt(Math.pow(currentPos[0]-sun_position[0],2), Math.pow(currentPos[1]-sun_position[1],2))/dist));
-			currentPos[0]--;
-			currentPos[1]--;
 		}
 		d[i+3] = 255;
 	}
 	ctx_dst.putImageData(imgData_dst, 0, 0);
-	/*//Set current position in terrain
-      CurrentPos.Set((float)x, hmap.Get(x, z), (float)z);
-  
-      //Calc new direction of lightray
-      LightDir = Sun - CurrentPos;
-      LightDir.Normalize();
-  
-      ShadowMap.Set(x, z, 255);
-  
-      //Start the test
-      while ( CurrentPos.x() >= 0 &&
-          CurrentPos.x() < MapWidth && 
-          CurrentPos.z() >= 0 && 
-          CurrentPos.z() < MapHeight && 
-          CurrentPos != Sun && CurrentPos.y() < 255 )
-      {
-        CurrentPos+=LightDir;
-    
-        LerpX = round(CurrentPos.x());
-        LerpZ = round(CurrentPos.z());
-  
-        //Hit?
-        if(CurrentPos.y() <= hmap.Get(LerpX, LerpZ))
-        { 
-          ShadowMap.Set(x, z, 0);
-          break;
-        }
-    }*/
-
-
 }
 
 function setTerrainColor(colors){
