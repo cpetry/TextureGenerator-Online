@@ -430,11 +430,6 @@
 						<div class="option_settings_head">
 							Terrain Settings
 						</div>
-						<div class="terrain_gradient_preview"></div>
-						<div class="slider_area_terrain">
-							<hr class="slider_line_terrain" />
-						</div>
-						
 						<table align="center">
 						<tr class="suboption_settings">
 							<td>
@@ -463,18 +458,18 @@
 									style="width:45px;" min="0" value="0.45" max="1" step="0.01" />
 							</td>
 						</tr>
-						
+
 						<tr class="suboption_settings">
 							<td>
-								Percentage
+								Minimum Height
 							</td>
 							<td colspan=2>
-								<input type="range" id="terrain_percentage_slider" min="0" max="1" value="1" step="0.01"
-									onchange="document.getElementById('terrain_percentage').value = this.value; updateTexture();"
+								<input type="range" id="terrain_min_height_slider" min="0" max="1" value="0" step="0.01"
+									onchange="document.getElementById('terrain_min_height').value = this.value; updateTexture();"
 									style="width:50%;vertical-align:top;">
-								<input type="number" id="terrain_percentage" 
-									onchange="document.getElementById('terrain_percentage_slider').value = this.value; updateTexture();"
-									style="width:45px;" min="0" value="1" max="1" step="0.01" />
+								<input type="number" id="terrain_min_height" 
+									onchange="document.getElementById('terrain_min_height_slider').value = this.value; updateTexture();"
+									style="width:45px;" min="0" value="0" max="1" step="0.01" />
 							</td>
 						</tr>
 						
@@ -486,9 +481,36 @@
 								 <input type="number" id="terrain_seed" onchange="updateTexture();" style="width:45px;" min="1" value="1" max="1000" />
 							</td>
 						</tr>
-						
-						
 						</table>
+
+
+						<div>Colored
+							<input type="checkbox" onchange="switchTerrainColored();updateTexture();" checked> 
+						</div>
+						<div class="terrain_gradient_preview"></div>
+						<div class="slider_area_terrain">
+							<hr class="slider_line_terrain" />
+						</div>
+						<div>Shadow
+							<input type="checkbox" onchange="switchTerrainShadow();updateTexture();" checked> 
+						</div>
+						<table align="center">
+						<tr class="suboption_settings">
+							<td>
+								Strength
+							</td>
+							<td colspan=2>
+								<input type="range" id="terrain_shadow_strength_slider" min="1" max="100" value="40" step="1"
+									onchange="document.getElementById('terrain_shadow_strength').value = this.value; updateTexture();"
+									style="width:50%;vertical-align:top;">
+								<input type="number" id="terrain_shadow_strength" 
+									onchange="document.getElementById('terrain_shadow_strength_slider').value = this.value; updateTexture();"
+									style="width:52px;" min="1" value="40" max="100" step="1"/>
+							</td>
+						</tr>
+						</table>
+						
+						
 					</div>
 					
 					<!-- Textiles -->
