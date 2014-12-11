@@ -79,7 +79,7 @@ function showType(type){
 	updateTexture();
 }
 							
-function updateTexture(){
+function updateTexture(params){
 	//console.log("UT");
 	var rotation = parseInt($("#rotation").val()) * (Math.PI/180); //rad to deg
 
@@ -105,7 +105,7 @@ function updateTexture(){
 			updateTextiles();
 			break;
 		case "Terrain":
-			updateTerrain();
+			updateTerrain(params);
 			break;
 		case "Tiles":
 			updateTiling();
@@ -209,7 +209,7 @@ function createGradientSlider(pos, col, tex_type){
 		color: col,
 		onChange:function(hsb,hex,rgb,el) {
 			$(el).css('background-color', '#'+hex);
-			updateTexture();
+			updateTexture("color");
 		},
 		onSubmit:function(hsb,hex,rgb,el) {
 			$(el).colpickHide();
@@ -223,7 +223,40 @@ function createGradientSlider(pos, col, tex_type){
 		containment: ".slider_area_" + tex_type,
 		scroll: false,
 		drag: function() {
-			updateTexture();
+			updateTexture("color");
 		},
 	});
+}
+
+
+function multiplyCanvas(src1_canvas, src2_canvas, dest_canvas){
+	var max_w = 512, max_h = 512;
+	var ctx_src1 = src1_canvas.getContext("2d");
+	var imgData_src1 = ctx_src1.getImageData(0,0, max_w, max_h);
+	var s1 = imgData_src1.data;
+
+	var ctx_src2;
+	var imgData_src2;
+	var s2;
+	if (src2_canvas){
+		ctx_src2 = src2_canvas.getContext("2d");
+		imgData_src2 = ctx_src2.getImageData(0,0, max_w, max_h);
+		s2 = imgData_src2.data;
+	}
+
+	var ctx_dst = dest_canvas.getContext("2d");
+	var imgData = ctx_dst.getImageData(0,0, max_w, max_h);
+	var d = imgData.data;
+
+	for (var y=0; y<max_h; y++)
+	for (var x=0; x<max_w; x++){
+		// octaves, persistence, scale, loBound, hiBound, x, y
+		var i = (x + y*max_w) * 4;
+
+		d[i]   = (s1[i]/255) * (src2_canvas ? (s2[i]/255) : 1) * 255;
+		d[i+1] = (s1[i+1]/255) * (src2_canvas ? (s2[i+1]/255) : 1)* 255;
+		d[i+2] = (s1[i+2]/255) * (src2_canvas ? (s2[i+2]/255) : 1) * 255;
+		d[i+3] = (s1[i+3]/255) * (src2_canvas ? (s2[i+3]/255) : 1) * 255;
+	}
+	ctx_dst.putImageData(imgData, 0, 0);
 }

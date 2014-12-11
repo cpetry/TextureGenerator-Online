@@ -1,9 +1,12 @@
+var terrain_height_canvas = document.createElement("canvas");
+var terrain_color_canvas = document.createElement("canvas");
+
 $(".slider_area_terrain" ).click(function(evt) {
 	var x = Math.min(Math.max(evt.pageX - $(this).offset().left, 0), 255);
 	
 	createGradientSlider(x, 'ffffff', 'terrain');
 	
-	updateTexture();
+	updateTerrainColor();
 	//alert( "Position: " + x );
 });
 
@@ -23,10 +26,38 @@ createGradientSlider(10, '524f21', 'terrain');
 //createGradientSlider(0, '222222', 'terrain');
 
 
+function updateTerrain(setting_changed){
+	
+
+	var octaves = parseInt($("#terrain_octaves").val());
+	var scale = parseFloat($("#terrain_scale").val());
+	//var scale_y = parseFloat($("#perlin_noise_scale_y").val());
+	
+	var persistence = parseFloat($("#terrain_detail").val());
+	var percentage = parseFloat($("#terrain_percentage").val());
+
+	var seed = parseInt($("#terrain_seed").val());
+	
+	
+	if (!setting_changed){
+		var before = new Date().getTime();
+		setTerrainNoise("FractalNoise", 7, persistence, scale, seed, percentage);
+		var after = new Date().getTime();
+		console.log(after - before);
+	}
+
+	updateTerrainColor();
 
 
+	multiplyCanvas(terrain_color_canvas, null, document.getElementById("texture_preview"));
+}
 
-function updateTerrain(){
+function updateTerrainShadow(){
+
+}
+
+
+function updateTerrainColor(){
 	var colors = [];
 	var colors_hex = [];
 	
@@ -50,56 +81,36 @@ function updateTerrain(){
 	$(".terrain_gradient_preview").css('background', gradient_text); // W3C
 
 
-
-
-	console.log(colors);
+	//console.log(colors);
 	for (var c = 0; c < colors.length; c++) {
 		colors[c][0][0] = parseFloat(colors[c][0][0]);
 		colors[c][0][1] = parseFloat(colors[c][0][1]);
 		colors[c][0][2] = parseFloat(colors[c][0][2]);
 		colors[c][1] = colors[c][1] / 100;
-		console.log("r: " + colors[c][0][0] +  " g:" + colors[c][0][1] + " b:" + colors[c][0][2] +" percentage: "  + colors[c][1]);
+		//console.log("r: " + colors[c][0][0] +  " g:" + colors[c][0][1] + " b:" + colors[c][0][2] +" percentage: "  + colors[c][1]);
 	}
 
-	var octaves = parseInt($("#terrain_octaves").val());
-	var scale = parseFloat($("#terrain_scale").val());
-	//var scale_y = parseFloat($("#perlin_noise_scale_y").val());
-	
-	var persistence = parseFloat($("#terrain_detail").val());
-	var percentage = parseFloat($("#terrain_percentage").val());
-
-	var seed = parseInt($("#terrain_seed").val());
-	
-	
-
-	//var persistence = 0.6;
-	//var scale = 10;
-	//var seed = 100;
-	//var percentage = 0.80;
-
-	setTerrainNoise(colors, "FractalNoise", 7, persistence, scale, seed, percentage);
+	before = new Date().getTime();
+	setTerrainColor(colors);
+	after = new Date().getTime();
+	console.log(after - before);
 }
 
 
-function setTerrainNoise(colors, type, octaves, persistence, scale, seed, percentage)
+function setTerrainNoise(type, octaves, persistence, scale, seed, percentage)
 {
-	
-	
-	var c = document.getElementById("texture_preview");
-	var ctx = c.getContext("2d");
-
 	var max_w = 512, max_h = 512;
-	
-	var S = new SimplexNoise(seed);
-	
-	var imgData = ctx.getImageData(0,0, max_w, max_h);
+
+	terrain_height_canvas.width  = max_w; 	// important! dimensions would be to small otherwise
+	terrain_height_canvas.height = max_h;
+
+	var dst = terrain_height_canvas;
+	var ctx_dst = dst.getContext("2d");
+	var imgData = ctx_dst.getImageData(0,0, max_w, max_h);
 	var d = imgData.data;
 		
-	var scale_s = scale;	
-		
+	var scale_s = scale;
 	
-	var before = new Date().getTime();
-
 	var noise_type;
 	if (type == "PerlinNoise")
 		noise_type = NoiseTypeEnum.PERLINNOISE;
@@ -108,16 +119,78 @@ function setTerrainNoise(colors, type, octaves, persistence, scale, seed, percen
 	else if (type == "Turbulence")
 		noise_type = NoiseTypeEnum.TURBULENCE;
 		
-	//console.log(colors[1][1]);
-	//console.log(colors[1][0][2]);
-	
+	var S = new SimplexNoise(seed);
+
 	for (var y=0; y<max_h; y++)
 	for (var x=0; x<max_w; x++){
 		// octaves, persistence, scale, loBound, hiBound, x, y
 		var v = S.simplex(noise_type, octaves, persistence, percentage, scale_s, x, y);
 		var i = (x + y*max_w) * 4;
 
-		// searches for the lower and upper color
+		d[i]   = v * 255 + ((1.0-v) * 0);
+		d[i+1] = v * 255 + ((1.0-v) * 0);
+		d[i+2] = v * 255 + ((1.0-v) * 0);
+		d[i+3] = 255;
+	}
+	
+	ctx_dst.putImageData(imgData, 0, 0);
+}
+
+function setTerrainShadow(sun_position)
+{
+	/*//Set current position in terrain
+      CurrentPos.Set((float)x, hmap.Get(x, z), (float)z);
+  
+      //Calc new direction of lightray
+      LightDir = Sun - CurrentPos;
+      LightDir.Normalize();
+  
+      ShadowMap.Set(x, z, 255);
+  
+      //Start the test
+      while ( CurrentPos.x() >= 0 &&
+          CurrentPos.x() < MapWidth && 
+          CurrentPos.z() >= 0 && 
+          CurrentPos.z() < MapHeight && 
+          CurrentPos != Sun && CurrentPos.y() < 255 )
+      {
+        CurrentPos+=LightDir;
+    
+        LerpX = round(CurrentPos.x());
+        LerpZ = round(CurrentPos.z());
+  
+        //Hit?
+        if(CurrentPos.y() <= hmap.Get(LerpX, LerpZ))
+        { 
+          ShadowMap.Set(x, z, 0);
+          break;
+        }
+    }*/
+
+
+}
+
+function setTerrainColor(colors){
+	var max_w = 512, max_h = 512;
+
+	terrain_color_canvas.width  = max_w; 	// important! dimensions would be to small otherwise
+	terrain_color_canvas.height = max_h;
+
+	var dest = terrain_color_canvas;
+	var ctx_dest = dest.getContext("2d");
+	var imgData_dest = ctx_dest.getImageData(0,0, max_w, max_h);
+	var d = imgData_dest.data;
+	
+	var src = terrain_height_canvas;
+	var ctx_src = src.getContext("2d");
+	var imgData_src = ctx_src.getImageData(0,0, max_w, max_h);
+	var s = imgData_src.data;
+
+	for (var y=0; y<max_h; y++)
+	for (var x=0; x<max_w; x++){
+		var i = (x + y*max_w) * 4;
+		var v = s[i] / 255;
+
 		if (colors[0][1] > v){
 			d[i]   = colors[0][0][0];
 			d[i+1] = colors[0][0][1];
@@ -143,10 +216,6 @@ function setTerrainNoise(colors, type, octaves, persistence, scale, seed, percen
 			d[i+3] = 255;
 		}
 	}
-	
-	var after = new Date().getTime();
-	console.log(after - before);
 
-	ctx.putImageData(imgData, 0, 0);
-	
+	ctx_dest.putImageData(imgData_dest, 0, 0);
 }
