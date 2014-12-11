@@ -48,8 +48,10 @@ function updateTerrain(effect){
 		setTerrainNoise("FractalNoise", 7, persistence, scale, seed, 1, min_height);
 		var after = new Date().getTime();
 		
-		updateTerrainShadow(shadow_posx, shadow_posy, shadow_strength);
-		updateTerrainColor();
+		if (terrain_shadow)
+			updateTerrainShadow(shadow_posx, shadow_posy, shadow_strength);
+		if (terrain_colored)
+			updateTerrainColor();
 		console.log(after - before);
 	}
 	else if (effect == "shadow"){
