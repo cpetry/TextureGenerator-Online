@@ -40,6 +40,7 @@ function updateTerrain(effect){
 	var min_height = parseFloat($("#terrain_min_height").val());
 	var shadow_strength = (1-parseInt($("#terrain_shadow_strength").val()) / 100);
 
+	var sun_height = parseInt($("#terrain_sun_height").val()) * 20 + 255 ;
 	var shadow_posx = parseInt($("#terrain_shadow_xpos").val());
 	var shadow_posy = parseInt($("#terrain_shadow_ypos").val());
 
@@ -49,14 +50,14 @@ function updateTerrain(effect){
 		var after = new Date().getTime();
 		
 		if (terrain_shadow)
-			updateTerrainShadow(shadow_posx, shadow_posy, shadow_strength);
+			updateTerrainShadow(shadow_posx, shadow_posy, sun_height, shadow_strength);
 		if (terrain_colored)
 			updateTerrainColor();
 		console.log(after - before);
 	}
 	else if (effect == "shadow"){
 		before = new Date().getTime();
-		updateTerrainShadow(shadow_posx, shadow_posy, shadow_strength);
+		updateTerrainShadow(shadow_posx, shadow_posy, sun_height, shadow_strength);
 		after = new Date().getTime();
 		console.log(after - before);
 	}
@@ -85,8 +86,8 @@ function updateTerrain(effect){
 	console.log(after - before);
 }
 
-function updateTerrainShadow(shadow_posx, shadow_posy, shadow_strength){
-	setTerrainShadow(new Array(shadow_posx, shadow_posy, 600), shadow_strength);
+function updateTerrainShadow(shadow_posx, shadow_posy, sun_height, shadow_strength){
+	setTerrainShadow(new Array(shadow_posx, shadow_posy, sun_height), shadow_strength);
 }
 
 

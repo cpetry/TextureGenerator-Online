@@ -510,7 +510,19 @@
 
 							
 						</tr>
-
+						<tr class="suboption_settings">
+							<td>
+								Sun Height
+							</td>
+							<td colspan=2>
+								<input type="range" id="terrain_shadow_sun_height_slider" min="0" max="100" value="50" step="1"
+									onchange="document.getElementById('terrain_sun_height').value = this.value; updateTexture('shadow');"
+									style="width:50%;vertical-align:top;">
+								<input type="number" id="terrain_sun_height" 
+									onchange="document.getElementById('terrain_shadow_sun_height_slider').value = this.value; updateTexture('shadow');"
+									style="width:52px;" min="0" value="50" max="100" step="1"/>
+							</td>
+						</tr>
 						<tr class="suboption_settings">
 							<td>
 								X
