@@ -58,6 +58,9 @@ function updateTerrain(effect){
 		after = new Date().getTime();
 		console.log(after - before);
 	}
+	else if (effect == "shadow_strength"){
+		setShadowStrength(shadow_strength);
+	}
 	else if (effect == "color"){
 		before = new Date().getTime();
 		updateTerrainColor();
@@ -238,6 +241,29 @@ function setTerrainShadow(sun_position, shadow_strengh)
 			}
 		}
 		d[i+3] = 255;
+	}
+	ctx_dst.putImageData(imgData_dst, 0, 0);
+}
+
+
+function setShadowStrength(strength){
+	var max_w = 512, max_h = 512;
+
+	var dst = terrain_shadow_canvas;
+	var ctx_dst = dst.getContext("2d");
+	var imgData_dst = ctx_dst.getImageData(0,0, max_w, max_h);
+	var d = imgData_dst.data;
+
+	strength *= 255;
+
+	for (var y=0; y<max_h; y++)
+	for (var x=0; x<max_w; x++){
+		var i = (x + y*max_w) * 4;
+		if (d[i] < 255){
+			d[i] = strength;
+			d[i+1] = strength;
+			d[i+2] = strength;
+		}
 	}
 	ctx_dst.putImageData(imgData_dst, 0, 0);
 }
