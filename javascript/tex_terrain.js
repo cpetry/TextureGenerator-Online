@@ -27,8 +27,10 @@ var terrain_color_canvas = document.createElement("canvas");
 var terrain_shadow_canvas = document.createElement("canvas");
 var terrain_colored = true;
 var terrain_shadow = true;
-var terrain_shadow_x = 100.0;
-var terrain_shadow_y = 100.0;
+var terrain_shadow_x = -1400.0;
+var terrain_shadow_y = -1400.0;
+
+drawSunPositionCanvas(terrain_shadow_x/100, terrain_shadow_y/100);
 
 $(".slider_area_terrain" ).click(function(evt) {
 	var x = Math.min(Math.max(evt.pageX - $(this).offset().left, 0), 255);
@@ -49,10 +51,10 @@ $(".slider_area_terrain").droppable({
 
 //createGradientSlider(256, 'eeeeee', 'terrain');
 createGradientSlider(240, 'ffffff', 'terrain');
-createGradientSlider(180, '474038', 'terrain');
-createGradientSlider(125, '516b31', 'terrain');
-createGradientSlider(40, '22360a', 'terrain');
-createGradientSlider(10, '524f21', 'terrain');
+createGradientSlider(180, '686359', 'terrain');
+createGradientSlider(125, '809A60', 'terrain');
+createGradientSlider(40, '3A4F22', 'terrain');
+createGradientSlider(10, '60632e', 'terrain');
 //createGradientSlider(0, '222222', 'terrain');
 
 
@@ -62,16 +64,16 @@ function updateTerrain(effect){
 	var scale = parseFloat($("#terrain_scale_slider").val());	
 	var persistence = parseFloat($("#terrain_detail_slider").val());
 	var seed = parseInt($("#terrain_seed").val());
-	var min_height = parseFloat($("#terrain_min_height_slider").val());
+	var height = 1-parseFloat($("#terrain_height_slider").val());
 	var shadow_strength = (1-parseInt($("#terrain_shadow_strength").val()) / 100);
 
-	var sun_height = parseInt($("#terrain_sun_height").val()) * 20 + 255 ;
-	var sun_posx = parseInt($("#terrain_shadow_xpos").val());
-	var sun_posy = parseInt($("#terrain_shadow_ypos").val());
+	var sun_height = parseInt($("#terrain_sun_height").val()) * 40 + 255 ;
+	//var sun_posx = parseInt($("#terrain_shadow_xpos").val());
+	//var sun_posy = parseInt($("#terrain_shadow_ypos").val());
 
 	if (!effect){
 		var before = new Date().getTime();
-		setTerrainNoise("FractalNoise", 7, persistence, scale, seed, 1, min_height);
+		setTerrainNoise("FractalNoise", 7, persistence, scale, seed, 1, height);
 		var after = new Date().getTime();
 		
 		if (terrain_shadow)
@@ -189,7 +191,6 @@ function setTerrainNoise(type, octaves, persistence, scale, seed, percentage, mi
 		max_v = Math.max(v*255, max_v);
 		min_v = Math.min(v*255, min_v);
 
-		v = Math.max(min_height, v);
 		var i = (x + y*max_w) * 4;
 
 		d[i]   = v * 255 + ((1.0-v) * 0);
@@ -210,19 +211,20 @@ function setTerrainNoise(type, octaves, persistence, scale, seed, percentage, mi
 	for (var y=0; y<max_h; y++)
 	for (var x=0; x<max_w; x++){
 		// octaves, persistence, scale, loBound, hiBound, x, y
-		var v = S.simplex(NoiseTypeEnum.FRACTALNOISE, 1, 0.1, 1, 0.6*scale_s, x, y);
-		v=Math.min(v*1.6,1);//v = v / 255;
+		var v = S.simplex(NoiseTypeEnum.PERLINNOISE, 3, 0.2, 1, 0.8*scale_s, x, y);
+		v=Math.min(v*(1+(1-min_height/4)) - min_height,1);//v = v / 255;
+		v = v*v;
 		var i = (x + y*max_w) * 4;
+		var old = d[i];
+		//var v = Math.max((1-v) - 0.7, 0);
 
-		d[i]   = v * min_v*20 + ((1.0-v) * d[i]);
-		d[i+1] = v * min_v*20 + ((1.0-v) * d[i+1]);
-		d[i+2] = v * min_v*20 + ((1.0-v) * d[i+2]);
+		d[i]   = v * old;
+		d[i+1] = v * old;
+		d[i+2] = v * old;
 		//d[i]   = v*255;
 		//d[i+1] = v*255;
 		//d[i+2] = v*255;
 	}
-
-	console.log("max_v: " + max_v);
 
 	
 	
@@ -235,15 +237,36 @@ var fv = new Float32Array(buf);
 var lv = new Uint32Array(buf);
 var threehalfs = 1.5;
 
-$("#shadow_direction").mousedown(function(e){
+
+
+function drawSunPositionCanvas(x, y){
+	var canvas = document.getElementById("terrain_shadow_position_canvas");
+	var context = canvas.getContext('2d');
+    var centerX = canvas.width / 2;
+    var centerY = canvas.height / 2;
+    var radius = 24;
+    context.beginPath();
+    context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+    var grd = context.createRadialGradient(x+centerX, y+centerY, 2, x+centerX, y+centerY, 25);
+    // light blue
+    grd.addColorStop(0, '#8EA6EF');
+    // dark blue
+    grd.addColorStop(1, '#003C73');
+    context.fillStyle = grd;
+    context.fill();
+    context.lineWidth = 1;
+    context.strokeStyle = '#444444';
+    context.stroke();
+}
+
+$("#terrain_shadow_position_canvas").mousedown(function(e){
 	x=(e.pageX - $(this).offset().left) - $(this).width()/2;
 	y=(e.pageY - $(this).offset().top) - $(this).height()/2;
 	terrain_shadow_x = x * 100;
 	terrain_shadow_y = y * 100;
 	w=Math.round(Math.atan2(x,y)*(180/Math.PI));
 	w=180-w;
-	console.log("x: " + x + ", y: " + y);
-	console.log("w: " + w);
+	drawSunPositionCanvas(x,y);
 });
 
 function setTerrainShadow(sun_position, shadow_strengh)
@@ -284,7 +307,7 @@ function setTerrainShadow(sun_position, shadow_strengh)
 		d[i+1] = 255;
 		d[i+2] = 255;
 		d[i+3] = 255;
-
+		var steps = 0;
 		while(CurrentPos.z < 255.0 
 			&& CurrentPos.x >= 0.0 && CurrentPos.y >= 0.0
 			&& CurrentPos.x < max_w && CurrentPos.y < max_h
@@ -292,16 +315,18 @@ function setTerrainShadow(sun_position, shadow_strengh)
 			addVec3(CurrentPos, CurrentPos, LightDir);
 			LerpX = parseInt(CurrentPos.x + 0.5, 10);
 			LerpY = parseInt(CurrentPos.y + 0.5, 10);
-
+			steps++;
 			// check for hit
-			if ( CurrentPos.z <= s[(LerpX + LerpY*max_w) * 4] ) {
-				d[i] = shadow_strengh;
-				d[i+1] = shadow_strengh;
-				d[i+2] = shadow_strengh;
+			if ( CurrentPos.z <= s[(LerpX + LerpY*max_w) * 4]) {
+				var shadow = shadow_strengh;// * 1/steps;
+				d[i] = shadow;
+				d[i+1] = shadow;
+				d[i+2] = shadow;
 				break;
 			}
 		}
 	}
+	//gaussianblur(imgData_dst, max_w, max_h, 1);
 	ctx_dst.putImageData(imgData_dst, 0, 0);
 }
 
