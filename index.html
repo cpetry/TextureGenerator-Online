@@ -489,32 +489,17 @@
 
 						<table>
 						<tr class="suboption_settings">
-							<td>
-								Strength
-							</td>
-							<td colspan=2>
+							<td style="min-width:150px;">Strength
 								<input type="range" id="terrain_shadow_strength_slider" min="1" max="100" value="40" step="1"
-									onchange="document.getElementById('terrain_shadow_strength').value = this.value; updateTexture('shadow_strength');"
-									style="width:50%;vertical-align:top;">
-								<input type="number" id="terrain_shadow_strength" 
-									onchange="document.getElementById('terrain_shadow_strength_slider').value = this.value; updateTexture('shadow_strength');"
-									style="width:52px;" min="1" value="40" max="100" step="1"/>
+									onchange="updateTexture('shadow_strength');"
+									style="width:45%;vertical-align:top;">
 							</td>
-
-							
-						</tr>
-						<tr class="suboption_settings">
-							<td>
-								Sun Height
-							</td>
-							<td colspan=2>
+							<td style="min-width:150px;">Sun Height
 								<input type="range" id="terrain_shadow_sun_height_slider" min="0" max="100" value="52" step="1"
-									onchange="document.getElementById('terrain_sun_height').value = this.value; updateTexture('shadow');"
-									style="width:50%;vertical-align:top;">
-								<input type="number" id="terrain_sun_height" 
-									onchange="document.getElementById('terrain_shadow_sun_height_slider').value = this.value; updateTexture('shadow');"
-									style="width:52px;" min="0" value="52" max="100" step="1"/>
+									onchange="updateTexture('shadow');"
+									style="width:45%;vertical-align:top;">
 							</td>
+							
 						</tr>
 
 
@@ -546,7 +531,7 @@
 							</td>
 						</tr>-->
 						<tr class="suboption_settings">
-							<td colspan=2>
+							<td>
 								<p align="right" style="min-width:100px;">Sun Position</p>
 							</td>
 							<td>
