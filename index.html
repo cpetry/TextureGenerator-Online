@@ -493,6 +493,7 @@
 						</div>
 						<div>Shadow
 							<input type="checkbox" onchange="switchTerrainShadow();updateTexture();" checked> 
+							<input type="button" value="update" onclick="updateTexture('shadow');"> 
 						</div>
 						<table align="center">
 						<tr class="suboption_settings">
@@ -516,10 +517,10 @@
 							</td>
 							<td colspan=2>
 								<input type="range" id="terrain_shadow_sun_height_slider" min="0" max="100" value="50" step="1"
-									onchange="document.getElementById('terrain_sun_height').value = this.value; updateTexture('shadow');"
+									onchange="document.getElementById('terrain_sun_height').value = this.value;"
 									style="width:50%;vertical-align:top;">
 								<input type="number" id="terrain_sun_height" 
-									onchange="document.getElementById('terrain_shadow_sun_height_slider').value = this.value; updateTexture('shadow');"
+									onchange="document.getElementById('terrain_shadow_sun_height_slider').value = this.value;"
 									style="width:52px;" min="0" value="50" max="100" step="1"/>
 							</td>
 						</tr>
@@ -550,6 +551,12 @@
 							</td>
 						</tr>
 						</table>
+						<div style="width: 250px; overflow: hidden;">
+							<div id="shadow_direction" style="float:left; min-height:50px; min-width:50px; max-height:50px; max-width:50px; background-color: yellow;">
+							</div>
+							<div style="overflow: hidden; ">
+							</div>
+						</div>
 						
 						
 					</div>
@@ -893,9 +900,9 @@
 	<script src="javascript/extern/blob.js" type="text/javascript" ></script>
 	<script src="javascript/extern/canvas-toBlob.js" type="text/javascript" ></script>
 	<script src="javascript/extern/filesaver.min.js" type="text/javascript" ></script>
-	<script src="javascript/extern/glmatrix/gl-matrix-min.js" type="text/javascript"></script>
 
 	<script src="javascript/helper.js" type="text/javascript"></script>
+	<script src="javascript/helper_vector.js" type="text/javascript"></script>
 	<script src="javascript/download.js" type="text/javascript"></script>
 	<script src="javascript/noise.js" type="text/javascript"></script>
 	<script src="javascript/gaussianblur.js" type="text/javascript"></script>

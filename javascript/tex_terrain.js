@@ -3,6 +3,8 @@ var terrain_color_canvas = document.createElement("canvas");
 var terrain_shadow_canvas = document.createElement("canvas");
 var terrain_colored = true;
 var terrain_shadow = true;
+var terrain_shadow_x = 100.0;
+var terrain_shadow_y = 100.0;
 
 $(".slider_area_terrain" ).click(function(evt) {
 	var x = Math.min(Math.max(evt.pageX - $(this).offset().left, 0), 255);
@@ -41,8 +43,8 @@ function updateTerrain(effect){
 	var shadow_strength = (1-parseInt($("#terrain_shadow_strength").val()) / 100);
 
 	var sun_height = parseInt($("#terrain_sun_height").val()) * 20 + 255 ;
-	var shadow_posx = parseInt($("#terrain_shadow_xpos").val());
-	var shadow_posy = parseInt($("#terrain_shadow_ypos").val());
+	var sun_posx = parseInt($("#terrain_shadow_xpos").val());
+	var sun_posy = parseInt($("#terrain_shadow_ypos").val());
 
 	if (!effect){
 		var before = new Date().getTime();
@@ -50,14 +52,14 @@ function updateTerrain(effect){
 		var after = new Date().getTime();
 		
 		if (terrain_shadow)
-			updateTerrainShadow(shadow_posx, shadow_posy, sun_height, shadow_strength);
+			updateTerrainShadow(terrain_shadow_x, terrain_shadow_y, sun_height, shadow_strength);
 		if (terrain_colored)
 			updateTerrainColor();
 		console.log(after - before);
 	}
 	else if (effect == "shadow"){
 		before = new Date().getTime();
-		updateTerrainShadow(shadow_posx, shadow_posy, sun_height, shadow_strength);
+		updateTerrainShadow(terrain_shadow_x, terrain_shadow_y, sun_height, shadow_strength);
 		after = new Date().getTime();
 		console.log(after - before);
 	}
@@ -188,10 +190,25 @@ function setTerrainNoise(type, octaves, persistence, scale, seed, percentage, mi
 }
 
 
+var buf = new ArrayBuffer(Float32Array.BYTES_PER_ELEMENT);
+var fv = new Float32Array(buf);
+var lv = new Uint32Array(buf);
+var threehalfs = 1.5;
+
+$("#shadow_direction").mousedown(function(e){
+	x=(e.pageX - $(this).offset().left) - $(this).width()/2;
+	y=(e.pageY - $(this).offset().top) - $(this).height()/2;
+	terrain_shadow_x = x * 100;
+	terrain_shadow_y = y * 100;
+	w=Math.round(Math.atan2(x,y)*(180/Math.PI));
+	w=180-w;
+	console.log("x: " + x + ", y: " + y);
+	console.log("w: " + w);
+});
 
 function setTerrainShadow(sun_position, shadow_strengh)
 {
-	var max_w = 512, max_h = 512;
+	var max_w = 512.0, max_h = 512.0;
 
 	terrain_shadow_canvas.width  = max_w; 	// important! dimensions would be to small otherwise
 	terrain_shadow_canvas.height = max_h;
@@ -206,44 +223,44 @@ function setTerrainShadow(sun_position, shadow_strengh)
 	var imgData_src = ctx_src.getImageData(0,0, max_w, max_h);
 	var s = imgData_src.data;
 
-	shadow_strengh *= 255;
+	shadow_strengh *= 255.0;
 
+	var Sun = new Vec3(sun_position[0], sun_position[1], sun_position[2]);
+	var CurrentPos = new Vec3(max_w/2.0, max_h/2.0, 0.0);
+	var LightDir = new Vec3(0.0,0.0,0.0);
+	subtractVec3(LightDir, Sun, CurrentPos);
+	normalizeVec3(LightDir);
 
-	var Sun = vec3.fromValues(sun_position[0], sun_position[1], sun_position[2]);
-	var CurrentPos;
-	var LightDir = vec3.create();
-	var LerpX = 0;
-	var LerpY = 0;
+	var LerpX = 0.0;
+	var LerpY = 0.0;
 
 	for (var y=0; y<max_h; y++)
 	for (var x=0; x<max_w; x++){
 
 		var i = (x + y*max_w) * 4;
-		var CurrentPos = vec3.fromValues(x, y, s[i]);
-		vec3.subtract(LightDir, Sun, CurrentPos);
-		vec3.normalize(LightDir, LightDir);
-
+		setVec3(CurrentPos, x, y, s[i]);
+		
 		d[i] = 255;
 		d[i+1] = 255;
 		d[i+2] = 255;
+		d[i+3] = 255;
 
-		while(CurrentPos[2] < 255 
-			&& CurrentPos[0] >= 0 && CurrentPos[1] >= 0
-			&& CurrentPos[0] < max_w && CurrentPos[1] < max_h
+		while(CurrentPos.z < 255.0 
+			&& CurrentPos.x >= 0.0 && CurrentPos.y >= 0.0
+			&& CurrentPos.x < max_w && CurrentPos.y < max_h
 			&& CurrentPos != Sun){
-			vec3.add(CurrentPos, CurrentPos, LightDir);
-			LerpX = parseInt(CurrentPos[0] + 0.5);
-			LerpY = parseInt(CurrentPos[1] + 0.5);
+			addVec3(CurrentPos, CurrentPos, LightDir);
+			LerpX = parseInt(CurrentPos.x + 0.5, 10);
+			LerpY = parseInt(CurrentPos.y + 0.5, 10);
 
 			// check for hit
-			if ( CurrentPos[2] <= s[(LerpX + LerpY*max_w) * 4] ) {
+			if ( CurrentPos.z <= s[(LerpX + LerpY*max_w) * 4] ) {
 				d[i] = shadow_strengh;
 				d[i+1] = shadow_strengh;
 				d[i+2] = shadow_strengh;
 				break;
 			}
 		}
-		d[i+3] = 255;
 	}
 	ctx_dst.putImageData(imgData_dst, 0, 0);
 }

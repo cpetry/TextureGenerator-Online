@@ -21,6 +21,17 @@ function hexToRgb(hex) {
     } : null;
 }
 
+// 1 - sqrt(number)
+function Q_rsqrt(number) {
+  var x2 = number * 0.5;
+  fv[0] = number;
+  lv[0] = 0x5f3759df - ( lv[0] >> 1 );
+  var y = fv[0];
+  y = y * ( threehalfs - ( x2 * y * y ) );
+
+  return y;
+}
+
 // result is either 1 or 0
 function random10Seed(seed, percentage) {
 	percentage = (typeof percentage === "undefined") ? 1.00 : percentage;
@@ -260,3 +271,5 @@ function multiplyCanvas(src1_canvas, src2_canvas, dest_canvas){
 	}
 	ctx_dst.putImageData(imgData, 0, 0);
 }
+
+
