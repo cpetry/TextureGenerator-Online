@@ -432,70 +432,39 @@
 						</div>
 						<table align="center">
 						<tr class="suboption_settings">
-							<td>
-								Scale
+							<td>Scale
+								<input type="range" id="terrain_scale_slider" min="2" max="15" value="7" step="1"
+									onchange="updateTexture();"
+									style="width:45%;vertical-align:top;">
 							</td>
-							<td colspan=2>
-								<input type="range" id="terrain_scale_slider" min="1" max="20" value="7" step="1"
-									onchange="document.getElementById('terrain_scale').value = this.value; updateTexture();"
-									style="width:50%;vertical-align:top;">
-								<input type="number" id="terrain_scale" 
-									onchange="document.getElementById('terrain_scale_slider').value = this.value; updateTexture();"
-									style="width:52px;" min="1" value="7" max="20" step="1"/>
-							</td>
-						</tr>
-												
-						<tr class="suboption_settings">
-							<td>
-								Detail
-							</td>
-							<td colspan=2>
-								<input type="range" id="terrain_detail_slider" min="0" max="1" value="0.45" step="0.01"
-									onchange="document.getElementById('terrain_detail').value = this.value; updateTexture();"
-									style="width:50%;vertical-align:top;">
-								<input type="number" id="terrain_detail" 
-									onchange="document.getElementById('terrain_detail_slider').value = this.value; updateTexture();"
-									style="width:45px;" min="0" value="0.45" max="1" step="0.01" />
+							<td>Detail
+								<input type="range" id="terrain_detail_slider" min="0.25" max="0.6" value="0.45" step="0.01"
+									onchange="updateTexture();"
+									style="width:45%;vertical-align:top;">
 							</td>
 						</tr>
-
 						<tr class="suboption_settings">
-							<td>
-								Minimum Height
-							</td>
-							<td colspan=2>
+							
+							<td >Basin
 								<input type="range" id="terrain_min_height_slider" min="0" max="1" value="0" step="0.01"
-									onchange="document.getElementById('terrain_min_height').value = this.value; updateTexture();"
-									style="width:50%;vertical-align:top;">
-								<input type="number" id="terrain_min_height" 
-									onchange="document.getElementById('terrain_min_height_slider').value = this.value; updateTexture();"
-									style="width:45px;" min="0" value="0" max="1" step="0.01" />
+									onchange="updateTexture();"
+									style="width:45%;vertical-align:top;">
 							</td>
-						</tr>
-						
-						<tr class="suboption_settings" id="terrain_seed_line">
-							<td>
-								Seed
-							</td>
-							<td align="center">
+							<td align="center">Seed
 								 <input type="number" id="terrain_seed" onchange="updateTexture();" style="width:45px;" min="1" value="1" max="1000" />
 							</td>
 						</tr>
+						
 						</table>
-
-
-						<div>Colored
-							<input type="checkbox" onchange="switchTerrainColored();updateTexture();" checked> 
-						</div>
-						<div class="terrain_gradient_preview"></div>
-						<div class="slider_area_terrain">
-							<hr class="slider_line_terrain" />
-						</div>
-						<div>Shadow
+						<div style="min-height:10px"></div>
+						<div>
+							Shadow
 							<input type="checkbox" onchange="switchTerrainShadow();updateTexture();" checked> 
 							<input type="button" value="update" onclick="updateTexture('shadow');"> 
 						</div>
-						<table align="center">
+						<table>
+						
+						
 						<tr class="suboption_settings">
 							<td>
 								Strength
@@ -524,6 +493,7 @@
 									style="width:52px;" min="0" value="50" max="100" step="1"/>
 							</td>
 						</tr>
+						<!--
 						<tr class="suboption_settings">
 							<td>
 								X
@@ -549,8 +519,18 @@
 									onchange="document.getElementById('terrain_shadow_ypos_slider').value = this.value; updateTexture('shadow');"
 									style="width:52px;" min="-50" value="-50" max="600" step="1"/>
 							</td>
-						</tr>
+						</tr>-->
 						</table>
+
+
+						<div>Colored
+							<input type="checkbox" onchange="switchTerrainColored();updateTexture();" checked> 
+						</div>
+						<div class="terrain_gradient_preview"></div>
+						<div class="slider_area_terrain">
+							<hr class="slider_line_terrain" />
+						</div>
+						
 						<div style="width: 250px; overflow: hidden;">
 							<div id="shadow_direction" style="float:left; min-height:50px; min-width:50px; max-height:50px; max-width:50px; background-color: yellow;">
 							</div>

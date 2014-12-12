@@ -35,11 +35,10 @@ createGradientSlider(10, '524f21', 'terrain');
 function updateTerrain(effect){
 	
 
-	var octaves = parseInt($("#terrain_octaves").val());
-	var scale = parseFloat($("#terrain_scale").val());	
-	var persistence = parseFloat($("#terrain_detail").val());
+	var scale = parseFloat($("#terrain_scale_slider").val());	
+	var persistence = parseFloat($("#terrain_detail_slider").val());
 	var seed = parseInt($("#terrain_seed").val());
-	var min_height = parseFloat($("#terrain_min_height").val());
+	var min_height = parseFloat($("#terrain_min_height_slider").val());
 	var shadow_strength = (1-parseInt($("#terrain_shadow_strength").val()) / 100);
 
 	var sun_height = parseInt($("#terrain_sun_height").val()) * 20 + 255 ;
@@ -163,8 +162,8 @@ function setTerrainNoise(type, octaves, persistence, scale, seed, percentage, mi
 	for (var x=0; x<max_w; x++){
 		// octaves, persistence, scale, loBound, hiBound, x, y
 		var v = S.simplex(noise_type, octaves, persistence, percentage, scale_s, x, y);
-		max_v = Math.max(v, max_v);
-		min_v = Math.min(v, min_v);
+		max_v = Math.max(v*255, max_v);
+		min_v = Math.min(v*255, min_v);
 
 		v = Math.max(min_height, v);
 		var i = (x + y*max_w) * 4;
@@ -175,16 +174,33 @@ function setTerrainNoise(type, octaves, persistence, scale, seed, percentage, mi
 		d[i+3] = 255;
 	}
 
-	console.log("max_v: " + max_v);
-
 	for (var y=0; y<max_h; y++)
 	for (var x=0; x<max_w; x++){
 		var i = (x + y*max_w) * 4;
-		var v = (((d[i] / 255) + min_v) / max_v) * 255;
+		var v = ((d[i] + min_v) / max_v) * 255;
 		d[i] = v;
 		d[i+1] = v;
 		d[i+2] = v;
 	}
+
+	for (var y=0; y<max_h; y++)
+	for (var x=0; x<max_w; x++){
+		// octaves, persistence, scale, loBound, hiBound, x, y
+		var v = S.simplex(NoiseTypeEnum.FRACTALNOISE, 1, 0.1, 1, 0.6*scale_s, x, y);
+		v=Math.min(v*1.6,1);//v = v / 255;
+		var i = (x + y*max_w) * 4;
+
+		d[i]   = v * min_v*20 + ((1.0-v) * d[i]);
+		d[i+1] = v * min_v*20 + ((1.0-v) * d[i+1]);
+		d[i+2] = v * min_v*20 + ((1.0-v) * d[i+2]);
+		//d[i]   = v*255;
+		//d[i+1] = v*255;
+		//d[i+2] = v*255;
+	}
+
+	console.log("max_v: " + max_v);
+
+	
 	
 	ctx_dst.putImageData(imgData, 0, 0);
 }
