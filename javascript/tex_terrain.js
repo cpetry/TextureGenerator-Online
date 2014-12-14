@@ -367,7 +367,7 @@ function setTerrainShadow(sun_position, shadow_strengh)
 
 			if (i_x >= 0.0 && i_y >= 0.0 && i_x < max_w && i_y < max_h && curr_height < 255){
 				if ( curr_height < s[(i_x + i_y*max_w) * 4]) {
-					var shadow = shadow_strengh * (1-(1/(p)));
+					var shadow = shadow_strengh;// * (1-(1/(p)));
 					d[i] = shadow;
 					d[i+1] = shadow;
 					d[i+2] = shadow;
