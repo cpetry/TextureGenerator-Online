@@ -288,43 +288,106 @@ function setTerrainShadow(sun_position, shadow_strengh)
 
 	shadow_strengh *= 255.0;
 
-	var Sun = new Vec3(sun_position[0], sun_position[1], sun_position[2]);
-	var CurrentPos = new Vec3(max_w/2.0, max_h/2.0, 0.0);
-	var LightDir = new Vec3(0.0,0.0,0.0);
-	subtractVec3(LightDir, Sun, CurrentPos);
-	normalizeVec3(LightDir);
+	//var Sun = new Vec3(sun_position[0], sun_position[1], sun_position[2]);
+	//var CurrentPos = new Vec3(max_w/2.0, max_h/2.0, 0.0);
+	//var LightDir = new Vec3(0.0,0.0,0.0);
+	//subtractVec3(LightDir, Sun, CurrentPos);
+	//normalizeVec3(LightDir);
 
 	var LerpX = 0.0;
 	var LerpY = 0.0;
-
+	var i = 0;
+	
 	for (var y=0; y<max_h; y++)
 	for (var x=0; x<max_w; x++){
-
-		var i = (x + y*max_w) * 4;
-		setVec3(CurrentPos, x, y, s[i]);
-		
 		d[i] = 255;
 		d[i+1] = 255;
 		d[i+2] = 255;
 		d[i+3] = 255;
-		var steps = 0;
-		while(CurrentPos.z < 255.0 
-			&& CurrentPos.x >= 0.0 && CurrentPos.y >= 0.0
-			&& CurrentPos.x < max_w && CurrentPos.y < max_h
-			&& CurrentPos != Sun){
-			addVec3(CurrentPos, CurrentPos, LightDir);
-			LerpX = parseInt(CurrentPos.x + 0.5, 10);
-			LerpY = parseInt(CurrentPos.y + 0.5, 10);
-			steps++;
-			// check for hit
-			if ( CurrentPos.z <= s[(LerpX + LerpY*max_w) * 4]) {
-				var shadow = shadow_strengh;// * 1/steps;
-				d[i] = shadow;
-				d[i+1] = shadow;
-				d[i+2] = shadow;
-				break;
-			}
+
+		// midpoint algorithm
+		var dx = Math.abs(x - sun_position[0]);
+		var dy = Math.abs(y - sun_position[1]);
+		var curr_height = s[i];
+		var dz = Math.abs(sun_position[2] - curr_height);
+		var dz_x = dx * 1.0/(dx+dy) * dz  / dx;
+		var dz_y = dy * 1.0/(dx+dy) * dz  / dy;
+		var f = dy - parseInt(dx / 2.0);
+
+		var incrfar=0;
+		var incrnear=0;
+		var incr_z_far = 0.0;
+		var incr_z_near = 0.0;
+
+		var lfar, lnear, deltafar, deltanear;
+		if (dy > dx){
+			deltafar = dy;
+			deltanear = dx;
+			lfar = y;
+			lnear = x;
+			if (y > sun_position[1])
+				incrfar = -1;
+			else
+				incrfar = 1;
+			if (x > sun_position[0])
+				incrnear = -1;
+			else
+				incrnear = 1;
+			incr_z_far = dz_y;
+			incr_z_near = dz_x;
 		}
+		else{
+			deltafar = dx;
+			deltanear = dy;
+			lfar = x;
+			lnear = y;
+			if (y > sun_position[1])
+				incrnear = -1;
+			else
+				incrnear = 1;
+			if (x > sun_position[0])
+				incrfar = -1;
+			else
+				incrfar = 1;
+			incr_z_far = dz_x;
+			incr_z_near = dz_y;
+		}
+
+		for (var p = 1; p < deltafar; p++) {
+			var i_x=0, i_y=0;
+			if (dy > dx){
+				i_x = lnear;
+				i_y = lfar;
+			}
+			else{
+				i_x = lfar;
+				i_y = lnear;
+			}
+				
+
+			if (i_x >= 0.0 && i_y >= 0.0 && i_x < max_w && i_y < max_h && curr_height < 255){
+				if ( curr_height < s[(i_x + i_y*max_w) * 4]) {
+					var shadow = shadow_strengh * (1-(1/(p)));
+					d[i] = shadow;
+					d[i+1] = shadow;
+					d[i+2] = shadow;
+					//console.log("x = " + i_x + ", y = " + i_y + ", h =" + curr_height + " s[i]=" +  s[(i_x + i_y*max_w) * 4]);
+					break;
+				}
+			}
+			else
+				break;
+
+			lfar += incrfar;
+			curr_height += incr_z_far;
+			if (f > 0) {
+				lnear += incrnear;
+				curr_height += incr_z_near;
+				f -= deltafar;
+			}
+			f += deltanear;
+		}
+		i += 4;
 	}
 	//gaussianblur(imgData_dst, max_w, max_h, 1);
 	ctx_dst.putImageData(imgData_dst, 0, 0);
@@ -340,15 +403,16 @@ function setShadowStrength(strength){
 	var d = imgData_dst.data;
 
 	strength *= 255;
-
+	var i = 0;
 	for (var y=0; y<max_h; y++)
 	for (var x=0; x<max_w; x++){
-		var i = (x + y*max_w) * 4;
+		
 		if (d[i] < 255){
 			d[i] = strength;
 			d[i+1] = strength;
 			d[i+2] = strength;
 		}
+		i += 4;
 	}
 	ctx_dst.putImageData(imgData_dst, 0, 0);
 }
@@ -402,6 +466,8 @@ function setTerrainColor(colors){
 
 	ctx_dest.putImageData(imgData_dest, 0, 0);
 }
+
+
 
 
 function switchTerrainColored(){
