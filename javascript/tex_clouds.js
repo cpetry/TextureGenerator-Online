@@ -47,7 +47,7 @@ $('#clouds_color2').colpick({
 	}
 }).css('background-color', '#2a4d82');
 
-function updateClouds(){
+function updateClouds(canvas, size){
 	var color1 = rgb2hex($("#clouds_color1").css("background-color"));
 	var color2 = rgb2hex($("#clouds_color2").css("background-color"));
 
@@ -61,5 +61,5 @@ function updateClouds(){
 	
 	var type = "PerlinNoise";//$("#perlin_noise_type>option:selected").val();
 	//document.write(type);
-	setPerlinNoise(color1, color2, type, 7, persistence, scale, seed, percentage);
+	setPerlinNoise(canvas, size, color1, color2, type, 7, persistence, scale, seed, percentage);
 }

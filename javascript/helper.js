@@ -113,42 +113,58 @@ function showType(type){
 	updateTexture();
 }
 							
-function updateTexture(params){
+function updateTexture(canvas, size, params){
 	//console.log("UT");
 	var rotation = parseInt($("#rotation").val()) * (Math.PI/180); //rad to deg
 
 	var c = document.getElementById("texture_preview");
-	var ctx = c.getContext("2d");
+	if (!canvas || canvas == '')
+		canvas = c;
 
-	var max_w = 512, max_h = 512;
 	
+	var max_w = 512, max_h = 512;
+	if (size && size != ''){
+		size = parseInt(size);
+		max_w = size;
+		max_h = size;
+	}
+	else
+		size = 512;
+	console.log(size);
+
+	canvas.width  = max_w; 	// important! dimensions would be to small otherwise
+	canvas.height = max_h;
+	
+	var ctx = canvas.getContext("2d");
+
+
 	var type = $(".texture_type_selected").first().attr('id').substring(5);
 	//console.log(type);
 
 	switch(type){
 		case "Brick":
-			updateBrick();
+			updateBrick(canvas, size, params);
 			break;
 		case "Clouds":
-			updateClouds();
+			updateClouds(canvas, size, params);
 			break;
 		case "Checker":
-			updateChecker();
+			updateChecker(canvas, size, params);
 			break;
 		case "Textiles":
-			updateTextiles();
+			updateTextiles(canvas, size, params);
 			break;
 		case "Terrain":
-			updateTerrain(params);
+			updateTerrain(canvas, size, params);
 			break;
 		case "Tiles":
-			updateTiling();
+			updateTiling(canvas, size, params);
 			break;
 		case "Gradient":
-			updateGradient();
+			updateGradient(canvas, size, params);
 			break;
 		case "PerlinNoise":
-			updatePerlinNoise();
+			updatePerlinNoise(canvas, size, params);
 			break;
 	}
 	
@@ -159,7 +175,7 @@ function updateTexture(params){
 		ctx.rotate(rotation);
 		ctx.translate(-max_w/2, -max_h/2);
 
-		var pat=ctx.createPattern(document.getElementById("texture_preview"),"repeat");
+		var pat=ctx.createPattern(canvas,"repeat");
 
 		ctx.clearRect(-max_w/2,-max_h/2,max_w/2,max_h/2);
 		ctx.fillStyle=pat;
@@ -180,27 +196,23 @@ function percentage_compare (a,b) {
 
 
 
-function setGradientColors(colors, gradient_type, tex_type){
+function setGradientColors(canvas, size, colors, gradient_type){
 	//document.write(colors[0][1]);
 	
 	// only the one the browser supports, will be applied!
 	
-	//$(".gradient_preview").css('background', colors[0][0]); // Old browsers 
-	//$(".gradient_preview").css('background', '-webkit-linear-gradient(top, ' + colors[0][0] + ' ' + colors[0][1] + '%, #7db9e8 100%)'); // Chrome10+,Safari5.1+
-	//$(".gradient_preview").css('background', '-webkit-gradient(linear, left top, right top, color-stop(' + colors[0][1] + '%,' + colors[0][0] + '),color-stop(100%, #7db9e8)'); // Chrome10+,Safari5.1+
-	//$(".gradient_preview").css('background', 'linear-gradient(to right, ' + colors[0][0] + ' ' + colors[0][1] + '%, #7db9e8 100%)'); // W3C
 	colors.sort(percentage_compare);
 	
 	
-	var c = document.getElementById("texture_preview");
+	var c = canvas;
 	var ctx = c.getContext("2d");
 	
 	var grad;
 	if (gradient_type == 'linear')
-		grad = ctx.createLinearGradient(0,0,512,0);
+		grad = ctx.createLinearGradient(0,0,size,0);
 		
 	else if (gradient_type == 'radial')
-		grad = ctx.createRadialGradient(256, 256, 0, 256, 256, 362); //x1,y1,r1 ,x1,y1,r1
+		grad = ctx.createRadialGradient(size/2, size/2, 0, size/2, size/2, size/2+size/4); //x1,y1,r1 ,x1,y1,r1
 	
 	var gradient_text = 'linear-gradient(to right';
 	
@@ -209,24 +221,12 @@ function setGradientColors(colors, gradient_type, tex_type){
 		grad.addColorStop(Math.max(col[1],0) / 100, col[0]);
 	});
 	
-	$("." + tex_type + "_gradient_preview").css('background', gradient_text); // W3C
+	$(canvas).css('background', gradient_text); // W3C
 	
 	
 	ctx.fillStyle = grad;
-	ctx.fillRect(0, 0, 512, 512);
+	ctx.fillRect(0, 0, size, size);
 	
-	/*
-	background: #1e5799; // Old browsers 
-	background: -moz-linear-gradient(top, #1e5799 0%, #1e5799 22%, #2989d8 50%, #207cca 51%, #1e5799 71%, #1e5799 71%, #7db9e8 100%); // FF 3.6+ 
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1e5799), color-stop(22%,#1e5799), color-stop(50%,#2989d8), 
-				color-stop(51%,#207cca), color-stop(71%,#1e5799), color-stop(71%,#1e5799), color-stop(100%,#7db9e8)); // Chrome,Safari4+ 
-				
-	background: -webkit-linear-gradient(top, #1e5799 0%,#1e5799 22%,#2989d8 50%,#207cca 51%,#1e5799 71%,#1e5799 71%,#7db9e8 100%); // Chrome10+,Safari5.1+
-	background: -o-linear-gradient(top, #1e5799 0%,#1e5799 22%,#2989d8 50%,#207cca 51%,#1e5799 71%,#1e5799 71%,#7db9e8 100%); // Opera 11.10+ 
-	background: -ms-linear-gradient(top, #1e5799 0%,#1e5799 22%,#2989d8 50%,#207cca 51%,#1e5799 71%,#1e5799 71%,#7db9e8 100%); // IE10+
-	background: linear-gradient(to bottom, #1e5799 0%,#1e5799 22%,#2989d8 50%,#207cca 51%,#1e5799 71%,#1e5799 71%,#7db9e8 100%); // W3C
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 ); // IE6-9 
-	*/
 }
 
 
@@ -243,7 +243,7 @@ function createGradientSlider(pos, col, tex_type){
 		color: col,
 		onChange:function(hsb,hex,rgb,el) {
 			$(el).css('background-color', '#'+hex);
-			updateTexture("color");
+			updateTexture('', '', "color");
 		},
 		onSubmit:function(hsb,hex,rgb,el) {
 			$(el).colpickHide();
@@ -257,14 +257,14 @@ function createGradientSlider(pos, col, tex_type){
 		containment: ".slider_area_" + tex_type,
 		scroll: false,
 		drag: function() {
-			updateTexture("color");
+			updateTexture('', '', "color");
 		},
 	});
 }
 
 
 function multiplyCanvas(src1_canvas, src2_canvas, dest_canvas){
-	var max_w = 512, max_h = 512;
+	var max_w = src1_canvas.width, max_h = src1_canvas.height;
 	var ctx_src1 = src1_canvas.getContext("2d");
 	var imgData_src1 = ctx_src1.getImageData(0,0, max_w, max_h);
 	var s1 = imgData_src1.data;

@@ -68,12 +68,12 @@ NoiseTypeEnum = {
 //
 // For each octave, a higher frequency/lower amplitude function will be added to the original.
 // The higher the persistence [0-1], the more of each succeeding octave will be added.
-SimplexNoise.prototype.simplex = function( type, octaves, persistence, percentage, scale, x, y ) {
+SimplexNoise.prototype.simplex = function( type, size, octaves, persistence, percentage, scale, x, y ) {
     var total = 0;
-	scale = 512 / scale;
+	scale = 512 / scale * (size/512);
     var frequency = 0.25 / scale;
     var amplitude = 1;
-	var offset = 512;
+	var offset = size;
 	var power = 1 / frequency;
     // We have to keep track of the largest possible amplitude,
     // because each octave adds more, and we need a value in [-1, 1].

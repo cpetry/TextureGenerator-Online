@@ -34,15 +34,22 @@ function switchJPGQual(){
 		document.getElementById('file_jpg_qual').style.cssText = "width:40px";
 }
 
+function switchDownloadDimension(){
+	var select_img_dimen = document.getElementById('download_dimension');
+	var img_dim = parseFloat(select_img_dimen.options[select_img_dimen.selectedIndex].value);
+	document.getElementById('display_download_dimension').innerHTML = img_dim + "x" + img_dim;
+}
+
 var button = document.getElementById('download');
 button.addEventListener('click', function (e) {
 	
-	var canvas = document.getElementById("texture_preview");
-	var select_img_dimen = document.getElementById('img_dimension');
-	var img_dim = 0;
+	var select_img_dimen = document.getElementById('download_dimension');
+	var img_dim = 512;
 	if (select_img_dimen)
 		img_dim = parseFloat(select_img_dimen.options[select_img_dimen.selectedIndex].value);
-	//if (img_dim != 512)
+
+	var dl_canvas = document.createElement("canvas");
+	updateTexture(dl_canvas, img_dim);
 
 	var file_name = "texture";
 	
@@ -56,7 +63,7 @@ button.addEventListener('click', function (e) {
 		
 	var qual = parseFloat( document.getElementById('file_jpg_qual').value);
 	
-	canvas.toBlob(function(blob) {
+	dl_canvas.toBlob(function(blob) {
     	saveAs(blob, file_name + "." + file_type);
 	}, image_type, qual);
 });

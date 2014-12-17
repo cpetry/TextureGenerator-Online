@@ -49,7 +49,7 @@ $('#checker_color2').colpick({
 }).css('background-color', '#665e52');
 
 
-function updateChecker(){
+function updateChecker(canvas, size){
 	var color1 = rgb2hex($("#checker_color1").css("background-color"));
 	var color2 = rgb2hex($("#checker_color2").css("background-color"));
 
@@ -59,15 +59,15 @@ function updateChecker(){
 	var seed = parseInt($("#checker_seed").val());
 	var percentage1 = parseInt($("#checker_percentage").val()) / 100.0;
 
-	setChecker(x_checker, y_checker, color1, color2, seed, percentage1);
+	setChecker(canvas, size, x_checker, y_checker, color1, color2, seed, percentage1);
 }
 
-function setChecker(x_checker, y_checker, color1, color2, seed, percentage1)
+function setChecker(canvas, size, x_checker, y_checker, color1, color2, seed, percentage1)
 {
-	var c = document.getElementById("texture_preview");
+	var c = canvas;
 	var ctx = c.getContext("2d");
 
-	var max_w = 512, max_h = 512;
+	var max_w = size, max_h = size;
 	
 	// color2
 	ctx.fillStyle = color2; // hex col

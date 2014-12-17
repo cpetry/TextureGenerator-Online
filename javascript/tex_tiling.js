@@ -74,7 +74,7 @@ $('#grout_gradient_color').colpick({
 
 
 
-function updateTiling(){
+function updateTiling(canvas, size){
 	var tiles_color = rgb2hex($("#tiles_color").css("background-color"));
 	var grout_color = rgb2hex($("#grout_color").css("background-color"));
 	var tiles_gradient_color = rgb2hex($("#tiles_gradient_color").css("background-color"));
@@ -87,6 +87,11 @@ function updateTiling(){
 	var x_tiles_gradient = parseInt($("#tiles_x_gradient").val());
 	var y_tiles_gradient = parseInt($("#tiles_y_gradient").val());
 
+	x_grout = x_grout*(size/512);
+	y_grout = y_grout*(size/512);
+	x_tiles_gradient = x_tiles_gradient*(size/512);
+	y_tiles_gradient = y_tiles_gradient*(size/512);
+
 	if (!$('#TilesGradient').prop('checked')){
 		x_tiles_gradient = 0;
 		y_tiles_gradient = 0;
@@ -96,16 +101,16 @@ function updateTiling(){
 		grout_gradient_color = grout_color;
 	}
 	
-	setTiling(tiles_color, x_tiling, y_tiling, grout_color, x_grout, y_grout, tiles_gradient_color, x_tiles_gradient, y_tiles_gradient, grout_gradient_color);
+	setTiling(canvas, size, tiles_color, x_tiling, y_tiling, grout_color, x_grout, y_grout, tiles_gradient_color, x_tiles_gradient, y_tiles_gradient, grout_gradient_color);
 }
 
 
-function setTiling(tile_col_hex, hori_count, vert_count, grout_col_hex, hori_gap, vert_gap, tiles_gradient_color, x_tiles_gradient, y_tiles_gradient, grout_gradient_color)
+function setTiling(canvas, size, tile_col_hex, hori_count, vert_count, grout_col_hex, hori_gap, vert_gap, tiles_gradient_color, x_tiles_gradient, y_tiles_gradient, grout_gradient_color)
 {
-	var c = document.getElementById("texture_preview");
+	var c = canvas;
 	var ctx = c.getContext("2d");
 
-	var max_w = 512, max_h = 512;
+	var max_w = size, max_h = size;
 	
 	// grout
 	ctx.fillStyle = grout_col_hex; // hex col

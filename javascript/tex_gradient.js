@@ -42,7 +42,7 @@ createGradientSlider(0, 'e6d7c3', 'gradient');
 createGradientSlider(96, '262626', 'gradient');
 createGradientSlider(178, '665e52', 'gradient');
 
-function updateGradient(){
+function updateGradient(canvas, size){
 	var colors = [];
 	
 	$(".slider_gradient").each(function( index ) {
@@ -53,8 +53,14 @@ function updateGradient(){
 		colors.push([rgb2hex($(this).css("background-color")), percentage]);
 	});
 	
+	var gradient_text = 'linear-gradient(to right';
+	colors.forEach(function(col) {
+		gradient_text += ', ' + col[0] + ' ' + Math.max(col[1],0) + '%';
+	});
+	$(".gradient_gradient_preview").css('background', gradient_text); // W3C
+
 	
 	gradient_type = $("select#gradient_type option:selected").val();
 	//document.write(gradient_type);
-	setGradientColors(colors, gradient_type, 'gradient');
+	setGradientColors(canvas, size, colors, gradient_type);
 }

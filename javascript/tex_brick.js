@@ -60,24 +60,25 @@ $('#brick_grout_color').colpick({
 }).css('background-color', '#665e52');
 
 
-function updateBrick(){
+function updateBrick(canvas, size){
 	var brick_color = rgb2hex($("#brick_color").css("background-color"));
 	var grout_color = rgb2hex($("#brick_grout_color").css("background-color"));
 	var gradient_color = rgb2hex($("#brick_gradient_color").css("background-color"));
 	
 	var pattern = $("input[name='brick_pattern']:checked").val();
 	var groutspace = parseInt($("#brick_grout_width").val());
-
 	var brick_gradient = $('#BrickGradient').prop('checked') ? parseInt($("#brick_gradient").val()): 0;
 	
+	groutspace = groutspace*(size/512);
+	brick_gradient = brick_gradient*(size/512);
 	
 	var count_x = parseInt($("#brick_x").val());
 	var count_y = parseInt($("#brick_y").val());
 
-	var c = document.getElementById("texture_preview");
+	var c = canvas;
 	var ctx = c.getContext("2d");
 
-	var max_w = 512, max_h = 512;
+	var max_w = size, max_h = size;
 	var width = parseInt(max_w / count_x + 0.5);
 	var height = parseInt(max_h / count_y + 0.5);
 	

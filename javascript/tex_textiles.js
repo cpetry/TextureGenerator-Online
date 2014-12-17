@@ -79,7 +79,7 @@ function textiles_select_pattern(elem){
 	updateTexture();
 }
 
-function updateTextiles(){
+function updateTextiles(canvas, size){
 	var color1 = rgb2hex($("#textiles_color1").css("background-color"));
 	var color2 = rgb2hex($("#textiles_color2").css("background-color"));
 	var bgcolor = '#000000'; //$("#textiles_bgcolor").css("background-color")
@@ -96,9 +96,9 @@ function updateTextiles(){
 	// own parameter
 	var depth = 1; // [1,3] , default 1
 	var round = true;
-	var max_w = 512;
-	var max_h = 512;
-	var c = document.getElementById("texture_preview");
+	var max_w = size;
+	var max_h = size;
+	var c = canvas;
 	var ctx = c.getContext("2d");
 	
 	var col1_rgb = hexToRgb(color1);

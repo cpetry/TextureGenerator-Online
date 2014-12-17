@@ -58,7 +58,7 @@ createGradientSlider(10, '60632e', 'terrain');
 //createGradientSlider(0, '222222', 'terrain');
 
 
-function updateTerrain(effect){
+function updateTerrain(canvas, size, effect){
 	
 
 	var scale = parseFloat($("#terrain_scale_slider").val());	
@@ -73,52 +73,48 @@ function updateTerrain(effect){
 
 	if (!effect){
 		var before = new Date().getTime();
-		setTerrainNoise("FractalNoise", 7, persistence, scale, seed, 1, height);
+		setTerrainNoise("FractalNoise", size, 7, persistence, scale, seed, 1, height);
 		var after = new Date().getTime();
 		
 		if (terrain_shadow)
-			updateTerrainShadow(terrain_shadow_x, terrain_shadow_y, sun_height, shadow_strength);
+			updateTerrainShadow(size, terrain_shadow_x, terrain_shadow_y, sun_height, shadow_strength);
 		if (terrain_colored)
-			updateTerrainColor();
-		console.log(after - before);
+			updateTerrainColor(size);
 	}
 	else if (effect == "shadow"){
 		before = new Date().getTime();
-		updateTerrainShadow(terrain_shadow_x, terrain_shadow_y, sun_height, shadow_strength);
+		updateTerrainShadow(size, terrain_shadow_x, terrain_shadow_y, sun_height, shadow_strength);
 		after = new Date().getTime();
-		console.log(after - before);
 	}
 	else if (effect == "shadow_strength"){
 		setShadowStrength(shadow_strength);
 	}
 	else if (effect == "color"){
 		before = new Date().getTime();
-		updateTerrainColor();
+		updateTerrainColor(size);
 		after = new Date().getTime();
-		console.log(after - before);
 	}
 	
 	before = new Date().getTime();
 	//console.log(terrain_colored);
 	if (terrain_colored && terrain_shadow)
-		multiplyCanvas(terrain_color_canvas, terrain_shadow_canvas, document.getElementById("texture_preview"));
+		multiplyCanvas(terrain_color_canvas, terrain_shadow_canvas, canvas);
 	else if (terrain_colored && !terrain_shadow)
-		multiplyCanvas(terrain_color_canvas, null, document.getElementById("texture_preview"));
+		multiplyCanvas(terrain_color_canvas, null, canvas);
 	else if (!terrain_colored && terrain_shadow)
-		multiplyCanvas(terrain_shadow_canvas, null, document.getElementById("texture_preview"));
+		multiplyCanvas(terrain_shadow_canvas, null, canvas);
 	else
-		multiplyCanvas(terrain_height_canvas, null, document.getElementById("texture_preview"));
+		multiplyCanvas(terrain_height_canvas, null, canvas);
 
 	after = new Date().getTime();
-	console.log(after - before);
 }
 
-function updateTerrainShadow(shadow_posx, shadow_posy, sun_height, shadow_strength){
-	setTerrainShadow(new Array(shadow_posx, shadow_posy, sun_height), shadow_strength);
+function updateTerrainShadow(size, shadow_posx, shadow_posy, sun_height, shadow_strength){
+	setTerrainShadow(size, new Array(shadow_posx, shadow_posy, sun_height), shadow_strength);
 }
 
 
-function updateTerrainColor(){
+function updateTerrainColor(size){
 	var colors = [];
 	var colors_hex = [];
 	
@@ -152,19 +148,20 @@ function updateTerrainColor(){
 	}
 
 	before = new Date().getTime();
-	setTerrainColor(colors);
+	setTerrainColor(size, colors);
 	after = new Date().getTime();
-	console.log(after - before);
 }
 
 
-function setTerrainNoise(type, octaves, persistence, scale, seed, percentage, min_height)
+function setTerrainNoise(type, size, octaves, persistence, scale, seed, percentage, min_height)
 {
-	var max_w = 512, max_h = 512;
+	var max_w = size, max_h = size;
 
 	terrain_height_canvas.width  = max_w; 	// important! dimensions would be to small otherwise
 	terrain_height_canvas.height = max_h;
 
+	console.log(size);
+	
 	var dst = terrain_height_canvas;
 	var ctx_dst = dst.getContext("2d");
 	var imgData = ctx_dst.getImageData(0,0, max_w, max_h);
@@ -187,7 +184,7 @@ function setTerrainNoise(type, octaves, persistence, scale, seed, percentage, mi
 	for (var y=0; y<max_h; y++)
 	for (var x=0; x<max_w; x++){
 		// octaves, persistence, scale, loBound, hiBound, x, y
-		var v = S.simplex(noise_type, octaves, persistence, percentage, scale_s, x, y);
+		var v = S.simplex(noise_type, size, octaves, persistence, percentage, scale_s, x, y);
 		max_v = Math.max(v*255, max_v);
 		min_v = Math.min(v*255, min_v);
 
@@ -211,7 +208,7 @@ function setTerrainNoise(type, octaves, persistence, scale, seed, percentage, mi
 	for (var y=0; y<max_h; y++)
 	for (var x=0; x<max_w; x++){
 		// octaves, persistence, scale, loBound, hiBound, x, y
-		var v = S.simplex(NoiseTypeEnum.PERLINNOISE, 3, 0.2, 1, 0.8*scale_s, x, y);
+		var v = S.simplex(NoiseTypeEnum.PERLINNOISE, size, 3, 0.2, 1, 0.8*scale_s, x, y);
 		v=Math.min(v*(1+(1-min_height/4)) - min_height,1);//v = v / 255;
 		v = v*v;
 		var i = (x + y*max_w) * 4;
@@ -269,9 +266,9 @@ $("#terrain_shadow_position_canvas").mousedown(function(e){
 	drawSunPositionCanvas(x,y);
 });
 
-function setTerrainShadow(sun_position, shadow_strengh)
+function setTerrainShadow(size, sun_position, shadow_strengh)
 {
-	var max_w = 512.0, max_h = 512.0;
+	var max_w = size, max_h = size;
 
 	terrain_shadow_canvas.width  = max_w; 	// important! dimensions would be to small otherwise
 	terrain_shadow_canvas.height = max_h;
@@ -394,8 +391,8 @@ function setTerrainShadow(sun_position, shadow_strengh)
 }
 
 
-function setShadowStrength(strength){
-	var max_w = 512, max_h = 512;
+function setShadowStrength(size, strength){
+	var max_w = size, max_h = size;
 
 	var dst = terrain_shadow_canvas;
 	var ctx_dst = dst.getContext("2d");
@@ -417,8 +414,8 @@ function setShadowStrength(strength){
 	ctx_dst.putImageData(imgData_dst, 0, 0);
 }
 
-function setTerrainColor(colors){
-	var max_w = 512, max_h = 512;
+function setTerrainColor(size, colors){
+	var max_w = size, max_h = size;
 
 	terrain_color_canvas.width  = max_w; 	// important! dimensions would be to small otherwise
 	terrain_color_canvas.height = max_h;
@@ -466,8 +463,6 @@ function setTerrainColor(colors){
 
 	ctx_dest.putImageData(imgData_dest, 0, 0);
 }
-
-
 
 
 function switchTerrainColored(){

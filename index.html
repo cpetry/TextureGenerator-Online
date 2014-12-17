@@ -68,7 +68,7 @@
 	<div class="container">		
 	
 		<table><tr>
-			<td style="vertical-align:top;">
+			<td style="vertical-align:bottom;">
 				<div class="preview">
 					<canvas id="texture" style="display:none;" width="512" height="512"> </canvas>
 					<div width=512 height=512>
@@ -489,14 +489,14 @@
 
 						<table>
 						<tr class="suboption_settings">
-							<td style="min-width:150px;">Strength
+							<td >Strength
 								<input type="range" id="terrain_shadow_strength_slider" min="1" max="100" value="40" step="1"
-									onchange="updateTexture('shadow');"
+									onchange="updateTexture( '', '','shadow');"
 									style="width:45%;vertical-align:top;">
 							</td>
-							<td style="min-width:150px;">Sun Height
+							<td >Height
 								<input type="range" id="terrain_shadow_sun_height_slider" min="0" max="100" value="52" step="1"
-									onchange="updateTexture('shadow');"
+									onchange="updateTexture('','' ,'shadow');"
 									style="width:45%;vertical-align:top;">
 							</td>
 							
@@ -535,7 +535,7 @@
 								<p align="right" style="min-width:100px;">Sun Position</p>
 							</td>
 							<td>
-								<canvas id="terrain_shadow_position_canvas" style="float:left;margin-left: 20px;" onclick="updateTexture('shadow');" width="50" height="50"></canvas>
+								<canvas id="terrain_shadow_position_canvas" style="float:left;margin-left: 20px;" onclick="updateTexture('', '','shadow');" width="50" height="50"></canvas>
 							</td>
 						</tr>
 						</table>
@@ -845,6 +845,15 @@
 					<option value="1024">1024x1024</option>
 				</select>
 				<div style="min-height:10px"></div> -->
+				<select id="download_dimension" onChange="switchDownloadDimension();">
+					<option value="256">Tiny</option>
+					<option value="512" selected>Small</option>
+					<option value="1024">Normal</option>
+					<option value="2048">Big</option>
+					<option value="4096">Huge</option>
+				</select>
+				<div style="display:inline" id="display_download_dimension">512x512</div>
+				<div style="min-height:10px"></div>
 				<input id="file_name" type="text" size="12">
 				<select id="file_type" onChange="switchJPGQual();">
 					<option value="png" selected>PNG</option>
