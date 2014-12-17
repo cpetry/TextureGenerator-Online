@@ -151,6 +151,12 @@ function updateTexture(canvas, size, params){
 		case "Checker":
 			updateChecker(canvas, size, params);
 			break;
+		case "Gradient":
+			updateGradient(canvas, size, params);
+			break;
+		case "PerlinNoise":
+			updatePerlinNoise(canvas, size, params);
+			break;
 		case "Textiles":
 			updateTextiles(canvas, size, params);
 			break;
@@ -160,11 +166,8 @@ function updateTexture(canvas, size, params){
 		case "Tiles":
 			updateTiling(canvas, size, params);
 			break;
-		case "Gradient":
-			updateGradient(canvas, size, params);
-			break;
-		case "PerlinNoise":
-			updatePerlinNoise(canvas, size, params);
+		case "Wood":
+			updateWood(canvas, size, params);
 			break;
 	}
 	

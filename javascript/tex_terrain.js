@@ -25,6 +25,7 @@
 var terrain_height_canvas = document.createElement("canvas");
 var terrain_color_canvas = document.createElement("canvas");
 var terrain_shadow_canvas = document.createElement("canvas");
+var terrain_type = "mountains";
 var terrain_colored = true;
 var terrain_shadow = true;
 var terrain_shadow_x = -1400.0;
@@ -72,9 +73,14 @@ function updateTerrain(canvas, size, effect){
 	//var sun_posx = parseInt($("#terrain_shadow_xpos").val());
 	//var sun_posy = parseInt($("#terrain_shadow_ypos").val());
 
+	
 	if (!effect){
 		var before = new Date().getTime();
-		setTerrainNoise("FractalNoise", size, 7, persistence, scale, seed, 1, height);
+		if (terrain_type == "mountains")
+			setTerrainMountain(size, persistence, scale, seed, height);
+		else if(terrain_type == "sand")
+			setTerrainSand(size, persistence, scale, seed, height);
+		
 		var after = new Date().getTime();
 		
 		if (terrain_shadow)
@@ -116,6 +122,9 @@ function updateTerrainShadow(size, shadow_posx, shadow_posy, sun_height, shadow_
 
 
 function updateTerrainColor(size){
+	if (!size)
+		size = 512;
+	
 	var colors = [];
 	var colors_hex = [];
 	
@@ -154,8 +163,7 @@ function updateTerrainColor(size){
 }
 
 
-function setTerrainNoise(type, size, octaves, persistence, scale, seed, percentage, min_height)
-{
+function setTerrainSand(size, persistence, scale, seed, min_height){
 	var max_w = size, max_h = size;
 
 	terrain_height_canvas.width  = max_w; 	// important! dimensions would be to small otherwise
@@ -170,14 +178,9 @@ function setTerrainNoise(type, size, octaves, persistence, scale, seed, percenta
 		
 	var scale_s = scale;
 	
-	var noise_type;
-	if (type == "PerlinNoise")
-		noise_type = NoiseTypeEnum.PERLINNOISE;
-	else if (type == "FractalNoise")
-		noise_type = NoiseTypeEnum.FRACTALNOISE;
-	else if (type == "Turbulence")
-		noise_type = NoiseTypeEnum.TURBULENCE;
-		
+	var noise_type = NoiseTypeEnum.FRACTALNOISE;
+	var octaves = 7;
+	var percentage = 1;
 	var S = new SimplexNoise(seed);
 
 	var max_v = 0, min_v = 255;
@@ -211,6 +214,7 @@ function setTerrainNoise(type, size, octaves, persistence, scale, seed, percenta
 		// octaves, persistence, scale, loBound, hiBound, x, y
 		var v = S.simplex(NoiseTypeEnum.PERLINNOISE, size, 3, 0.2, 1, 0.8*scale_s, x, y);
 		v=Math.min(v*(1+(1-min_height/4)) - min_height,1);//v = v / 255;
+		v = Math.max(v, 0 );
 		v = v*v;
 		var i = (x + y*max_w) * 4;
 		var old = d[i];
@@ -219,9 +223,73 @@ function setTerrainNoise(type, size, octaves, persistence, scale, seed, percenta
 		d[i]   = v * old;
 		d[i+1] = v * old;
 		d[i+2] = v * old;
-		//d[i]   = v*255;
-		//d[i+1] = v*255;
-		//d[i+2] = v*255;
+	}
+
+	
+	
+	ctx_dst.putImageData(imgData, 0, 0);
+}
+
+function setTerrainMountain(size, persistence, scale, seed, min_height)
+{
+	var max_w = size, max_h = size;
+
+	terrain_height_canvas.width  = max_w; 	// important! dimensions would be to small otherwise
+	terrain_height_canvas.height = max_h;
+
+	console.log(size);
+	
+	var dst = terrain_height_canvas;
+	var ctx_dst = dst.getContext("2d");
+	var imgData = ctx_dst.getImageData(0,0, max_w, max_h);
+	var d = imgData.data;
+		
+	var scale_s = scale;
+	
+	var noise_type = NoiseTypeEnum.FRACTALNOISE;
+	var octaves = 7;
+	var percentage = 1;
+	var S = new SimplexNoise(seed);
+
+	var max_v = 0, min_v = 255;
+
+	for (var y=0; y<max_h; y++)
+	for (var x=0; x<max_w; x++){
+		// octaves, persistence, scale, loBound, hiBound, x, y
+		var v = S.simplex(noise_type, size, octaves, persistence, percentage, scale_s, x, y);
+		max_v = Math.max(v*255, max_v);
+		min_v = Math.min(v*255, min_v);
+
+		var i = (x + y*max_w) * 4;
+
+		d[i]   = v * 255 + ((1.0-v) * 0);
+		d[i+1] = v * 255 + ((1.0-v) * 0);
+		d[i+2] = v * 255 + ((1.0-v) * 0);
+		d[i+3] = 255;
+	}
+
+	for (var y=0; y<max_h; y++)
+	for (var x=0; x<max_w; x++){
+		var i = (x + y*max_w) * 4;
+		var v = ((d[i] + min_v) / max_v) * 255;
+		d[i] = v;
+		d[i+1] = v;
+		d[i+2] = v;
+	}
+
+	for (var y=0; y<max_h; y++)
+	for (var x=0; x<max_w; x++){
+		// octaves, persistence, scale, loBound, hiBound, x, y
+		var v = S.simplex(NoiseTypeEnum.PERLINNOISE, size, 3, 0.2, 1, 0.8*scale_s, x, y);
+		v=Math.min(v*Math.max((1+(1-min_height/4)) - min_height, 0),1);//v = v / 255;
+		v = v*v;
+		var i = (x + y*max_w) * 4;
+		var old = d[i];
+		//var v = Math.max((1-v) - 0.7, 0);
+
+		d[i]   = v * old;
+		d[i+1] = v * old;
+		d[i+2] = v * old;
 	}
 
 	
@@ -479,6 +547,11 @@ function switchTerrainColored(){
 	}
 }
 
+
+function setTerrainType(){
+	var select_terrain_type = document.getElementById('terrain_type');
+	terrain_type = select_terrain_type.options[select_terrain_type.selectedIndex].value;
+}
 
 function switchTerrainShadow(){
 	terrain_shadow = !terrain_shadow;
