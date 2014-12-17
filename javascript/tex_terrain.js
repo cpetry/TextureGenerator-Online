@@ -67,7 +67,8 @@ function updateTerrain(canvas, size, effect){
 	var height = 1-parseFloat($("#terrain_height_slider").val());
 	var shadow_strength = (1-parseInt($("#terrain_shadow_strength_slider").val()) / 100);
 
-	var sun_height = parseInt($("#terrain_shadow_sun_height_slider").val()) * 40 + 255 ;
+	var sun_height = parseInt($("#terrain_shadow_sun_height_slider").val()) * 40 + 255;
+	sun_height = sun_height*(512/size);
 	//var sun_posx = parseInt($("#terrain_shadow_xpos").val());
 	//var sun_posy = parseInt($("#terrain_shadow_ypos").val());
 
