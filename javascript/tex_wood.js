@@ -38,6 +38,19 @@ $('#wood_color1').colpick({
 
 $('#wood_color2').colpick({
 	layout:'rgbhsbhex',
+	color: {h:35, s:46, b:29},
+	onChange:function(hsb,hex,rgb,el) {
+		$(el).css('background-color', '#'+hex);
+		updateTexture();
+	},
+	onSubmit:function(hsb,hex,rgb,el) {
+		$(el).colpickHide();
+	}
+}).css('background-color', '#4a3c28');
+
+
+$('#wood_color3').colpick({
+	layout:'rgbhsbhex',
 	color: {h:35, s:20, b:10},
 	onChange:function(hsb,hex,rgb,el) {
 		$(el).css('background-color', '#'+hex);
@@ -51,6 +64,7 @@ $('#wood_color2').colpick({
 function updateWood(canvas, size){
 	var color1 = rgb2hex($("#wood_color1").css("background-color"));
 	var color2 = rgb2hex($("#wood_color2").css("background-color"));
+	var color3 = rgb2hex($("#wood_color3").css("background-color"));
 
 	var scale = parseFloat($("#wood_scale").val());
 	//var scale_y = parseFloat($("#perlin_noise_scale_y").val());
@@ -63,10 +77,10 @@ function updateWood(canvas, size){
 	
 	var type = $("#wood_type>option:selected").val();
 	//document.write(type);
-	setWood(canvas, size, color1, color2, type, octaves, persistence, scale, seed, percentage);
+	setWood(canvas, size, color1, color2, color3, type, octaves, persistence, scale, seed, percentage);
 }
 
-function setWood(canvas, size, color1, color2, type, octaves, persistence, scale, seed, percentage)
+function setWood(canvas, size, color1, color2, color3, type, octaves, persistence, scale, seed, percentage)
 {
 	var c = canvas;
 	var ctx = c.getContext("2d");
@@ -80,20 +94,38 @@ function setWood(canvas, size, color1, color2, type, octaves, persistence, scale
 	
 	var col1_rgb = hexToRgb(color1);
 	var col2_rgb = hexToRgb(color2);
+	var col3_rgb = hexToRgb(color3);
 	var scale_s = scale;
 	
 	var before = new Date().getTime();
+	
+	for(var y = 0; y < max_h; y++)
+	for(var x = 0; x < max_w; x++)
+    {   
+		var i = (x + y*max_w) * 4;
+		var v = S.simplex(NoiseTypeEnum.PERLINNOISE, size, octaves*2, persistence, 1, scale_s*55, x*10, y/3);
+		v = v * (S.simplex(NoiseTypeEnum.PERLINNOISE, size, octaves, persistence, 1, scale_s*5, x*5, y) - 0.5) ;
+		v += 0.4;
+		
+        d[i]   = v * 255;
+		d[i+1] = v * 255;
+		d[i+2] = v * 255;
+		d[i+3] = 255;
+    }
 	
     for(var y = 0; y < max_h; y++)
 	for(var x = 0; x < max_w; x++)
     {   
 		var i = (x + y*max_w) * 4;
-		var v = S.simplex(NoiseTypeEnum.PERLINNOISE, size, octaves, persistence, 1, scale_s, x*5, y*2);
-        v = v * persistence* 20;
+		var v = S.simplex(NoiseTypeEnum.PERLINNOISE, size, octaves, persistence, 1, scale_s, x*5, y);
+		v = v * persistence * 20;
 		v = v - parseInt(v);
-		if (v < 0.1 || v > 0.9)
-			v = v * (1-v);
-			
+		if (v < 0.1 || v > 0.9){
+			v = v/2 * (2-v*2);
+		}
+		v *= d[i]/255;
+		v = Math.sqrt(v);
+		
         d[i]   = v * col1_rgb.r + ((1.0-v) * col2_rgb.r);
 		d[i+1] = v * col1_rgb.g + ((1.0-v) * col2_rgb.g);
 		d[i+2] = v * col1_rgb.b + ((1.0-v) * col2_rgb.b);
@@ -107,9 +139,9 @@ function setWood(canvas, size, color1, color2, type, octaves, persistence, scale
 		var v = S.simplex(NoiseTypeEnum.TURBULENCE, size, octaves, persistence, 1, scale_s, x*20, y);
 		v = Math.min(v*20,1);
         v = v * (d[i]/255);
-        d[i]   = v * col1_rgb.r + ((1.0-v) * col2_rgb.r);
-		d[i+1] = v * col1_rgb.g + ((1.0-v) * col2_rgb.g);
-		d[i+2] = v * col1_rgb.b + ((1.0-v) * col2_rgb.b);
+        d[i]   = v * d[i]   + ((1.0-v) * col3_rgb.r);
+		d[i+1] = v * d[i+1] + ((1.0-v) * col3_rgb.g);
+		d[i+2] = v * d[i+2] + ((1.0-v) * col3_rgb.b);
 		d[i+3] = 255;
     }
 	
