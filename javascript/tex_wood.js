@@ -73,14 +73,14 @@ function updateWood(canvas, size){
 	var percentage = 1;
 	
 	var seed = parseInt($("#wood_seed").val());
-	var octaves = parseInt($("#wood_octaves").val());
-	
+	var x_scale = parseInt($("#wood_x").val());wood_planks
+	var nmb_planks = parseInt($("#wood_planks").val());
 	var type = $("#wood_type>option:selected").val();
 	//document.write(type);
-	setWood(canvas, size, color1, color2, color3, type, octaves, persistence, scale, seed, percentage);
+	setWood(canvas, size, color1, color2, color3, type, x_scale, persistence, scale, seed, percentage, nmb_planks);
 }
 
-function setWood(canvas, size, color1, color2, color3, type, octaves, persistence, scale, seed, percentage)
+function setWood(canvas, size, color1, color2, color3, type, x_scale, persistence, scale, seed, percentage, nmb_planks)
 {
 	var c = canvas;
 	var ctx = c.getContext("2d");
@@ -98,47 +98,60 @@ function setWood(canvas, size, color1, color2, color3, type, octaves, persistenc
 	var scale_s = scale;
 	
 	var before = new Date().getTime();
-	
+	var i=0;
 	for(var y = 0; y < max_h; y++)
 	for(var x = 0; x < max_w; x++)
     {   
-		var i = (x + y*max_w) * 4;
-		var v = S.simplex(NoiseTypeEnum.PERLINNOISE, size, octaves*2, persistence, 1, scale_s*55, x*10, y/3);
-		v = v * (S.simplex(NoiseTypeEnum.PERLINNOISE, size, octaves, persistence, 1, scale_s*5, x*5, y) - 0.5) ;
-		v += 0.4;
+		var v = S.simplex(NoiseTypeEnum.PERLINNOISE, size, 1*2, persistence, 1, scale_s*55, x*x_scale*2, y/x_scale);
+		v = v * (S.simplex(NoiseTypeEnum.PERLINNOISE, size, 1, persistence, 1, scale_s*5, x*x_scale, y) - 0.5) ;
+		v += 0.5;
 		
         d[i]   = v * 255;
 		d[i+1] = v * 255;
 		d[i+2] = v * 255;
 		d[i+3] = 255;
+		i += 4;
     }
-	
+    
+	i =0;
+	/**/
     for(var y = 0; y < max_h; y++)
 	for(var x = 0; x < max_w; x++)
     {   
-		var i = (x + y*max_w) * 4;
-		var v = S.simplex(NoiseTypeEnum.PERLINNOISE, size, octaves, persistence, 1, scale_s, x*5, y);
+		var v = S.simplex(NoiseTypeEnum.PERLINNOISE, size, 1, persistence, 1, scale_s, x*x_scale, y);
 		v = v * persistence * 20;
 		v = v - parseInt(v);
-		if (v < 0.1 || v > 0.9){
-			v = v/2 * (2-v*2);
-		}
+		//v = 6 * Math.pow(v,5) - 15 * Math.pow(v,4) + 10 * Math.pow(v,3);
+		//if (v < 0.1 || v > 0.9){
+		//	v = v/2 * (2-v*2);
+		//}
 		v *= d[i]/255;
 		v = Math.sqrt(v);
+		//v -= 0.5;
+		//v *= 2;
+		var trg = 1 - 2*Math.acos((1 - 0.1)*Math.sin(2*Math.PI*((2*v - 1)/4)))/Math.PI;
+		v = (trg*Math.sqrt(v));
+		//v += 1;
+		//v *= 2;
 		
         d[i]   = v * col1_rgb.r + ((1.0-v) * col2_rgb.r);
 		d[i+1] = v * col1_rgb.g + ((1.0-v) * col2_rgb.g);
 		d[i+2] = v * col1_rgb.b + ((1.0-v) * col2_rgb.b);
 		d[i+3] = 255;
+		i += 4;
     }
+
+    //gaussianblur(imgData, size, size, 2);
 	
+	
+	i=0;
 	for(var y = 0; y < max_h; y++)
 	for(var x = 0; x < max_w; x++)
     {   
-		var i = (x + y*max_w) * 4;
-		var v = S.simplex(NoiseTypeEnum.TURBULENCE, size, octaves, persistence, 1, scale_s, x*20, y);
+		i += 4;
+		var v = S.simplex(NoiseTypeEnum.TURBULENCE, size, 1, persistence, 1, (nmb_planks-1)*(nmb_planks-1), x, y/size);
 		v = Math.min(v*20,1);
-        v = v * (d[i]/255);
+        //v = v * (d[i]/255);
         d[i]   = v * d[i]   + ((1.0-v) * col3_rgb.r);
 		d[i+1] = v * d[i+1] + ((1.0-v) * col3_rgb.g);
 		d[i+2] = v * d[i+2] + ((1.0-v) * col3_rgb.b);

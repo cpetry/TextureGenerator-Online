@@ -559,8 +559,6 @@
 						<div class="slider_area_terrain">
 							<hr class="slider_line_terrain" />
 						</div>
-						
-						
 					</div>
 					
 					<!-- Textiles -->
@@ -807,8 +805,7 @@
 						</table>
 					</div>
 					
-					<!-- Wood -->
-					
+					<!-- Wood -->				
 					<div class="type_settings" id="Wood">
 						<table align="center">
 						<tr class="option_settings_head">
@@ -829,29 +826,29 @@
 						
 						<tr class="suboption_settings">
 							<td>
-								Type
+								Planks
 							</td>
 							<td>
-								<select id="wood_type"
-									onchange="updateTexture();">
-									<option selected>PerlinNoise</option>
-									<option>FractalNoise</option>
-									<option>Turbulence</option>
-								</select>
+								<input type="range" id="wood_planks_slider" min="1" max="10" value="5" step="0.1"
+									onchange="document.getElementById('wood_planks').value = this.value; updateTexture();"
+									style="width:50%;vertical-align:top;">
+								 <input type="number" id="wood_planks" 
+								 onchange="document.getElementById('wood_planks_slider').value = this.value; updateTexture();"
+								 step="0.1" style="width:45px;" min="1" value="5" max="10" />
 							</td>
 						</tr>
 						
 						<tr class="suboption_settings">
 							<td>
-								Octaves
+								X scale
 							</td>
 							<td>
-								<input type="range" id="wood_octaves_slider" min="1" max="2" value="1" step="1"
-									onchange="document.getElementById('wood_octaves').value = this.value; updateTexture();"
+								<input type="range" id="wood_x_slider" min="1" max="10" value="5" step="0.1"
+									onchange="document.getElementById('wood_x').value = this.value; updateTexture();"
 									style="width:50%;vertical-align:top;">
-								 <input type="number" id="wood_octaves" 
-								 onchange="document.getElementById('wood_octaves_slider').value = this.value; updateTexture();"
-								 step="1" style="width:45px;" min="1" value="1" max="2" />
+								 <input type="number" id="wood_x" 
+								 onchange="document.getElementById('wood_x_slider').value = this.value; updateTexture();"
+								 step="0.1" style="width:45px;" min="1" value="5" max="10" />
 							</td>
 						</tr>
 						
