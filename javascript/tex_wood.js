@@ -39,6 +39,7 @@ $('#wood_color1').colpick({
 $('#wood_color2').colpick({
 	layout:'rgbhsbhex',
 	color: {h:35, s:46, b:29},
+	hue:200,
 	onChange:function(hsb,hex,rgb,el) {
 		$(el).css('background-color', '#'+hex);
 		updateTexture();
@@ -52,6 +53,7 @@ $('#wood_color2').colpick({
 $('#wood_color3').colpick({
 	layout:'rgbhsbhex',
 	color: {h:35, s:20, b:10},
+	hue:200,
 	onChange:function(hsb,hex,rgb,el) {
 		$(el).css('background-color', '#'+hex);
 		updateTexture();
@@ -98,6 +100,9 @@ function setWood(canvas, size, color1, color2, color3, type, x_scale, persistenc
 	var scale_s = scale;
 	
 	var before = new Date().getTime();
+
+	//////////
+	// grain
 	var i=0;
 	for(var y = 0; y < max_h; y++)
 	for(var x = 0; x < max_w; x++)
@@ -113,8 +118,12 @@ function setWood(canvas, size, color1, color2, color3, type, x_scale, persistenc
 		i += 4;
     }
     
+
+    //////////
+    // circles
 	i =0;
-	/**/
+	var max_v = -255;
+	var min_v = 255;
     for(var y = 0; y < max_h; y++)
 	for(var x = 0; x < max_w; x++)
     {   
@@ -126,24 +135,55 @@ function setWood(canvas, size, color1, color2, color3, type, x_scale, persistenc
 		//	v = v/2 * (2-v*2);
 		//}
 		v *= d[i]/255;
-		v = Math.sqrt(v);
 		//v -= 0.5;
 		//v *= 2;
-		var trg = 1 - 2*Math.acos((1 - 0.1)*Math.sin(2*Math.PI*((2*v - 1)/4)))/Math.PI;
-		v = (trg*Math.sqrt(v));
-		//v += 1;
-		//v *= 2;
+		//var trg = 1 - 2*Math.acos((1 - 0.1)*Math.sin(2*Math.PI*((2*v - 1)/4)))/Math.PI;
+		// complement
+		//compl = 1.0-Math.pow(Math.sqrt(v),15);
+		//v = (compl*v);
+
 		
-        d[i]   = v * col1_rgb.r + ((1.0-v) * col2_rgb.r);
+		
+		max_v = Math.max(v,max_v);
+		min_v = Math.min(v,min_v);
+
+        d[i]   = v*255;
+		d[i+1] = v*255;
+		d[i+2] = v*255;
+		d[i+3] = 255;
+		i += 4;
+    }
+
+    // smoothing it out
+	i =0;
+    for(var y = 0; y < max_h; y++)
+	for(var x = 0; x < max_w; x++)
+    {   
+    	var v = Math.max((d[i] / 255) - min_v,0) / (max_v - min_v);
+
+    	// http://mathematica.stackexchange.com/questions/38293/make-a-differentiable-smooth-sawtooth-waveform
+		//trg[x_] := 1 - 2 ArcCos[(1 - δ) Sin[2 π x]]/π;
+		//sqr[x_] := 2 ArcTan[Sin[2 π x]/δ]/π;
+		//swt[x_] := (1 + trg[(2 x - 1)/4] sqr[x/2])/2;
+    	var delta = 0.25; // 0.05 - 0.2    is okay
+		var trg_x = (2*v - 1) / 4;
+		var sqr_x = v / 2;
+		var trg = 1 - 2 * Math.acos((1 - delta) * Math.sin(2 * Math.PI * trg_x)) / Math.PI;
+		var sqr = 2 * Math.atan(Math.sin(2 * Math.PI * sqr_x)/delta)/Math.PI;
+		var swt = (1 + trg * sqr) / 2;
+		v=swt;
+		//v=min_v;
+
+		d[i]   = v * col1_rgb.r + ((1.0-v) * col2_rgb.r);
 		d[i+1] = v * col1_rgb.g + ((1.0-v) * col2_rgb.g);
 		d[i+2] = v * col1_rgb.b + ((1.0-v) * col2_rgb.b);
 		d[i+3] = 255;
 		i += 4;
     }
-
     //gaussianblur(imgData, size, size, 2);
 	
-	
+	//////////
+	// planks
 	i=0;
 	for(var y = 0; y < max_h; y++)
 	for(var x = 0; x < max_w; x++)
