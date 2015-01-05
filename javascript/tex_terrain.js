@@ -188,7 +188,7 @@ function setTerrainSand(size, persistence, scale, seed, min_height){
 	for (var y=0; y<max_h; y++)
 	for (var x=0; x<max_w; x++){
 		// octaves, persistence, scale, loBound, hiBound, x, y
-		var v = S.simplex(noise_type, size, octaves, persistence, percentage, scale_s, x, y);
+		var v = S.simplexNoise(noise_type, size, octaves, persistence, percentage, scale_s, x, y);
 		max_v = Math.max(v*255, max_v);
 		min_v = Math.min(v*255, min_v);
 
@@ -212,7 +212,7 @@ function setTerrainSand(size, persistence, scale, seed, min_height){
 	for (var y=0; y<max_h; y++)
 	for (var x=0; x<max_w; x++){
 		// octaves, persistence, scale, loBound, hiBound, x, y
-		var v = S.simplex(NoiseTypeEnum.PERLINNOISE, size, 3, 0.2, 1, 0.8*scale_s, x, y);
+		var v = S.simplexNoise(NoiseTypeEnum.PERLINNOISE, size, 3, 0.2, 1, 0.8*scale_s, x, y);
 		v=Math.min(v*(1+(1-min_height/4)) - min_height,1);//v = v / 255;
 		v = Math.max(v, 0 );
 		v = v*v;
@@ -256,7 +256,7 @@ function setTerrainMountain(size, persistence, scale, seed, min_height)
 	for (var y=0; y<max_h; y++)
 	for (var x=0; x<max_w; x++){
 		// octaves, persistence, scale, loBound, hiBound, x, y
-		var v = S.simplex(noise_type, size, octaves, persistence, percentage, scale_s, x, y);
+		var v = S.simplexNoise(noise_type, size, octaves, persistence, percentage, scale_s, x, y);
 		max_v = Math.max(v*255, max_v);
 		min_v = Math.min(v*255, min_v);
 
@@ -280,7 +280,7 @@ function setTerrainMountain(size, persistence, scale, seed, min_height)
 	for (var y=0; y<max_h; y++)
 	for (var x=0; x<max_w; x++){
 		// octaves, persistence, scale, loBound, hiBound, x, y
-		var v = S.simplex(NoiseTypeEnum.PERLINNOISE, size, 3, 0.2, 1, 0.8*scale_s, x, y);
+		var v = S.simplexNoise(NoiseTypeEnum.PERLINNOISE, size, 3, 0.2, 1, 0.8*scale_s, x, y);
 		v=Math.min(v*Math.max((1+(1-min_height/4)) - min_height, 0),1);//v = v / 255;
 		v = v*v;
 		var i = (x + y*max_w) * 4;

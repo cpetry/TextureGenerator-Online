@@ -99,7 +99,7 @@ function setPerlinNoise(canvas, size, color1, color2, type, octaves, persistence
 	for (var y=0; y<max_h; y++)
 	for (var x=0; x<max_w; x++){
 		// octaves, persistence, scale, loBound, hiBound, x, y
-		var v = S.simplex(noise_type, size, octaves, persistence, percentage, scale_s, x, y);
+		var v = S.simplexNoise(noise_type, size, octaves, persistence, percentage, scale_s, x, y);
 		//v = v * lo_hi_mul + lo_hi_add; // not sure what this does...
 		//if (type == "PerlinNoise")
 			//v = (v + 1.0) / 2.0; //interval [0,1]. 

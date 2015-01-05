@@ -107,8 +107,8 @@ function setWood(canvas, size, color1, color2, color3, type, x_scale, persistenc
 	for(var y = 0; y < max_h; y++)
 	for(var x = 0; x < max_w; x++)
     {   
-		var v = S.simplex(NoiseTypeEnum.PERLINNOISE, size, 1*2, persistence, 1, scale_s*55, x*x_scale*2, y/x_scale);
-		v = v * (S.simplex(NoiseTypeEnum.PERLINNOISE, size, 1, persistence, 1, scale_s*5, x*x_scale, y) - 0.5) ;
+		var v = S.simplexNoise(NoiseTypeEnum.PERLINNOISE, size, 1*2, persistence, 1, scale_s*55, x*x_scale*2, y/x_scale);
+		v = v * (S.simplexNoise(NoiseTypeEnum.PERLINNOISE, size, 1, persistence, 1, scale_s*5, x*x_scale, y) - 0.5) ;
 		v += 0.5;
 		
         d[i]   = v * 255;
@@ -127,7 +127,7 @@ function setWood(canvas, size, color1, color2, color3, type, x_scale, persistenc
     for(var y = 0; y < max_h; y++)
 	for(var x = 0; x < max_w; x++)
     {   
-		var v = S.simplex(NoiseTypeEnum.PERLINNOISE, size, 1, persistence, 1, scale_s, x*x_scale, y);
+		var v = S.simplexNoise(NoiseTypeEnum.PERLINNOISE, size, 1, persistence, 1, scale_s, x*x_scale*4, y);
 		v = v * persistence * 20;
 		v = v - parseInt(v);
 		//v = 6 * Math.pow(v,5) - 15 * Math.pow(v,4) + 10 * Math.pow(v,3);
@@ -189,7 +189,7 @@ function setWood(canvas, size, color1, color2, color3, type, x_scale, persistenc
 	for(var x = 0; x < max_w; x++)
     {   
 		i += 4;
-		var v = S.simplex(NoiseTypeEnum.TURBULENCE, size, 1, persistence, 1, (nmb_planks-1)*(nmb_planks-1), x, y/size);
+		var v = S.simplexNoise(NoiseTypeEnum.TURBULENCE, size, 1, persistence, 1, (nmb_planks-1)*(nmb_planks-1), x, y/size);
 		v = Math.min(v*20,1);
         //v = v * (d[i]/255);
         d[i]   = v * d[i]   + ((1.0-v) * col3_rgb.r);
